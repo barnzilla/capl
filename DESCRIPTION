@@ -1,11 +1,33 @@
 Package: capl
-Title: A package for use with data collected using the Canadian Assessment of Physical Literacy
-Version: 0.0.0.9000
-Authors@R: person("Joel D.", "Barnes", email = "jbarnes@cheo.on.ca", role = c("aut", "cre"))
-Description: The capl package has been developed to include functions for use with data collected using the Canadian Assessment of Physical Literacy (www.capl-eclp.ca).
-Depends: R (>= 3.4.4), lubridate
-Imports: stats
-License: GPL-2 | GPL-3
+Title: Compute Canadian Assessment of Physical Literacy Scores
+    and Interpretations from Raw Data
+Version: 1.01
+Authors@R: 
+    c(person(given = "Joel",
+             family = "Barnes",
+             role = c("aut", "cre"),
+             email = "j@barnzilla.ca",
+             comment = c(ORCID = "0000-0002-7621-9020")),
+      person(given = "Michelle",
+             family = "Guerrero",
+             role = "aut",
+             email = "mguerrero@cheo.on.ca",
+             comment = c(ORCID = "0000-0001-8169-5040")))
+Description: Compute Canadian Assessment of Physical Literacy
+    (CAPL, www.capl-eclp.ca) scores and interpretations from raw data.
+License: GPL-3
+Depends: 
+    R (>= 2.10)
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
+Language: en
 LazyData: true
-RoxygenNote: 6.0.1
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.0
+Imports: 
+    stats
+Suggests: 
+    klippy,
+    knitr,
+    rmarkdown

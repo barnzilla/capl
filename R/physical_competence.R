@@ -1,0 +1,228 @@
+#' Convert PACER shuttle run laps to their equivalent in 20-metre laps.
+#'
+#' @export
+#'
+#' @importFrom stats var
+#'
+#' @param lap_distance a numeric element or vector (valid values are 15 or 20).
+#' @param laps_run a numeric element (if lap_distance = 15, valid values are between 1 and 298).
+#'
+#' @examples
+#' get_pacer_20m_laps(lap_distance = c(15, 20, NA, "15"), laps_run = rep(100, 4))
+#' # [1]  77 100  NA  77
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_pacer_20m_laps <- function(lap_distance = NA, laps_run = NA) {
+  try(
+    if(var(c(length(lap_distance), length(laps_run))) == 0) {
+      return(
+        unname(
+          apply(data.frame(lap_distance, laps_run), 1, function(x) {
+            lap_distance <- validate_number(x[1])
+            laps_run <- validate_number(x[2])
+            if(sum(is.na(c(lap_distance, laps_run))) > 0 | ! lap_distance %in% c(15, 20) | (lap_distance == 15 & (laps_run < 1 | laps_run > 298))) {
+              return(NA)
+            } else if(lap_distance == 15) {
+              lookup <- data.frame(
+                meters_15 = 1:298,
+                meters_20 = c(
+                  1,
+                  rep(2, 2),
+                  3:4,
+                  rep(5, 2),
+                  6:7,
+                  rep(8, 2),
+                  9:11,
+                  rep(12, 2),
+                  13:14,
+                  rep(15, 2),
+                  16:17,
+                  rep(18, 2),
+                  19:21,
+                  rep(22, 2),
+                  23:24,
+                  rep(25, 2),
+                  26:27,
+                  rep(28, 2),
+                  29:31,
+                  rep(32, 2),
+                  33:34,
+                  rep(35, 2),
+                  36:37,
+                  rep(38, 2),
+                  39:40,
+                  rep(41, 2),
+                  42:44,
+                  rep(45, 2),
+                  46:47,
+                  rep(48, 2),
+                  49:50,
+                  rep(51, 2),
+                  52:54,
+                  rep(55, 2),
+                  56:57,
+                  rep(58, 2),
+                  59:60,
+                  rep(61, 2),
+                  62:64,
+                  rep(65, 2),
+                  66:67,
+                  rep(68, 2),
+                  69:71,
+                  rep(72, 2),
+                  73:74,
+                  rep(75, 2),
+                  76:77,
+                  rep(78, 2),
+                  79:81,
+                  rep(82, 2),
+                  83:84,
+                  rep(85, 2),
+                  86:87,
+                  rep(88, 2),
+                  89:91,
+                  rep(92, 2),
+                  93,
+                  rep(94, 2),
+                  95:97,
+                  rep(98, 2),
+                  99:101,
+                  rep(102, 2),
+                  103:104,
+                  rep(105, 2),
+                  106:107,
+                  rep(108, 2),
+                  109:111,
+                  rep(112, 2),
+                  113:114,
+                  rep(115, 2),
+                  116:117,
+                  rep(118, 2),
+                  119:121,
+                  rep(122, 2),
+                  123:124,
+                  rep(125, 2),
+                  126:127,
+                  rep(128, 2),
+                  129:130,
+                  rep(131, 2),
+                  132:134,
+                  rep(135, 2),
+                  136:137,
+                  rep(138, 2),
+                  139:141,
+                  rep(142, 2),
+                  143,
+                  rep(144, 2),
+                  145:147,
+                  rep(148, 2),
+                  149:151,
+                  rep(152, 2),
+                  153:154,
+                  rep(155, 2),
+                  rep(156, 2),
+                  157:161,
+                  rep(162, 2),
+                  163:164,
+                  rep(165, 2),
+                  166:167,
+                  rep(168, 2),
+                  169:170,
+                  rep(171, 2),
+                  172:174,
+                  rep(175, 2),
+                  176:177,
+                  rep(178, 2),
+                  179:181,
+                  rep(182, 2),
+                  183:184,
+                  rep(185, 2),
+                  186:185,
+                  186,
+                  188:191,
+                  rep(192, 2),
+                  193:194,
+                  rep(195, 2),
+                  196:197,
+                  rep(198, 2),
+                  199:201,
+                  200:201,
+                  203:204,
+                  rep(205, 2),
+                  206:207,
+                  rep(208, 2),
+                  209:211,
+                  rep(212, 2),
+                  213:215,
+                  rep(216, 2),
+                  217,
+                  rep(218, 2),
+                  219:221,
+                  rep(222, 2),
+                  223:224,
+                  rep(225, 2),
+                  226:227,
+                  rep(228, 2),
+                  229
+                )
+              )
+              return(lookup$meters_20[laps_run])
+            } else {
+              return(laps_run)
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the lap_distance and laps_run arguments must be the same length.")
+    }
+  )
+}
+
+#' Compute a PACER score based on the number of PACER laps run at a 20-metre distance.
+#'
+#' @export
+#'
+#' @param pacer_laps_20m a numeric element or vector.
+#'
+#' @examples
+#' get_pacer_score(c(1, 6, 12, 18, NA, 46, 31))
+#' # [1]  0  1  2  3 NA  9  6
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_pacer_score <- function(pacer_laps_20m = NA) {
+  return(
+    unname(
+      sapply(pacer_laps_20m, function(x) {
+        pacer_laps_20m <- validate_number(x)
+        if(is.na(pacer_laps_20m)) {
+          return(NA)
+        } else if(pacer_laps_20m > 49) {
+          return(10)
+        } else if(pacer_laps_20m >= 45) {
+          return(9)
+        } else if(pacer_laps_20m >= 40) {
+          return(8)
+        } else if(pacer_laps_20m >= 35) {
+          return(7)
+        } else if(pacer_laps_20m >= 30) {
+          return(6)
+        } else if(pacer_laps_20m >= 25) {
+          return(5)
+        } else if(pacer_laps_20m >= 20) {
+          return(4)
+        } else if(pacer_laps_20m >= 15) {
+          return(3)
+        } else if(pacer_laps_20m >= 10) {
+          return(2)
+        } else if(pacer_laps_20m >= 5) {
+          return(1)
+        } else if(pacer_laps_20m > 0) {
+          return(0)
+        } else {
+          return(NA)
+        }
+      })
+    )
+  )
+}
