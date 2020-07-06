@@ -229,3 +229,51 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
     )
   )
 }
+
+#' Compute a plank score based on the number of seconds a plank was held.
+#'
+#' @export
+#'
+#' @param plank_time a numeric element or vector representing time (seconds).
+#'
+#' @examples
+#' get_plank_score(c(120.5, 75.6, 40, 10.99, 90))
+#' # [1] 10  6  3  0  8
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_plank_score <- function(plank_time = NA) {
+  return(
+    unname(
+      sapply(plank_time, function(x) {
+        plank_time <- validate_number(x)
+        if(is.na(plank_time)) {
+          return(NA)
+        } else if(plank_time > 110) {
+          return(10)
+        } else if(plank_time >= 100) {
+          return(9)
+        } else if(plank_time >= 90) {
+          return(8)
+        } else if(plank_time >= 80) {
+          return(7)
+        } else if(plank_time >= 70) {
+          return(6)
+        } else if(plank_time >= 60) {
+          return(5)
+        } else if(plank_time >= 50) {
+          return(4)
+        } else if(plank_time >= 40) {
+          return(3)
+        } else if(plank_time >= 30) {
+          return(2)
+        } else if(plank_time >= 20) {
+          return(1)
+        } else if(plank_time > 0) {
+          return(0)
+        } else {
+          return(NA)
+        }
+      })
+    )
+  )
+}

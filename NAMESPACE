@@ -3,6 +3,7 @@
 export(get_interpretation)
 export(get_pacer_20m_laps)
 export(get_pacer_score)
+export(get_plank_score)
 export(validate_age)
 export(validate_gender)
 export(validate_number)

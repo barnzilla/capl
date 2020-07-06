@@ -13,7 +13,7 @@ get_interpretation(age = NA, gender = NA, score = NA, protocol = NA)
 
 \item{score}{a numeric element or vector.}
 
-\item{protocol}{a character element representing a CAPL protocol (e.g., "pacer").}
+\item{protocol}{a character element representing a CAPL protocol (valid values currently include "pacer", "plank").}
 }
 \value{
 returns a character element with a value of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).
