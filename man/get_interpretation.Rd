@@ -2,7 +2,7 @@
 % Please edit documentation in R/capl.R
 \name{get_interpretation}
 \alias{get_interpretation}
-\title{Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol.}
+\title{Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol or domain score.}
 \usage{
 get_interpretation(age = NA, gender = NA, score = NA, protocol = NA)
 }
@@ -13,13 +13,13 @@ get_interpretation(age = NA, gender = NA, score = NA, protocol = NA)
 
 \item{score}{a numeric element or vector.}
 
-\item{protocol}{a character element representing a CAPL protocol (valid values currently include "pacer", "plank").}
+\item{protocol}{a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa").}
 }
 \value{
 returns a character element with a value of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).
 }
 \description{
-Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol.
+Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol or domain score.
 }
 \examples{
 get_interpretation(

@@ -1,3 +1,135 @@
+#' Compute the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score out of two trials.
+#'
+#' @export
+#'
+#' @importFrom stats var
+#'
+#' @param camsa_score1 a numeric element or vector representing the skill + time score from trial 1 (valid values are between 1 and 28).
+#' @param camsa_score2 a numeric element or vector representing the skill + time score from trial 2 (valid values are between 1 and 28).
+#'
+#' @examples
+#' get_best_camsa_score(
+#'   camsa_score1 = c(1, 5, 10, 28, 29), 
+#'   camsa_score2 = c(5, 7, 12, NA, 27)
+#' )
+#' # [1]  5  7 12 NA NA
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_best_camsa_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
+  try(
+    if(var(c(length(camsa_score1), length(camsa_score2))) == 0) {
+      return(
+        unname(
+          apply(data.frame(camsa_score1, camsa_score2), 1, function(x) {
+            camsa_score1 <- validate_number(x[1])
+            camsa_score2 <- validate_number(x[2])
+            if(sum(is.na(c(camsa_score1, camsa_score2))) > 0 | camsa_score1 < 1 | camsa_score1 > 28 | camsa_score2 < 1 | camsa_score2 > 28) {
+              return(NA)
+            } else {
+              return(max(camsa_score1, camsa_score2))
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the camsa_skill_score and camsa_time_score arguments must be the same length.")
+    }
+  )
+}
+
+#' Compute the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score.
+#'
+#' @export
+#'
+#' @importFrom stats var
+#'
+#' @param camsa_skill_score a numeric element or vector representing the CAMSA skill score (valid values are between 0 and 14).
+#' @param camsa_time_score a numeric element or vector representing the CAMSA time score (valid values are between 1 and 14).
+#'
+#' @examples
+#' get_camsa_score(
+#'   camsa_skill_score = c(0, 5, 10, 14, 15),
+#'   camsa_time_score = c(1, 10, 12, 15, 30)
+#' )
+#' # [1]  1 15 22 NA NA
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_camsa_score <- function(camsa_skill_score = NA, camsa_time_score = NA) {
+  try(
+    if(var(c(length(camsa_skill_score), length(camsa_time_score))) == 0) {
+      return(
+        unname(
+          apply(data.frame(camsa_skill_score, camsa_time_score), 1, function(x) {
+            camsa_skill_score <- validate_number(x[1])
+            camsa_time_score <- validate_number(x[2])
+            if(sum(is.na(c(camsa_skill_score, camsa_time_score))) > 0 | camsa_skill_score < 0 | camsa_skill_score > 14 | camsa_time_score < 1 | camsa_time_score > 14) {
+              return(NA)
+            } else {
+              return(sum(camsa_skill_score, camsa_time_score))
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the camsa_skill_score and camsa_time_score arguments must be the same length.")
+    }
+  )
+}
+
+#' Compute the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken to complete a trial.
+#'
+#' @export
+#'
+#' @param camsa_time a numeric element or vector representing the time (in seconds) taken to complete a CAMSA trial (valid values are > 0).
+#'
+#' @examples
+#' get_camsa_time_score(c(14, 12, 30, 25, 0))
+#' # [1] 13 14  1  4 NA
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_camsa_time_score <- function(camsa_time = NA) {
+  return(
+    unname(
+      sapply(camsa_time, function(x) {
+        camsa_time <- validate_number(x)
+        if(is.na(camsa_time) | camsa_time <= 0) {
+          return(NA)
+        } else if(camsa_time > 0 & camsa_time < 14) {
+          return(14)
+        } else if(camsa_time < 15) {
+          return(13)
+        } else if(camsa_time < 16) {
+          return(12)
+        } else if(camsa_time < 17) {
+          return(11)
+        } else if(camsa_time < 18) {
+          return(10)
+        } else if(camsa_time < 19) {
+          return(9)
+        } else if(camsa_time < 20) {
+          return(8)
+        } else if(camsa_time < 21) {
+          return(7)
+        } else if(camsa_time < 22) {
+          return(6)
+        } else if(camsa_time < 24) {
+          return(5)
+        } else if(camsa_time < 26) {
+          return(4)
+        } else if(camsa_time < 28) {
+          return(3)
+        } else if(camsa_time < 30) {
+          return(2)
+        } else if(camsa_time >= 30) {
+          return(1)
+        } else {
+          return(NA)
+        }
+      })
+    )
+  )
+}
+
 #' Convert PACER shuttle run laps to their equivalent in 20-metre laps.
 #'
 #' @export

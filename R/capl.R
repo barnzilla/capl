@@ -1,4 +1,4 @@
-#' Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol.
+#' Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol or domain score.
 #'
 #' @export
 #'
@@ -7,7 +7,7 @@
 #' @param age a numeric element or vector (valid values are between 8 and 12).
 #' @param gender a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").
 #' @param score a numeric element or vector.
-#' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank").
+#' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa").
 #'
 #' @examples
 #' get_interpretation(
@@ -29,7 +29,7 @@ get_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA)
             gender <- validate_gender(x[2])
             score <- validate_number(x[3])
             protocol <- as.character(x[4])
-            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank")) {
+            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa")) {
               return(NA)
             } else {
               if(protocol == "pacer") {
@@ -45,6 +45,14 @@ get_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA)
                   age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
                   gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
                   bound = c(12.4, 72.0, 101.0, 101.0, 24.4, 59.4, 89.3, 89.3, 15.2, 74.9, 103.8, 103.8, 25.2, 61.4, 92.2, 92.2, 18.1, 77.7, 106.7, 106.7, 26.0, 63.4, 95.2, 95.2, 20.9, 80.6, 109.5, 109.5, 26.8, 65.3, 98.2, 98.2, 23.8, 83.4, 112.4, 112.4, 27.6, 67.3, 101.2, 101.2),
+                  interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+                )
+              }
+              if(protocol == "camsa") {
+                lookup <- data.frame(
+                  age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+                  gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+                  bound = c(16, 21, 23, 23, 15, 20, 21, 21, 17, 22, 23, 23, 16, 21, 22, 22, 17, 22, 24, 24, 17, 22, 23, 23, 18, 23, 25, 25, 17, 22, 24, 24, 18, 24, 26, 26, 18, 23, 25, 25),
                   interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
                 )
               }
