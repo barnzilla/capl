@@ -8,7 +8,10 @@
 #' @param laps_run a numeric element (if lap_distance = 15, valid values are between 1 and 298).
 #'
 #' @examples
-#' get_pacer_20m_laps(lap_distance = c(15, 20, NA, "15"), laps_run = rep(100, 4))
+#' get_pacer_20m_laps(
+#'   lap_distance = c(15, 20, NA, "15"), 
+#'   laps_run = rep(100, 4)
+#' )
 #' # [1]  77 100  NA  77
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
