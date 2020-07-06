@@ -24,7 +24,7 @@ get_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA)
     if(var(c(length(age), length(gender), length(score))) == 0) {
       return(
         unname(
-          apply(data.frame(age, gender, score, rep(protocol, length(age))), 1, function(x) {
+          apply(data.frame(age, gender, score, rep(protocol[1], length(age))), 1, function(x) {
             age <- validate_age(x[1])
             gender <- validate_gender(x[2])
             score <- validate_number(x[3])
