@@ -24,7 +24,7 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
         time_on <- suppressWarnings(hm(x[1]))
         time_off <- suppressWarnings(hm(x[2]))
         non_wear_time <- validate_number(x[3])
-        if(is.na(non_wear_time)) {
+        if(is.na(non_wear_time) | non_wear_time < 0) {
           non_wear_time <- dminutes(0)
         } else {
           non_wear_time <- dminutes(non_wear_time)
@@ -33,8 +33,17 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
           NA
         } else {
           wear_time <- as.duration(time_off - time_on) - non_wear_time
-          wear_time <- strsplit(as.character(wear_time), "~| ")
-          validate_number(wear_time[[1]][3])
+          wear_time <- strsplit(as.character(wear_time), "~| |)")
+          time_unit <- wear_time[[1]][4]
+          wear_time <- validate_number(wear_time[[1]][3])
+          if("minutes" %in% time_unit) {
+            wear_time <- wear_time / 60
+          }
+          if(wear_time < 0) {
+            NA
+          } else {
+            wear_time
+          }
         }
       })
     )
