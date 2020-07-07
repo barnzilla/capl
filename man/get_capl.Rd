@@ -2,7 +2,7 @@
 % Please edit documentation in R/capl.R
 \name{get_capl}
 \alias{get_capl}
-\title{The main function in this package that computes CAPL scores and intepretations from raw data.}
+\title{The main function in this package that computes CAPL scores and interpretations from raw data.}
 \usage{
 get_capl(raw_data = NULL)
 }
@@ -13,5 +13,5 @@ get_capl(raw_data = NULL)
 returns a data frame of CAPL scores and interpretations.
 }
 \description{
-The main function in this package that computes CAPL scores and intepretations from raw data.
+The main function in this package that computes CAPL scores and interpretations from raw data.
 }
