@@ -3,7 +3,7 @@
 #' @export
 #'
 #' @param raw_data a data frame or tibble of raw CAPL data.
-#' @param sort a character element representing how the variables in the returned data frame should be sorted (valid values are "abc" and "zyx"; valid
+#' @param sort a character element representing how the variables in the returned data frame should be sorted (valid values are "abc", "zyx" and "asis"; valid
 #' values are not case-sensitive). This argument is set to "abc" by default.
 #'
 #' @examples
@@ -35,8 +35,8 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
       raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_overall_score)
       raw_data$pc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pc_score, "pc")
       raw_data$pc_status <- get_capl_domain_status(raw_data[c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_overall_score")])
-      if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0) {
-        # Don't reorder variables in raw_data
+      if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
+        # Don't sort variables in raw_data
       } else if(sort == "abc") {
         raw_data <- raw_data[order(colnames(raw_data), decreasing = FALSE)]
       }  else if(sort == "zyx") {

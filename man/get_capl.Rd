@@ -9,7 +9,7 @@ get_capl(raw_data = NULL, sort = "abc")
 \arguments{
 \item{raw_data}{a data frame or tibble of raw CAPL data.}
 
-\item{sort}{a character element representing how the variables in the returned data frame should be sorted (valid values are "abc" and "zyx"; valid
+\item{sort}{a character element representing how the variables in the returned data frame should be sorted (valid values are "abc", "zyx" and "asis"; valid
 values are not case-sensitive). This argument is set to "abc" by default.}
 }
 \value{
