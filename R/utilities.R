@@ -71,3 +71,29 @@ validate_gender <- function(x) {
 validate_number <- function(x) {
   return(unname(sapply(x, function(x) suppressWarnings(as.numeric(x)))))
 }
+
+#' Check whether a physical competence score is numeric and between 0 and 10
+#'
+#' @export
+#'
+#' @param x an element or vector representing a physical competence protocol score.
+#'
+#' @examples
+#' validate_pc_protocol_score(c(1, 5, 10, 11, -1, NA, "6"))
+#' # [1]  1  5 10 NA NA NA  6
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+validate_pc_protocol_score <- function(x) {
+  return(
+    unname(
+      sapply(x, function(x) {
+        x <- validate_number(x)
+        if(is.na(x) | x < 0 | x > 10) {
+          return(NA)
+        } else {
+          return(x)
+        }
+      })
+    )
+  )
+}

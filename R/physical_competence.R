@@ -1,4 +1,4 @@
-#' Compute the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score out of two trials.
+#' Compute the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score out of two trials and divide by 2.8.
 #'
 #' @export
 #'
@@ -8,14 +8,14 @@
 #' @param camsa_score2 a numeric element or vector representing the skill + time score from trial 2 (valid values are between 1 and 28).
 #'
 #' @examples
-#' get_best_camsa_score(
+#' get_camsa_overall_score(
 #'   camsa_score1 = c(1, 5, 10, 28, 29), 
 #'   camsa_score2 = c(5, 7, 12, NA, 27)
 #' )
 #' # [1]  5  7 12 NA NA
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
-get_best_camsa_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
+get_camsa_overall_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
   try(
     if(var(c(length(camsa_score1), length(camsa_score2))) == 0) {
       return(
@@ -26,7 +26,7 @@ get_best_camsa_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
             if(sum(is.na(c(camsa_score1, camsa_score2))) > 0 | camsa_score1 < 1 | camsa_score1 > 28 | camsa_score2 < 1 | camsa_score2 > 28) {
               return(NA)
             } else {
-              return(max(camsa_score1, camsa_score2))
+              return(max(camsa_score1, camsa_score2) / 2.8)
             }
           })
         )
@@ -359,6 +359,49 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
         }
       })
     )
+  )
+}
+
+#' Compute a physical competence domain score based on the PACER, plank and CAMSA scores. If one protocol score is missing or invalid, a weighted domain 
+#' score will be computed from the other two protocol scores.
+#'
+#' @export
+#'
+#' @param pacer_score a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).
+#' @param plank_score a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).
+#' @param camsa_overall_score a numeric element or vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).
+#'
+#' @examples
+#' get_pc_score(
+#'   pacer_score = c(1, 5, 8, 10, NA),
+#'   plank_score = c(4, 5, 5, 6, 9),
+#'   camsa_overall_score = c(-1, 0, 6, 4, 3)
+#' )
+#' # [1]  7.5 10.0 19.0 20.0 18.0
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_pc_score <- function(pacer_score = NA, plank_score = NA, camsa_overall_score = NA) {
+  try(
+    if(var(c(length(pacer_score), length(plank_score), length(camsa_overall_score))) == 0) {
+      return(
+        unname(
+          apply(data.frame(pacer_score, plank_score, camsa_overall_score), 1, function(x) {
+            pacer_score <- validate_pc_protocol_score(x[1])
+            plank_score <- validate_pc_protocol_score(x[2])
+            camsa_overall_score <- validate_pc_protocol_score(x[3])
+            if(sum(is.na(c(pacer_score, plank_score, camsa_overall_score))) > 1) {
+              return(NA)
+            } else if(sum(is.na(c(pacer_score, plank_score, camsa_overall_score))) == 1) {
+              return(sum(pacer_score, plank_score, camsa_overall_score, na.rm = TRUE) * 30 / 20)
+            } else {
+              return(sum(pacer_score, plank_score, camsa_overall_score))
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the pacer_score, plank_score and camsa_overall_score arguments must be the same length.")
+    }
   )
 }
 

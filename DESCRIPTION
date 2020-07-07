@@ -1,7 +1,7 @@
 Package: capl
 Title: Compute Canadian Assessment of Physical Literacy Scores
     and Interpretations from Raw Data
-Version: 1.01
+Version: 1.1
 Authors@R: 
     c(person(given = "Joel",
              family = "Barnes",
