@@ -4,14 +4,21 @@
 \alias{get_capl}
 \title{The main function in this package that computes CAPL scores and interpretations from raw data.}
 \usage{
-get_capl(raw_data = NULL)
+get_capl(raw_data = NULL, sort = "abc")
 }
 \arguments{
 \item{raw_data}{a data frame or tibble of raw CAPL data.}
+
+\item{sort}{a character element representing how the variables in the returned data frame should be sorted (valid values are "abc" and "zyx"; valid
+values are not case-sensitive). This argument is set to "abc" by default.}
 }
 \value{
-returns a data frame of CAPL scores and interpretations.
+returns a merged data frame of raw data and CAPL scores and interpretations.
 }
 \description{
 The main function in this package that computes CAPL scores and interpretations from raw data.
+}
+\examples{
+get_capl(raw_data)
+
 }

@@ -3,9 +3,14 @@
 #' @export
 #'
 #' @param raw_data a data frame or tibble of raw CAPL data.
+#' @param sort a character element representing how the variables in the returned data frame should be sorted (valid values are "abc" and "zyx"; valid
+#' values are not case-sensitive). This argument is set to "abc" by default.
 #'
-#' @return returns a data frame of CAPL scores and interpretations.
-get_capl <- function(raw_data = NULL) {
+#' @examples
+#' get_capl(raw_data)
+#'
+#' @return returns a merged data frame of raw data and CAPL scores and interpretations.
+get_capl <- function(raw_data = NULL, sort = "abc") {
   try(
     if(is.null(raw_data)) {
       stop("[CAPL error]: the raw_data argument is missing.")
@@ -14,45 +19,31 @@ get_capl <- function(raw_data = NULL) {
       stop("[CAPL error]: the raw_data argument must be a data frame or a tibble.")
     }
     else {
-      colnames(raw_data) <- tolower(colnames(raw_data))
-      if(! "age" %in% colnames(raw_data)) {
-        raw_data$age <- rep(NA, nrow(raw_data))
+      sort <- tolower(sort[1])
+      raw_data <- add_missing_capl_variables(raw_data)
+      raw_data$pacer_laps_20m <- get_pacer_20m_laps(raw_data$pacer_lap_distance, raw_data$pacer_laps)
+      raw_data$pacer_score <- get_pacer_score(raw_data$pacer_laps_20m)
+      raw_data$pacer_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pacer_laps_20m, "pacer")
+      raw_data$plank_score <- get_plank_score(raw_data$plank_time)
+      raw_data$plank_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$plank_time, "plank")
+      raw_data$camsa_time_score1 <- get_camsa_time_score(raw_data$camsa_time1)
+      raw_data$camsa_time_score2 <- get_camsa_time_score(raw_data$camsa_time2)
+      raw_data$camsa_score1 <- get_camsa_trial_score(raw_data$camsa_skill_score1, raw_data$camsa_time_score1)
+      raw_data$camsa_score2 <- get_camsa_trial_score(raw_data$camsa_skill_score2, raw_data$camsa_time_score2)
+      raw_data$camsa_overall_score <- get_camsa_overall_score(raw_data$camsa_score1, raw_data$camsa_score2)
+      raw_data$camsa_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$camsa_overall_score, "camsa")
+      raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_overall_score)
+      raw_data$pc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pc_score, "pc")
+      if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0) {
+        # Don't reorder variables in raw_data
+      } else if(sort == "abc") {
+        raw_data <- raw_data[order(colnames(raw_data), decreasing = FALSE)]
+      }  else if(sort == "zyx") {
+        raw_data <- raw_data[order(colnames(raw_data), decreasing = TRUE)]
+      } else {
+        # Don't reorder variables in raw_data
       }
-      if(! "gender" %in% colnames(raw_data)) {
-        raw_data$gender <- rep(NA, nrow(raw_data))
-      }
-      pacer_laps_20m <- get_pacer_20m_laps(raw_data$pacer_lap_distance, raw_data$pacer_laps)
-      pacer_score <- get_pacer_score(pacer_laps_20m)
-      pacer_interpretation <- get_interpretation(raw_data$age, raw_data$gender, pacer_laps_20m, "pacer")
-      plank_score <- get_plank_score(raw_data$plank_time)
-      plank_interpretation <- get_interpretation(raw_data$age, raw_data$gender, raw_data$plank_time, "plank")
-      camsa_time_score1 <- get_camsa_time_score(raw_data$camsa_time1)
-      camsa_time_score2 <- get_camsa_time_score(raw_data$camsa_time2)
-      camsa_score1 <- get_camsa_score(raw_data$camsa_skill_score1, camsa_time_score1)
-      camsa_score2 <- get_camsa_score(raw_data$camsa_skill_score2, camsa_time_score2)
-      camsa_overall_score <- get_camsa_overall_score(camsa_score1, camsa_score2)
-      camsa_interpretation <- get_interpretation(raw_data$age, raw_data$gender, camsa_overall_score, "camsa")
-      pc_score <- get_pc_score(pacer_score, plank_score, camsa_overall_score)
-      pc_interpretation <- get_interpretation(raw_data$age, raw_data$gender, pc_score, "pc")
-      return(
-        data.frame(
-          age = raw_data$age,
-          gender = raw_data$gender,
-          pacer_laps_20m,
-          pacer_score,
-          pacer_interpretation,
-          plank_score,
-          plank_interpretation,
-          camsa_time_score1,
-          camsa_time_score2,
-          camsa_score1,
-          camsa_score2,
-          camsa_overall_score,
-          camsa_interpretation,
-          pc_score,
-          pc_interpretation
-        )
-      )
+      return(raw_data)
     }
   )
 }
@@ -66,10 +57,11 @@ get_capl <- function(raw_data = NULL) {
 #' @param age a numeric element or vector (valid values are between 8 and 12).
 #' @param gender a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").
 #' @param score a numeric element or vector.
-#' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc").
+#' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc"; valid values are 
+#' not case-sensitive).
 #'
 #' @examples
-#' get_interpretation(
+#' get_capl_interpretation(
 #'   age = 7:13, 
 #'   gender = c("g", "g", "b", "Boy", "m", "f", "Female"), 
 #'   score = c(50, 25, 100, 5, 150, 23, 78), 
@@ -78,12 +70,12 @@ get_capl <- function(raw_data = NULL) {
 #' # [1] NA            "achieving"   "excelling"   "beginning"   "excelling"   "progressing"
 #' # [7] NA
 #' @return returns a character element with a value of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).
-get_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA) {
+get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA) {
   try(
     if(var(c(length(age), length(gender), length(score))) == 0) {
       return(
         unname(
-          apply(data.frame(age, gender, score, rep(protocol[1], length(age))), 1, function(x) {
+          apply(data.frame(age, gender, score, rep(tolower(protocol[1]), length(age))), 1, function(x) {
             age <- validate_age(x[1])
             gender <- validate_gender(x[2])
             score <- validate_number(x[3])
@@ -122,6 +114,7 @@ get_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA)
               } else {
                 lookup <- data.frame(age = NA, gender = NA, bound = NA, interpretation = NA)
               }
+              age <- floor(age)
               lookup <- lookup[which(lookup$age == age & lookup$gender == gender),]
               if(score < lookup$bound[lookup$interpretation == "beginning"]) {
                 return("beginning")

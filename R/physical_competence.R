@@ -37,45 +37,6 @@ get_camsa_overall_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
   )
 }
 
-#' Compute the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score.
-#'
-#' @export
-#'
-#' @importFrom stats var
-#'
-#' @param camsa_skill_score a numeric element or vector representing the CAMSA skill score (valid values are between 0 and 14).
-#' @param camsa_time_score a numeric element or vector representing the CAMSA time score (valid values are between 1 and 14).
-#'
-#' @examples
-#' get_camsa_score(
-#'   camsa_skill_score = c(0, 5, 10, 14, 15),
-#'   camsa_time_score = c(1, 10, 12, 15, 30)
-#' )
-#' # [1]  1 15 22 NA NA
-#'
-#' @return returns a numeric element (if valid) or NA (if not valid).
-get_camsa_score <- function(camsa_skill_score = NA, camsa_time_score = NA) {
-  try(
-    if(var(c(length(camsa_skill_score), length(camsa_time_score))) == 0) {
-      return(
-        unname(
-          apply(data.frame(camsa_skill_score, camsa_time_score), 1, function(x) {
-            camsa_skill_score <- validate_number(x[1])
-            camsa_time_score <- validate_number(x[2])
-            if(sum(is.na(c(camsa_skill_score, camsa_time_score))) > 0 | camsa_skill_score < 0 | camsa_skill_score > 14 | camsa_time_score < 1 | camsa_time_score > 14) {
-              return(NA)
-            } else {
-              return(sum(camsa_skill_score, camsa_time_score))
-            }
-          })
-        )
-      )
-    } else {
-      stop("[CAPL error]: the camsa_skill_score and camsa_time_score arguments must be the same length.")
-    }
-  )
-}
-
 #' Compute the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken to complete a trial.
 #'
 #' @export
@@ -127,6 +88,45 @@ get_camsa_time_score <- function(camsa_time = NA) {
         }
       })
     )
+  )
+}
+
+#' Compute the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial.
+#'
+#' @export
+#'
+#' @importFrom stats var
+#'
+#' @param camsa_skill_score a numeric element or vector representing the CAMSA skill score (valid values are between 0 and 14).
+#' @param camsa_time_score a numeric element or vector representing the CAMSA time score (valid values are between 1 and 14).
+#'
+#' @examples
+#' get_camsa_trial_score(
+#'   camsa_skill_score = c(0, 5, 10, 14, 15),
+#'   camsa_time_score = c(1, 10, 12, 15, 30)
+#' )
+#' # [1]  1 15 22 NA NA
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+get_camsa_trial_score <- function(camsa_skill_score = NA, camsa_time_score = NA) {
+  try(
+    if(var(c(length(camsa_skill_score), length(camsa_time_score))) == 0) {
+      return(
+        unname(
+          apply(data.frame(camsa_skill_score, camsa_time_score), 1, function(x) {
+            camsa_skill_score <- validate_number(x[1])
+            camsa_time_score <- validate_number(x[2])
+            if(sum(is.na(c(camsa_skill_score, camsa_time_score))) > 0 | camsa_skill_score < 0 | camsa_skill_score > 14 | camsa_time_score < 1 | camsa_time_score > 14) {
+              return(NA)
+            } else {
+              return(sum(camsa_skill_score, camsa_time_score))
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the camsa_skill_score and camsa_time_score arguments must be the same length.")
+    }
   )
 }
 
@@ -367,6 +367,8 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
 #'
 #' @export
 #'
+#' @importFrom stats var
+#'
 #' @param pacer_score a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).
 #' @param plank_score a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).
 #' @param camsa_overall_score a numeric element or vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).
@@ -386,9 +388,9 @@ get_pc_score <- function(pacer_score = NA, plank_score = NA, camsa_overall_score
       return(
         unname(
           apply(data.frame(pacer_score, plank_score, camsa_overall_score), 1, function(x) {
-            pacer_score <- validate_pc_protocol_score(x[1])
-            plank_score <- validate_pc_protocol_score(x[2])
-            camsa_overall_score <- validate_pc_protocol_score(x[3])
+            pacer_score <- validate_protocol_score(x[1], "pc")
+            plank_score <- validate_protocol_score(x[2], "pc")
+            camsa_overall_score <- validate_protocol_score(x[3], "pc")
             if(sum(is.na(c(pacer_score, plank_score, camsa_overall_score))) > 1) {
               return(NA)
             } else if(sum(is.na(c(pacer_score, plank_score, camsa_overall_score))) == 1) {
