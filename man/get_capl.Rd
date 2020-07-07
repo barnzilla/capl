@@ -2,7 +2,7 @@
 % Please edit documentation in R/capl.R
 \name{get_capl}
 \alias{get_capl}
-\title{The main function in this package that computes CAPL scores and interpretations from raw data.}
+\title{The main (wrapper) function in the CAPL package that computes CAPL scores and interpretations from raw data.}
 \usage{
 get_capl(raw_data = NULL, sort = "abc")
 }
@@ -16,7 +16,7 @@ values are not case-sensitive). This argument is set to "abc" by default.}
 returns a merged data frame of raw data and CAPL scores and interpretations.
 }
 \description{
-The main function in this package that computes CAPL scores and interpretations from raw data.
+The main (wrapper) function in the CAPL package that computes CAPL scores and interpretations from raw data.
 }
 \examples{
 get_capl(raw_data)

@@ -1,4 +1,4 @@
-#' The main function in this package that computes CAPL scores and interpretations from raw data.
+#' The main (wrapper) function in the CAPL package that computes CAPL scores and interpretations from raw data.
 #'
 #' @export
 #'
@@ -34,6 +34,7 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
       raw_data$camsa_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$camsa_overall_score, "camsa")
       raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_overall_score)
       raw_data$pc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pc_score, "pc")
+      raw_data$pc_status <- get_capl_domain_status(raw_data[c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_overall_score")])
       if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0) {
         # Don't reorder variables in raw_data
       } else if(sort == "abc") {
@@ -44,6 +45,60 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
         # Don't reorder variables in raw_data
       }
       return(raw_data)
+    }
+  )
+}
+
+#' Compute the status of a CAPL domain.
+#'
+#' @export
+#'
+#' @param x a data frame or tibble. The first column must be CAPL domain scores, the second column must be CAPL domain interpretations and 
+#' the remaining columns must be protocol scores for the domain.
+#'
+#' @examples
+#' x <- data.frame(
+#'   domain_score = c(5, 10, 15, 20, 25, "", NA),
+#'     interpretation = c("beginning", "progressing", NA, "achieving", "excelling", NA, NA),
+#'     protocol_score1 = c(NA, 2, 3, 7, 10, NA, NA),
+#'     protocol_score2 = c(3, 5, 7, 12, 10, NA, NA),
+#'     protocol_score3 = c(2, 3, 10, 6, 10, NA, NA)
+#' )
+#'
+#' get_capl_domain_status(x)
+#' # [1] "missing protocol"       "complete"               "missing interpretation"
+#' # [4] "complete"               "complete"               "incomplete" 
+#' # [7] "incomplete"
+#'
+#' @return returns a character element with a value of "complete", "missing interpretation", "missing protocol" or "incomplete".
+get_capl_domain_status <- function(x = NULL) {
+  try(
+    if(is.null(x)) {
+      stop("[CAPL error]: the x argument is missing.")
+    }
+    else if(! isTRUE("data.frame" %in% class(x))) {
+      stop("[CAPL error]: the x argument must be a data frame or a tibble.")
+    } else {
+      x[, 2] <- sapply(x[, 2], validate_character)
+      x[, -2] <- data.frame(apply(data.frame(x[, -2]), 2, validate_number))
+      number_of_columns = ncol(x)
+      return(
+        unname(
+          apply(x, 1, function(x) {
+            if(sum(is.na(x[1:number_of_columns])) == 0) {
+              "complete"
+            } else if(is.na(x[1])) {
+              "incomplete"
+            } else if(is.na(x[2])) {
+              "missing interpretation"
+            } else if(sum(is.na(x[3:number_of_columns])) > 0) {
+              "missing protocol"
+            } else {
+              "incomplete"
+            }
+          })
+        )
+      )
     }
   )
 }
@@ -69,6 +124,7 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
 #' )
 #' # [1] NA            "achieving"   "excelling"   "beginning"   "excelling"   "progressing"
 #' # [7] NA
+#'
 #' @return returns a character element with a value of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).
 get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol = NA) {
   try(

@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{validate_gender}
 \alias{validate_gender}
-\title{Check whether an element can be classified as girl or boy}
+\title{Check whether an element can be classified as girl or boy.}
 \usage{
 validate_gender(x)
 }
@@ -13,7 +13,7 @@ validate_gender(x)
 returns a character element with a value of "girl" or "boy" (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element can be classified as girl or boy
+Check whether an element can be classified as girl or boy.
 }
 \examples{
 validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA))

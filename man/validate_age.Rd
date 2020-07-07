@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{validate_age}
 \alias{validate_age}
-\title{Check whether an element is numeric and between 8 and 12}
+\title{Check whether an element is numeric and between 8 and 12.}
 \usage{
 validate_age(x)
 }
@@ -13,7 +13,7 @@ validate_age(x)
 returns a numeric element with a value between 8 and 12 (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element is numeric and between 8 and 12
+Check whether an element is numeric and between 8 and 12.
 }
 \examples{
 validate_age(c(7:13, "", NA, "12"))

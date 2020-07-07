@@ -46,7 +46,7 @@ add_missing_capl_variables <- function(raw_data = NULL) {
   )
 }
 
-#' Check whether an element is numeric and between 8 and 12
+#' Check whether an element is numeric and between 8 and 12.
 #'
 #' @export
 #'
@@ -72,7 +72,34 @@ validate_age <- function(x) {
   )
 }
 
-#' Check whether an element can be classified as girl or boy
+#' Check whether an element is a character and not of length zero or "".
+#'
+#' @export
+#'
+#' @param x an element or vector.
+#'
+#' @examples
+#' validate_character(c("beginning", "progressing", "achieving", "excelling", "", NA, 7))
+#' # [1] "beginning"   "progressing" "achieving"   "excelling"   NA            NA 
+#' # [7] "7"
+#'
+#' @return returns a character element (if valid) or NA (if not valid).
+validate_character <- function(x) {
+  return(
+    unname(
+      sapply(x, function(x) {
+        x <- as.character(x)
+        if(is.na(x) | length(x) == 0 | x == "") {
+          x <- NA
+        } else {
+          x
+        }
+      })
+    )
+  )
+}
+
+#' Check whether an element can be classified as girl or boy.
 #'
 #' @export
 #'
@@ -105,7 +132,7 @@ validate_gender <- function(x) {
   )
 }
 
-#' Check whether an element is numeric
+#' Check whether an element is numeric.
 #'
 #' @export
 #'

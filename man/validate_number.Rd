@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities.R
 \name{validate_number}
 \alias{validate_number}
-\title{Check whether an element is numeric}
+\title{Check whether an element is numeric.}
 \usage{
 validate_number(x)
 }
@@ -13,7 +13,7 @@ validate_number(x)
 returns a numeric element (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element is numeric
+Check whether an element is numeric.
 }
 \examples{
 validate_number(c(1:5, "5", "", NA, "hello, world!"))
