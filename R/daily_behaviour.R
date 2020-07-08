@@ -61,7 +61,8 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
 #'
 #' @export
 #'
-#' @param x a data frame or tibble with seven columns where each column represents a day of the week when a pedometer was worn and contains "yes" or "no"  #' values (see [validate_steps()]).
+#' @param x a data frame or tibble with seven columns where each column represents a day of the week when a pedometer was worn and contains "yes" or 
+#' "no" values (see [validate_steps()]).
 #'
 #' @examples
 #' x <- data.frame(
