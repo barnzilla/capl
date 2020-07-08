@@ -20,7 +20,7 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
     }
     else {
       sort <- tolower(sort[1])
-      raw_data <- add_missing_capl_variables(raw_data)
+      raw_data <- get_missing_capl_variables(raw_data)
       raw_data$pacer_laps_20m <- get_pacer_20m_laps(raw_data$pacer_lap_distance, raw_data$pacer_laps)
       raw_data$pacer_score <- get_pacer_score(raw_data$pacer_laps_20m)
       raw_data$pacer_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pacer_laps_20m, "pacer")
@@ -35,6 +35,21 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
       raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_overall_score)
       raw_data$pc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pc_score, "pc")
       raw_data$pc_status <- get_capl_domain_status(raw_data[c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_overall_score")])
+      raw_data$wear_time1 <- get_pedometer_wear_time(raw_data$time_on1, raw_data$time_off1, raw_data$non_wear_time1)
+      raw_data$wear_time2 <- get_pedometer_wear_time(raw_data$time_on2, raw_data$time_off2, raw_data$non_wear_time2)
+      raw_data$wear_time3 <- get_pedometer_wear_time(raw_data$time_on3, raw_data$time_off3, raw_data$non_wear_time3)
+      raw_data$wear_time4 <- get_pedometer_wear_time(raw_data$time_on4, raw_data$time_off4, raw_data$non_wear_time4)
+      raw_data$wear_time5 <- get_pedometer_wear_time(raw_data$time_on5, raw_data$time_off5, raw_data$non_wear_time5)
+      raw_data$wear_time6 <- get_pedometer_wear_time(raw_data$time_on6, raw_data$time_off6, raw_data$non_wear_time6)
+      raw_data$wear_time7 <- get_pedometer_wear_time(raw_data$time_on7, raw_data$time_off7, raw_data$non_wear_time7)
+      raw_data$valid_steps1 <- validate_steps(raw_data$steps1, raw_data$wear_time1)
+      raw_data$valid_steps2 <- validate_steps(raw_data$steps2, raw_data$wear_time2)
+      raw_data$valid_steps3 <- validate_steps(raw_data$steps3, raw_data$wear_time3)
+      raw_data$valid_steps4 <- validate_steps(raw_data$steps4, raw_data$wear_time4)
+      raw_data$valid_steps5 <- validate_steps(raw_data$steps5, raw_data$wear_time5)
+      raw_data$valid_steps6 <- validate_steps(raw_data$steps6, raw_data$wear_time6)
+      raw_data$valid_steps7 <- validate_steps(raw_data$steps7, raw_data$wear_time7)
+      raw_data$valid_days <- get_valid_days(raw_data[c("valid_steps1", "valid_steps2", "valid_steps3", "valid_steps4", "valid_steps5", "valid_steps6", "valid_steps7")])
       if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
         # Don't sort variables in raw_data
       } else if(sort == "abc") {

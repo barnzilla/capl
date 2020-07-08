@@ -21,10 +21,10 @@ Compute pedometer wear time in decimal hours for a given day.
 }
 \examples{
 get_pedometer_wear_time(
-  time_on = "6:23", 
-  time_off = "21:55", 
-  non_wear_time = 90
+  time_on = c("6:23", "5:50 am", NA),
+  time_off = c("21:37", "9:17pm", ""),
+  c(60, 90, 0)
 )
-# [1] 14.03
+# [1] 14.23 13.95    NA
 
 }

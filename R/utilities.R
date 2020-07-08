@@ -1,14 +1,40 @@
-#' Add mandatory CAPL variables to a data frame of raw data if they are missing.
+#' Convert a 12-hour clock element to a 24-hour clock element.
+#'
+#' @export
+#'
+#' @param x a character element or vector in 12-hour clock format.
+#'
+#' @examples
+#' get_24_hour_clock(c("5:00 am", "7:10PM", "21:37", NA, "", 9))
+#' # [1] "05:00" "19:10" "21:37" NA      NA      "9" 
+#'
+#' @return returns a 24-hour clock element (if valid) or the original element as a character element (if not valid).
+get_24_hour_clock <- function(x = NA) {
+  return(
+    unname(
+      sapply(x, function(x) {
+        x <- validate_character(x)
+        if(grepl("am|pm", tolower(x))) {
+          format(strptime(x, "%I:%M %p"), format = "%H:%M")
+        } else {
+          x
+        }
+      })
+    )
+  )
+}
+
+#' Add required CAPL variables to a data frame of raw data if they are missing.
 #'
 #' @export
 #'
 #' @param raw_data a data frame or tibble of raw CAPL data.
 #'
 #' @examples
-#' raw_data <- add_missing_capl_variables(raw_data)
+#' raw_data <- get_missing_capl_variables(raw_data)
 #'
-#' @return returns a merged data frame of raw data and missing mandatory CAPL variables (values are set to NA).
-add_missing_capl_variables <- function(raw_data = NULL) {
+#' @return returns a merged data frame of raw data and missing required CAPL variables (values are set to NA).
+get_missing_capl_variables <- function(raw_data = NULL) {
   try(
     if(is.null(raw_data)) {
       stop("[CAPL error]: the raw_data argument is missing.")
@@ -17,7 +43,7 @@ add_missing_capl_variables <- function(raw_data = NULL) {
       stop("[CAPL error]: the raw_data argument must be a data frame or a tibble.")
     }
     else {
-      mandatory_variables <- c(
+      required_variables <- c(
         "age",
         "gender",
         "pacer_lap_distance",
@@ -56,8 +82,8 @@ add_missing_capl_variables <- function(raw_data = NULL) {
         "time_off7",
         "non_wear_time7"
       )
-      if(sum(mandatory_variables %in% tolower(colnames(raw_data))) < length(mandatory_variables)) {
-        new_raw_data <- data.frame(sapply(mandatory_variables, function(x) {
+      if(sum(required_variables %in% tolower(colnames(raw_data))) < length(required_variables)) {
+        new_raw_data <- data.frame(sapply(required_variables, function(x) {
           if(! x %in% tolower(colnames(raw_data))) {
             rep(NA, nrow(raw_data))
           } else {
