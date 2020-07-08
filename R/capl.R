@@ -3,14 +3,14 @@
 #' @export
 #'
 #' @param raw_data a data frame or tibble of raw CAPL data.
-#' @param sort a character element representing how the variables in the returned data frame should be sorted (valid values are "abc", "zyx" and "asis"; valid
-#' values are not case-sensitive). This argument is set to "abc" by default.
+#' @param sort a character element representing how the variables in the returned data frame should be sorted (valid values are "asis, "abc" and "zyx"; valid
+#' values are not case-sensitive). This argument is set to "asis" by default.
 #'
 #' @examples
 #' get_capl(raw_data)
 #'
 #' @return returns a merged data frame of raw data and CAPL scores and interpretations.
-get_capl <- function(raw_data = NULL, sort = "abc") {
+get_capl <- function(raw_data = NULL, sort = "asis") {
   try(
     if(is.null(raw_data)) {
       stop("[CAPL error]: the raw_data argument is missing.")
@@ -57,7 +57,7 @@ get_capl <- function(raw_data = NULL, sort = "abc") {
       }  else if(sort == "zyx") {
         raw_data <- raw_data[order(colnames(raw_data), decreasing = TRUE)]
       } else {
-        # Don't reorder variables in raw_data
+        # Don't sort variables in raw_data
       }
       return(raw_data)
     }
