@@ -27,6 +27,7 @@ get_pc_score(
   plank_score = c(4, 5, 5, 6, 9),
   camsa_overall_score = c(-1, 0, 6, 4, 3)
 )
+
 # [1]  7.5 10.0 19.0 20.0 18.0
 
 }

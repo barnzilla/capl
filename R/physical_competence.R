@@ -12,6 +12,7 @@
 #'   camsa_score1 = c(1, 5, 10, 28, 29), 
 #'   camsa_score2 = c(5, 7, 12, NA, 27)
 #' )
+#'
 #' # [1]  5  7 12 NA NA
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -45,6 +46,7 @@ get_camsa_overall_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
 #'
 #' @examples
 #' get_camsa_time_score(c(14, 12, 30, 25, 0))
+#'
 #' # [1] 13 14  1  4 NA
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -105,6 +107,7 @@ get_camsa_time_score <- function(camsa_time = NA) {
 #'   camsa_skill_score = c(0, 5, 10, 14, 15),
 #'   camsa_time_score = c(1, 10, 12, 15, 30)
 #' )
+#'
 #' # [1]  1 15 22 NA NA
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -144,6 +147,7 @@ get_camsa_trial_score <- function(camsa_skill_score = NA, camsa_time_score = NA)
 #'   lap_distance = c(15, 20, NA, "15"), 
 #'   laps_run = rep(100, 4)
 #' )
+#'
 #' # [1]  77 100  NA  77
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -322,6 +326,7 @@ get_pacer_20m_laps <- function(lap_distance = NA, laps_run = NA) {
 #'
 #' @examples
 #' get_pacer_score(c(1, 6, 12, 18, NA, 46, 31))
+#'
 #' # [1]  0  1  2  3 NA  9  6
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -379,6 +384,7 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
 #'   plank_score = c(4, 5, 5, 6, 9),
 #'   camsa_overall_score = c(-1, 0, 6, 4, 3)
 #' )
+#'
 #' # [1]  7.5 10.0 19.0 20.0 18.0
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -415,6 +421,7 @@ get_pc_score <- function(pacer_score = NA, plank_score = NA, camsa_overall_score
 #'
 #' @examples
 #' get_plank_score(c(120.5, 75.6, 40, 10.99, 90))
+#'
 #' # [1] 10  6  3  0  8
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).

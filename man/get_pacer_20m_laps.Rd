@@ -22,6 +22,7 @@ get_pacer_20m_laps(
   lap_distance = c(15, 20, NA, "15"), 
   laps_run = rep(100, 4)
 )
+
 # [1]  77 100  NA  77
 
 }

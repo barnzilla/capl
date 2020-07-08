@@ -17,6 +17,7 @@ Compute the CAMSA (Canadian Agility and Movement Skill Assessment) time score ba
 }
 \examples{
 get_camsa_time_score(c(14, 12, 30, 25, 0))
+
 # [1] 13 14  1  4 NA
 
 }

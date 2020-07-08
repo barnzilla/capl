@@ -22,6 +22,7 @@ get_camsa_overall_score(
   camsa_score1 = c(1, 5, 10, 28, 29), 
   camsa_score2 = c(5, 7, 12, NA, 27)
 )
+
 # [1]  5  7 12 NA NA
 
 }

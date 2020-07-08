@@ -17,6 +17,7 @@ Compute a PACER score based on the number of PACER laps run at a 20-metre distan
 }
 \examples{
 get_pacer_score(c(1, 6, 12, 18, NA, 46, 31))
+
 # [1]  0  1  2  3 NA  9  6
 
 }

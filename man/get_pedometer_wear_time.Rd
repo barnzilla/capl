@@ -7,9 +7,10 @@
 get_pedometer_wear_time(time_on = NA, time_off = NA, non_wear_time = NA)
 }
 \arguments{
-\item{time_on}{a character element or vector representing the time (in 24-hour format) when the pedometer was first worn on a given day.}
+\item{time_on}{a character element or vector representing the time (in 12- or 24-hour clock format) when the pedometer was first worn on a given day.}
 
-\item{time_off}{a character element or vector representing the time (in 24-hour format) when the pedometer was removed at the end of a given day.}
+\item{time_off}{a character element or vector representing the time (in 12- or 24-hour clock format) when the pedometer was removed at the end of a given
+day.}
 
 \item{non_wear_time}{a numeric element or vector representing the total time (in minutes) the pedometer was not worn during waking hours on a given day.}
 }
@@ -25,6 +26,7 @@ get_pedometer_wear_time(
   time_off = c("21:37", "9:17pm", ""),
   c(60, 90, 0)
 )
+
 # [1] 14.23 13.95    NA
 
 }

@@ -17,6 +17,7 @@ Compute a plank score based on the number of seconds a plank was held.
 }
 \examples{
 get_plank_score(c(120.5, 75.6, 40, 10.99, 90))
+
 # [1] 10  6  3  0  8
 
 }

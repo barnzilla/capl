@@ -26,6 +26,8 @@ x <- data.frame(
 )
 
 get_capl_domain_status(x)
+
+
 # [1] "missing protocol"       "complete"               "missing interpretation"
 # [4] "complete"               "complete"               "incomplete" 
 # [7] "incomplete"

@@ -6,6 +6,7 @@
 #'
 #' @examples
 #' get_24_hour_clock(c("5:00 am", "7:10PM", "21:37", NA, "", 9))
+#'
 #' # [1] "05:00" "19:10" "21:37" NA      NA      "9" 
 #'
 #' @return returns a 24-hour clock element (if valid) or the original element as a character element (if not valid).
@@ -108,6 +109,7 @@ get_missing_capl_variables <- function(raw_data = NULL) {
 #'
 #' @examples
 #' validate_age(c(7:13, "", NA, "12"))
+#'
 #' # [1] NA  8  9 10 11 12 NA NA NA 12
 #'
 #' @return returns a numeric element with a value between 8 and 12 (if valid) or NA (if not valid).
@@ -134,6 +136,7 @@ validate_age <- function(x) {
 #'
 #' @examples
 #' validate_character(c("beginning", "progressing", "achieving", "excelling", "", NA, 7))
+#'
 #' # [1] "beginning"   "progressing" "achieving"   "excelling"   NA            NA 
 #' # [7] "7"
 #'
@@ -164,6 +167,7 @@ validate_character <- function(x) {
 #' # [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA
 #'
 #' validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA))
+#'
 #' # [1] "boy" "boy" "boy" "boy" "boy" "boy" "boy" NA    NA
 #'
 #' @return returns a character element with a value of "girl" or "boy" (if valid) or NA (if not valid).
@@ -194,6 +198,7 @@ validate_gender <- function(x) {
 #'
 #' @examples
 #' validate_number(c(1:5, "5", "", NA, "hello, world!"))
+#'
 #' # [1]  1  2  3  4  5  5 NA NA NA
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
@@ -214,6 +219,7 @@ validate_number <- function(x) {
 #'   x = c(1, 5, 10, 11, -1, NA, "6"),
 #'   protocol = "pc"
 #' )
+#'
 #' # [1]  1  5 10 NA NA NA  6
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).

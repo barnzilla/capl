@@ -22,6 +22,7 @@ get_camsa_trial_score(
   camsa_skill_score = c(0, 5, 10, 14, 15),
   camsa_time_score = c(1, 10, 12, 15, 30)
 )
+
 # [1]  1 15 22 NA NA
 
 }

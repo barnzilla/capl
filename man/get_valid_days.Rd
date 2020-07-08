@@ -8,7 +8,7 @@ get_valid_days(x = NULL)
 }
 \arguments{
 \item{x}{a data frame or tibble with seven columns where each column represents a day of the week when a pedometer was worn and contains "yes" or
-"no" values (see \code{\link[=validate_steps]{validate_steps()}}).}
+"no" values. See \code{\link[=validate_steps]{validate_steps()}}.}
 }
 \value{
 returns a numeric element (if valid) or 0 (if not valid).
@@ -28,6 +28,7 @@ x <- data.frame(
 )
 
 get_valid_days(x)
+
 # [1] 4 3 6
 
 }

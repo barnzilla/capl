@@ -17,6 +17,7 @@ Check whether an element is numeric.
 }
 \examples{
 validate_number(c(1:5, "5", "", NA, "hello, world!"))
+
 # [1]  1  2  3  4  5  5 NA NA NA
 
 }

@@ -17,6 +17,7 @@ Check whether an element is numeric and between 8 and 12.
 }
 \examples{
 validate_age(c(7:13, "", NA, "12"))
+
 # [1] NA  8  9 10 11 12 NA NA NA 12
 
 }

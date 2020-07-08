@@ -23,6 +23,7 @@ validate_protocol_score(
   x = c(1, 5, 10, 11, -1, NA, "6"),
   protocol = "pc"
 )
+
 # [1]  1  5 10 NA NA NA  6
 
 }

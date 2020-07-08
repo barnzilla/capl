@@ -23,6 +23,7 @@ validate_steps(
   steps = c(5400, 11001, 999, 31000, 8796),
   wear_time = c(10.1, 12.6, 10.2, 10.9, 9.5)
 )
+
 # [1] "yes" "yes" "no"  "no"  "no" 
 
 }

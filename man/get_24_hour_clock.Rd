@@ -17,6 +17,7 @@ Convert a 12-hour clock element to a 24-hour clock element.
 }
 \examples{
 get_24_hour_clock(c("5:00 am", "7:10PM", "21:37", NA, "", 9))
+
 # [1] "05:00" "19:10" "21:37" NA      NA      "9" 
 
 }

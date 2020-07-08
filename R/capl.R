@@ -49,7 +49,8 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$valid_steps5 <- validate_steps(raw_data$steps5, raw_data$wear_time5)
       raw_data$valid_steps6 <- validate_steps(raw_data$steps6, raw_data$wear_time6)
       raw_data$valid_steps7 <- validate_steps(raw_data$steps7, raw_data$wear_time7)
-      raw_data$valid_days <- get_valid_days(raw_data[c("valid_steps1", "valid_steps2", "valid_steps3", "valid_steps4", "valid_steps5", "valid_steps6", "valid_steps7")])
+      raw_data$valid_days <- get_valid_days(raw_data[paste0("valid_steps", 1:7)])
+      raw_data$step_average <- get_step_average(raw_data[paste0("steps", 1:7)], raw_data$valid_days)
       if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
         # Don't sort variables in raw_data
       } else if(sort == "abc") {
@@ -57,7 +58,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       }  else if(sort == "zyx") {
         raw_data <- raw_data[order(colnames(raw_data), decreasing = TRUE)]
       } else {
-        # Don't sort variables in raw_data
+        # Don't reorder variables in raw_data
       }
       return(raw_data)
     }
@@ -81,6 +82,8 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' )
 #'
 #' get_capl_domain_status(x)
+#' 
+#' 
 #' # [1] "missing protocol"       "complete"               "missing interpretation"
 #' # [4] "complete"               "complete"               "incomplete" 
 #' # [7] "incomplete"
@@ -127,8 +130,8 @@ get_capl_domain_status <- function(x = NULL) {
 #' @param age a numeric element or vector (valid values are between 8 and 12).
 #' @param gender a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").
 #' @param score a numeric element or vector.
-#' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc"; valid values are 
-#' not case-sensitive).
+#' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc", "steps"; valid values
+#' are not case-sensitive).
 #'
 #' @examples
 #' get_capl_interpretation(
@@ -137,6 +140,7 @@ get_capl_domain_status <- function(x = NULL) {
 #'   score = c(50, 25, 100, 5, 150, 23, 78), 
 #'   protocol = "pacer"
 #' )
+#'
 #' # [1] NA            "achieving"   "excelling"   "beginning"   "excelling"   "progressing"
 #' # [7] NA
 #'
@@ -151,7 +155,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
             gender <- validate_gender(x[2])
             score <- validate_number(x[3])
             protocol <- as.character(x[4])
-            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc")) {
+            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps")) {
               return(NA)
             } else {
               if(protocol == "pacer") {
@@ -180,6 +184,13 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
                   age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
                   gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
                   bound = c(13.4, 19.4, 22.0, 22.0, 13.2, 18.0, 20.3, 20.3, 13.7, 19.9, 22.5, 22.5, 13.7, 18.6, 20.9, 20.9, 14.0, 20.3, 23.0, 23.0, 14.1, 19.1, 21.6, 21.6, 14.3, 20.8, 23.6, 23.6, 14.5, 19.8, 22.3, 22.3, 14.9, 21.6, 24.5, 24.5, 15.2, 20.7, 23.3, 23.3),
+                  interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+                )
+              } else if(protocol == "steps") {
+                lookup <- data.frame(
+                  age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+                  gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+                  bound = c(8892, 11999, 17980, 17980, 8059, 11999, 15643, 15643, 8655, 11999, 17500, 17500, 7814, 11999, 15168, 15168, 8417, 11999, 17020, 17020, 7569, 11999, 14692, 14692, 8180, 11999, 16539, 16539, 7324, 11999, 14217, 14217, 7942, 11999, 16059, 16059, 7079, 11999, 13742, 13742),
                   interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
                 )
               } else {
