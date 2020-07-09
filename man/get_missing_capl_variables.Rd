@@ -13,7 +13,64 @@ get_missing_capl_variables(raw_data = NULL)
 returns a merged data frame of raw data and missing required CAPL variables (values are set to NA).
 }
 \description{
-Add required CAPL variables to a data frame of raw data if they are missing.
+This function adds required CAPL variables (see the Details section for a full list) to a data frame of raw data if they are missing. When missing
+variables are added, the values for a given missing variable are set to NA. This function is called within \code{\link[=get_capl]{get_capl()}} so that CAPL score and
+interpretation computations will run without errors in the presence of missing variables.
+}
+\details{
+The required CAPL variables include:
+\itemize{
+\item age
+\item gender
+\item pacer_lap_distance
+\item pacer_laps
+\item plank_time
+\item camsa_skill_score1
+\item camsa_time1
+\item camsa_skill_score2
+\item camsa_time2
+\item steps1
+\item time_on1
+\item time_off1
+\item non_wear_time1
+\item steps2
+\item time_on2
+\item time_off2
+\item non_wear_time2
+\item steps3
+\item time_on3
+\item time_off3
+\item non_wear_time3
+\item steps4
+\item time_on4
+\item time_off4
+\item non_wear_time4
+\item steps5
+\item time_on5
+\item time_off5
+\item non_wear_time5
+\item steps6
+\item time_on6
+\item time_off6
+\item non_wear_time6
+\item steps7
+\item time_on7
+\item time_off7
+\item non_wear_time7
+\item self_report_pa
+\item csappa1
+\item csappa2
+\item csappa3
+\item csappa4
+\item csappa5
+\item csappa6
+\item why_are_you_active1
+\item why_are_you_active2
+\item why_are_you_active3
+\item feelings_about_pa1
+\item feelings_about_pa2
+\item feelings_about_pa3
+}
 }
 \examples{
 raw_data <- get_missing_capl_variables(raw_data)

@@ -27,9 +27,67 @@ get_24_hour_clock <- function(x = NA) {
 
 #' Add required CAPL variables to a data frame of raw data if they are missing.
 #'
+#' @description
+#' This function adds required CAPL variables (see the Details section for a full list) to a data frame of raw data if they are missing. When missing
+#' variables are added, the values for a given missing variable are set to NA. This function is called within [get_capl()] so that CAPL score and
+#' interpretation computations will run without errors in the presence of missing variables.
+#'
 #' @export
 #'
 #' @param raw_data a data frame or tibble of raw CAPL data.
+#'
+#' @details
+#' The required CAPL variables include:
+#' * age
+#' * gender
+#' * pacer_lap_distance
+#' * pacer_laps
+#' * plank_time
+#' * camsa_skill_score1
+#' * camsa_time1
+#' * camsa_skill_score2
+#' * camsa_time2
+#' * steps1
+#' * time_on1
+#' * time_off1
+#' * non_wear_time1
+#' * steps2
+#' * time_on2
+#' * time_off2
+#' * non_wear_time2
+#' * steps3
+#' * time_on3
+#' * time_off3
+#' * non_wear_time3
+#' * steps4
+#' * time_on4
+#' * time_off4
+#' * non_wear_time4
+#' * steps5
+#' * time_on5
+#' * time_off5
+#' * non_wear_time5
+#' * steps6
+#' * time_on6
+#' * time_off6
+#' * non_wear_time6
+#' * steps7
+#' * time_on7
+#' * time_off7
+#' * non_wear_time7
+#' * self_report_pa
+#' * csappa1
+#' * csappa2
+#' * csappa3
+#' * csappa4
+#' * csappa5
+#' * csappa6
+#' * why_are_you_active1
+#' * why_are_you_active2
+#' * why_are_you_active3
+#' * feelings_about_pa1
+#' * feelings_about_pa2
+#' * feelings_about_pa3
 #'
 #' @examples
 #' raw_data <- get_missing_capl_variables(raw_data)
@@ -82,7 +140,10 @@ get_missing_capl_variables <- function(raw_data = NULL) {
         "time_on7",
         "time_off7",
         "non_wear_time7",
-        "self_report_pa"
+        "self_report_pa",
+        paste0("csappa", 1:6),
+        paste0("why_are_you_active", 1:3),
+        paste0("feelings_about_pa", 1:3)
       )
       if(sum(required_variables %in% tolower(colnames(raw_data))) < length(required_variables)) {
         new_raw_data <- data.frame(sapply(required_variables, function(x) {
@@ -240,8 +301,8 @@ validate_number <- function(x) {
 #' @export
 #'
 #' @param x an element or vector representing a CAPL protocol score.
-#' @param protocol a character element representing protocols within one of the four CAPL domains (valid values currently include "pc", "db"; valid values
-#' are not case-sensitive).
+#' @param protocol a character element representing protocols within one of the four CAPL domains (valid values currently include "pc", "db", "csappa"
+#' "breq"; valid values are not case-sensitive).
 #'
 #' @examples
 #' validate_protocol_score(
@@ -258,11 +319,15 @@ validate_protocol_score <- function(x = NA, protocol = NA) {
     unname(
       sapply(x, function(x) {
         x <- validate_number(x)
-        if(is.na(x) | ! protocol %in% c("pc", "db")) {
+        if(is.na(x) | ! protocol %in% c("pc", "db", "csappa", "breq")) {
           return(NA)
         } else if(protocol == "pc" & (x < 0 | x > 10)) {
           return(NA)
         } else if(protocol == "db" & (x < 0 | x > 25)) {
+          return(NA)
+        } else if(protocol == "csappa" & (x < 1.8 | x > 7.5)) {
+          return(NA)
+        } else if(protocol == "breq" & (x < 1.5 | x > 7.5)) {
           return(NA)
         } else {
           return(x)

@@ -42,15 +42,15 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$wear_time5 <- get_pedometer_wear_time(raw_data$time_on5, raw_data$time_off5, raw_data$non_wear_time5)
       raw_data$wear_time6 <- get_pedometer_wear_time(raw_data$time_on6, raw_data$time_off6, raw_data$non_wear_time6)
       raw_data$wear_time7 <- get_pedometer_wear_time(raw_data$time_on7, raw_data$time_off7, raw_data$non_wear_time7)
-      raw_data$valid_steps1 <- validate_steps(raw_data$steps1, raw_data$wear_time1)
-      raw_data$valid_steps2 <- validate_steps(raw_data$steps2, raw_data$wear_time2)
-      raw_data$valid_steps3 <- validate_steps(raw_data$steps3, raw_data$wear_time3)
-      raw_data$valid_steps4 <- validate_steps(raw_data$steps4, raw_data$wear_time4)
-      raw_data$valid_steps5 <- validate_steps(raw_data$steps5, raw_data$wear_time5)
-      raw_data$valid_steps6 <- validate_steps(raw_data$steps6, raw_data$wear_time6)
-      raw_data$valid_steps7 <- validate_steps(raw_data$steps7, raw_data$wear_time7)
-      raw_data$valid_days <- get_valid_days(raw_data[paste0("valid_steps", 1:7)])
-      raw_data$step_average <- get_step_average(raw_data[paste0("steps", 1:7)], raw_data[paste0("valid_steps", 1:7)])
+      raw_data$steps1_valid <- validate_steps(raw_data$steps1, raw_data$wear_time1)
+      raw_data$steps2_valid <- validate_steps(raw_data$steps2, raw_data$wear_time2)
+      raw_data$steps3_valid <- validate_steps(raw_data$steps3, raw_data$wear_time3)
+      raw_data$steps4_valid <- validate_steps(raw_data$steps4, raw_data$wear_time4)
+      raw_data$steps5_valid <- validate_steps(raw_data$steps5, raw_data$wear_time5)
+      raw_data$steps6_valid <- validate_steps(raw_data$steps6, raw_data$wear_time6)
+      raw_data$steps7_valid <- validate_steps(raw_data$steps7, raw_data$wear_time7)
+      raw_data$valid_days <- get_valid_days(raw_data[paste0("steps", 1:7, "_valid")])
+      raw_data$step_average <- get_step_average(raw_data[paste0("steps", 1:7)], raw_data[paste0("steps", 1:7, "_valid")])
       raw_data$step_score <- get_step_score(raw_data$step_average)
       raw_data$step_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$step_average, "steps")
       raw_data$self_report_pa_valid <- validate_self_report_pa(raw_data$self_report_pa)
@@ -58,6 +58,13 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$db_score <- get_db_score(raw_data$step_score, raw_data$self_report_pa_score)
       raw_data$db_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$db_score, "db")
       raw_data$db_status <- get_capl_domain_status(raw_data[c("db_score", "db_interpretation", "step_score", "self_report_pa_score")])
+      raw_data$predilection_score <- get_predilection_score(raw_data$csappa1, raw_data$csappa3, raw_data$csappa5)
+      raw_data$adequacy_score <- get_adequacy_score(raw_data$csappa2, raw_data$csappa4, raw_data$csappa6)
+      raw_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(raw_data$why_are_you_active1, raw_data$why_are_you_active2, raw_data$why_are_you_active3)
+      raw_data$pa_competence_score <- get_pa_competence_score(raw_data$feelings_about_pa1, raw_data$feelings_about_pa2, raw_data$feelings_about_pa3)
+      raw_data$mc_score <- get_mc_score(raw_data$predilection_score, raw_data$adequacy_score, raw_data$intrinsic_motivation_score, raw_data$pa_competence_score)
+      raw_data$mc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "mc")
+      raw_data$mc_status <- get_capl_domain_status(raw_data[c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")])
       if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
         # Don't sort variables in raw_data
       } else if(sort == "abc") {
@@ -138,7 +145,7 @@ get_capl_domain_status <- function(x = NULL) {
 #' @param gender a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").
 #' @param score a numeric element or vector. If the protocol argument is set to "pacer" or "steps", the element(s) in this argument must be integers.
 #' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc", "steps",
-#' "self_report_pa", "db"; valid values are not case-sensitive).
+#' "self_report_pa", "db", "mc"; valid values are not case-sensitive).
 #'
 #' @examples
 #' get_capl_interpretation(
@@ -166,7 +173,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
             } else {
               score <- validate_number(x[3])
             }
-            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps", "self_report_pa", "db")) {
+            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps", "self_report_pa", "db", "mc")) {
               return(NA)
             } else {
               if(protocol == "pacer") {
@@ -216,6 +223,13 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
                   age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
                   gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
                   bound = c(8.8, 22.3, 26.9, 26.9, 10.8, 21.6, 26.2, 26.2, 8.8, 22.3, 26.9, 26.9, 10.7, 21.5, 26.1, 26.1, 8.8, 22.3, 26.9, 26.9, 10.5, 21.1, 25.7, 25.7, 8.8, 22.3, 26.9, 26.9, 10.1, 20.4, 24.8, 24.8, 8.8, 22.3, 26.9, 26.9, 10.1, 20.3, 24.7, 24.7),
+                  interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+                )
+              } else if(protocol == "mc") {
+                lookup <- data.frame(
+                  age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+                  gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+                  bound = c(16.3, 23.0, 25.3, 25.3, 16.2, 22.3, 24.8, 24.8, 16.7, 23.3, 25.7, 25.7, 16.2, 22.3, 24.8, 24.8, 16.8, 23.5, 26.0, 26.0, 16.2, 22.3, 24.8, 24.8, 16.8, 23.7, 26.0, 26.0, 16.2, 22.5, 25.0, 25.0, 16.8, 23.7, 26.2, 26.2, 16.3, 22.5, 25.0, 25.0),
                   interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
                 )
               } else {

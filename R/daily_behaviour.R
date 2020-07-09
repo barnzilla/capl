@@ -108,7 +108,7 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
 #' @description
 #' This function computes a score for a response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
 #' minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?". This score is used to compute the 
-#' Daily Behaviour domain score.
+#' daily behaviour domain score.
 #'
 #' @export
 #'
@@ -382,7 +382,7 @@ get_valid_days <- function(x = NULL) {
 #' @description
 #' This function checks whether the response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
 #' minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" is valid. A valid response is an integer
-#' between 0 and 7.
+#' between 0 and 7. Data should be processed using this function before calling [get_self_report_pa_score()].
 #'
 #' @export
 #'

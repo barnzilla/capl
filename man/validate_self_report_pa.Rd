@@ -15,7 +15,7 @@ returns a numeric (integer) element (if valid) or NA (if not valid).
 \description{
 This function checks whether the response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" is valid. A valid response is an integer
-between 0 and 7.
+between 0 and 7. Data should be processed using this function before calling \code{\link[=get_self_report_pa_score]{get_self_report_pa_score()}}.
 }
 \examples{
 validate_self_report_pa(c(1:8, 5.5, NA, "", "5"))

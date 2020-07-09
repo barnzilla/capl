@@ -17,6 +17,7 @@ Check whether an element can be classified as girl or boy.
 }
 \examples{
 validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA))
+
 # [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA
 
 validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA))
