@@ -8,9 +8,9 @@ score will be computed from the other two protocol scores.}
 get_pc_score(pacer_score = NA, plank_score = NA, camsa_overall_score = NA)
 }
 \arguments{
-\item{pacer_score}{a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).}
+\item{pacer_score}{a numeric (integer) element or vector representing the PACER protocol score (valid values are integers between 0 and 10).}
 
-\item{plank_score}{a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).}
+\item{plank_score}{a numeric (integer) element or vector representing the PACER protocol score (valid values are integers between 0 and 10).}
 
 \item{camsa_overall_score}{a numeric element or vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).}
 }

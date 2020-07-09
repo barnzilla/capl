@@ -11,10 +11,10 @@ get_capl_interpretation(age = NA, gender = NA, score = NA, protocol = NA)
 
 \item{gender}{a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").}
 
-\item{score}{a numeric element or vector.}
+\item{score}{a numeric element or vector. If the protocol argument is set to "pacer" or "steps", the element(s) in this argument must be integers.}
 
-\item{protocol}{a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc", "steps"; valid values
-are not case-sensitive).}
+\item{protocol}{a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc", "steps",
+"self_report_pa", "db"; valid values are not case-sensitive).}
 }
 \value{
 returns a character element with a value of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).

@@ -139,26 +139,26 @@ get_camsa_trial_score <- function(camsa_skill_score = NA, camsa_time_score = NA)
 #'
 #' @importFrom stats var
 #'
-#' @param lap_distance a numeric element or vector (valid values are 15 or 20).
-#' @param laps_run a numeric element (if lap_distance = 15, valid values are between 1 and 298).
+#' @param lap_distance a numeric (integer) element or vector (valid values are 15 or 20).
+#' @param laps_run a numeric (integer) element (if lap_distance = 15, valid values are integers between 1 and 298).
 #'
 #' @examples
 #' get_pacer_20m_laps(
-#'   lap_distance = c(15, 20, NA, "15"), 
-#'   laps_run = rep(100, 4)
+#'   lap_distance = c(15, 20, NA, "15", 20.5), 
+#'   laps_run = rep(100, 5)
 #' )
 #'
-#' # [1]  77 100  NA  77
+#' # [1]  77 100  NA  77  NA
 #'
-#' @return returns a numeric element (if valid) or NA (if not valid).
+#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
 get_pacer_20m_laps <- function(lap_distance = NA, laps_run = NA) {
   try(
     if(var(c(length(lap_distance), length(laps_run))) == 0) {
       return(
         unname(
           apply(data.frame(lap_distance, laps_run), 1, function(x) {
-            lap_distance <- validate_number(x[1])
-            laps_run <- validate_number(x[2])
+            lap_distance <- validate_integer(x[1])
+            laps_run <- validate_integer(x[2])
             if(sum(is.na(c(lap_distance, laps_run))) > 0 | ! lap_distance %in% c(15, 20) | (lap_distance == 15 & (laps_run < 1 | laps_run > 298))) {
               return(NA)
             } else if(lap_distance == 15) {
@@ -322,19 +322,19 @@ get_pacer_20m_laps <- function(lap_distance = NA, laps_run = NA) {
 #'
 #' @export
 #'
-#' @param pacer_laps_20m a numeric element or vector.
+#' @param pacer_laps_20m a numeric (integer) element or vector.
 #'
 #' @examples
-#' get_pacer_score(c(1, 6, 12, 18, NA, 46, 31))
+#' get_pacer_score(c(1, 6, 12, 18, NA, 46, 31, 45.1))
 #'
-#' # [1]  0  1  2  3 NA  9  6
+#' # [1]  0  1  2  3 NA  9  6 NA
 #'
 #' @return returns a numeric element (if valid) or NA (if not valid).
 get_pacer_score <- function(pacer_laps_20m = NA) {
   return(
     unname(
       sapply(pacer_laps_20m, function(x) {
-        pacer_laps_20m <- validate_number(x)
+        pacer_laps_20m <- validate_integer(x)
         if(is.na(pacer_laps_20m)) {
           return(NA)
         } else if(pacer_laps_20m > 49) {
@@ -374,8 +374,8 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
 #'
 #' @importFrom stats var
 #'
-#' @param pacer_score a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).
-#' @param plank_score a numeric element or vector representing the PACER protocol score (valid values are between 0 and 10).
+#' @param pacer_score a numeric (integer) element or vector representing the PACER protocol score (valid values are integers between 0 and 10).
+#' @param plank_score a numeric (integer) element or vector representing the PACER protocol score (valid values are integers between 0 and 10).
 #' @param camsa_overall_score a numeric element or vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).
 #'
 #' @examples
@@ -394,8 +394,8 @@ get_pc_score <- function(pacer_score = NA, plank_score = NA, camsa_overall_score
       return(
         unname(
           apply(data.frame(pacer_score, plank_score, camsa_overall_score), 1, function(x) {
-            pacer_score <- validate_protocol_score(x[1], "pc")
-            plank_score <- validate_protocol_score(x[2], "pc")
+            pacer_score <- validate_integer(validate_protocol_score(x[1], "pc"))
+            plank_score <- validate_integer(validate_protocol_score(x[2], "pc"))
             camsa_overall_score <- validate_protocol_score(x[3], "pc")
             if(sum(is.na(c(pacer_score, plank_score, camsa_overall_score))) > 1) {
               return(NA)

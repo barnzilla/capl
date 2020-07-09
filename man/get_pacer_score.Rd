@@ -7,7 +7,7 @@
 get_pacer_score(pacer_laps_20m = NA)
 }
 \arguments{
-\item{pacer_laps_20m}{a numeric element or vector.}
+\item{pacer_laps_20m}{a numeric (integer) element or vector.}
 }
 \value{
 returns a numeric element (if valid) or NA (if not valid).
@@ -16,8 +16,8 @@ returns a numeric element (if valid) or NA (if not valid).
 Compute a PACER score based on the number of PACER laps run at a 20-metre distance.
 }
 \examples{
-get_pacer_score(c(1, 6, 12, 18, NA, 46, 31))
+get_pacer_score(c(1, 6, 12, 18, NA, 46, 31, 45.1))
 
-# [1]  0  1  2  3 NA  9  6
+# [1]  0  1  2  3 NA  9  6 NA
 
 }

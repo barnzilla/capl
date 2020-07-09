@@ -7,7 +7,7 @@
 get_step_score(step_average = NA)
 }
 \arguments{
-\item{step_average}{a numeric element or vector representing daily steps taken. See \code{\link[=get_step_average]{get_step_average()}}.}
+\item{step_average}{a numeric element or vector representing average daily steps taken. See \code{\link[=get_step_average]{get_step_average()}}.}
 }
 \value{
 returns a numeric element (if valid) or NA (if not valid).

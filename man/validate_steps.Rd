@@ -7,7 +7,7 @@
 validate_steps(steps = NA, wear_time = NA)
 }
 \arguments{
-\item{steps}{a numeric element or vector representing the steps taken on a given day (valid values are between 1000 and 30000).}
+\item{steps}{a numeric (integer) element or vector representing the steps taken on a given day (valid values are between 1000 and 30000).}
 
 \item{wear_time}{a numeric element representing the duration of time (in decimal hours) that a pedometer was worn on a given day (valid values are >= 10.0
 hours).}

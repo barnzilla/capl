@@ -7,22 +7,22 @@
 get_pacer_20m_laps(lap_distance = NA, laps_run = NA)
 }
 \arguments{
-\item{lap_distance}{a numeric element or vector (valid values are 15 or 20).}
+\item{lap_distance}{a numeric (integer) element or vector (valid values are 15 or 20).}
 
-\item{laps_run}{a numeric element (if lap_distance = 15, valid values are between 1 and 298).}
+\item{laps_run}{a numeric (integer) element (if lap_distance = 15, valid values are integers between 1 and 298).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+returns a numeric (integer) element (if valid) or NA (if not valid).
 }
 \description{
 Convert PACER shuttle run laps to their equivalent in 20-metre laps.
 }
 \examples{
 get_pacer_20m_laps(
-  lap_distance = c(15, 20, NA, "15"), 
-  laps_run = rep(100, 4)
+  lap_distance = c(15, 20, NA, "15", 20.5), 
+  laps_run = rep(100, 5)
 )
 
-# [1]  77 100  NA  77
+# [1]  77 100  NA  77  NA
 
 }

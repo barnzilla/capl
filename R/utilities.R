@@ -81,7 +81,8 @@ get_missing_capl_variables <- function(raw_data = NULL) {
         "steps7",
         "time_on7",
         "time_off7",
-        "non_wear_time7"
+        "non_wear_time7",
+        "self_report_pa"
       )
       if(sum(required_variables %in% tolower(colnames(raw_data))) < length(required_variables)) {
         new_raw_data <- data.frame(sapply(required_variables, function(x) {
@@ -164,6 +165,7 @@ validate_character <- function(x) {
 #'
 #' @examples
 #' validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA))
+#'
 #' # [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA
 #'
 #' validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA))
@@ -184,6 +186,33 @@ validate_gender <- function(x) {
           x <- "boy"
         } else {
           x <- NA
+        }
+      })
+    )
+  )
+}
+
+#' Check whether an element is an integer.
+#'
+#' @export
+#'
+#' @param x an element or vector.
+#'
+#' @examples
+#' validate_integer(c(2, 6, 3.3, "", NA, "6", "hello, world"))
+#'
+#' # [1]  2  6 NA NA NA  6 NA
+#'
+#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
+validate_integer <- function(x) {
+  x <- validate_number(x)
+  return(
+    unname(
+      sapply(x, function(x) {
+        if(is.na(x) | x %% 1 > 0) {
+          NA
+        } else {
+          x
         }
       })
     )
@@ -211,8 +240,8 @@ validate_number <- function(x) {
 #' @export
 #'
 #' @param x an element or vector representing a CAPL protocol score.
-#' @param protocol a character element representing protocols within one of the four CAPL domains (valid values currently include "pc"; valid values are 
-#' not case-sensitive).
+#' @param protocol a character element representing protocols within one of the four CAPL domains (valid values currently include "pc", "db"; valid values
+#' are not case-sensitive).
 #'
 #' @examples
 #' validate_protocol_score(
@@ -229,9 +258,11 @@ validate_protocol_score <- function(x = NA, protocol = NA) {
     unname(
       sapply(x, function(x) {
         x <- validate_number(x)
-        if(is.na(x) | ! protocol %in% c("pc")) {
+        if(is.na(x) | ! protocol %in% c("pc", "db")) {
           return(NA)
         } else if(protocol == "pc" & (x < 0 | x > 10)) {
+          return(NA)
+        } else if(protocol == "db" & (x < 0 | x > 25)) {
           return(NA)
         } else {
           return(x)

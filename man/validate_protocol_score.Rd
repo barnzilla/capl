@@ -9,8 +9,8 @@ validate_protocol_score(x = NA, protocol = NA)
 \arguments{
 \item{x}{an element or vector representing a CAPL protocol score.}
 
-\item{protocol}{a character element representing protocols within one of the four CAPL domains (valid values currently include "pc"; valid values are
-not case-sensitive).}
+\item{protocol}{a character element representing protocols within one of the four CAPL domains (valid values currently include "pc", "db"; valid values
+are not case-sensitive).}
 }
 \value{
 returns a numeric element (if valid) or NA (if not valid).
