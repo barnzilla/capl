@@ -466,8 +466,8 @@ validate_protocol_score <- function(x = NA, protocol = NA) {
 #'
 #' @param x a numeric (integer) element or vector representing the response to a questionnaire item (valid values are between the values set by the 
 #' lower_bound and upper_bound argumetns).
-#' #param lower_bound a numeric element representing the value below which x is invalid.
-#' #param upper_bound a numeric element representing the value above which x is invalid.
+#' @param lower_bound a numeric element representing the value below which x is invalid.
+#' @param upper_bound a numeric element representing the value above which x is invalid.
 #'
 #' @examples
 #' validate_questionnaire_item(
@@ -485,7 +485,9 @@ validate_questionnaire_item <- function(x, lower_bound = NA, upper_bound = NA) {
   upper_bound <- validate_number(upper_bound[1])
   return(
     unname(
-      sapply(x, function(x) {
+      sapply(x, function(x, y = lower_bound, z = upper_bound) {
+        lower_bound <- y
+        upper_bound <- z
         if(sum(is.na(c(x, lower_bound, upper_bound))) > 0 | x < lower_bound | x > upper_bound) {
           NA
         } else {

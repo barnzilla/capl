@@ -8,9 +8,11 @@ validate_questionnaire_item(x, lower_bound = NA, upper_bound = NA)
 }
 \arguments{
 \item{x}{a numeric (integer) element or vector representing the response to a questionnaire item (valid values are between the values set by the
-lower_bound and upper_bound argumetns).
-#param lower_bound a numeric element representing the value below which x is invalid.
-#param upper_bound a numeric element representing the value above which x is invalid.}
+lower_bound and upper_bound argumetns).}
+
+\item{lower_bound}{a numeric element representing the value below which x is invalid.}
+
+\item{upper_bound}{a numeric element representing the value above which x is invalid.}
 }
 \value{
 returns a numeric (integer) element (if valid) or NA (if not valid).

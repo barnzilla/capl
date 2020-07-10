@@ -71,10 +71,10 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
       raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate)
       raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$cardiorespiratory_fitness_means_score, raw_data$muscular_strength_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
-      raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "ku")
+      raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$ku_score, "ku")
       raw_data$ku_status <- get_capl_domain_status(raw_data[c("ku_score", "ku_interpretation", "pa_guideline_score", "cardiorespiratory_fitness_means_score", "muscular_strength_means_score", "sports_skill_score", "fill_in_the_blanks_score")])
       raw_data$capl_score <- get_capl_score(raw_data$pc_score, raw_data$db_score, raw_data$mc_score, raw_data$ku_score)
-      raw_data$capl_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "capl")
+      raw_data$capl_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$capl_score, "capl")
       raw_data$capl_status <- get_capl_domain_status(raw_data[c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")])
       if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
         # Don't sort variables in raw_data
@@ -202,6 +202,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
                   interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
                 )
               } else if(protocol == "camsa") {
+			    score <- score * 2.8
                 lookup <- data.frame(
                   age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
                   gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
