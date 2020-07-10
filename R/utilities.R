@@ -25,6 +25,61 @@ get_24_hour_clock <- function(x = NA) {
   )
 }
 
+#' Compute a binary score for a response to a questionnaire item.
+#'
+#' @description
+#' This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the values set as 
+#' answer(s) to the item.
+#'
+#' @export
+#'
+#' @param x an element or vector representing a response to a questionnaire item.
+#' @param answer an element or vector representing the correct answer(s) to the questionnaire item. The answer argument does not have to match x in case 
+#' for a correct answer to be computed.
+#' 
+#' @details
+#' This function is called to compute scores for several knowledge and understanding questions in the CAPL-2 questionnaire and is also called by 
+#' [get_fill_in_the_blanks_score()]. 
+#'
+#' @examples
+#' get_binary_score(
+#'   x = c(1:4, NA, ""),
+#'	 answer = 3
+#' )
+#'
+#' # [1]  0  0  1  0 NA  0
+#' 
+#' get_binary_score(
+#'   x = c("20 minutes", "30 minutes", "60 minutes or 1 hour", "120 minutes or 2 hours"),
+#'	 answer = "60 minutes or 1 hour"
+#' )
+#'
+#' # [1] 0 0 1 0
+#'
+#' get_binary_score(
+#'   x = c(1:5, "Heart", "hello, world", NA),
+#'   answer = c(3, "heart")
+#' )
+#'
+#' # [1]  0  0  1  0  0  1  0 NA
+#'
+#' @return returns 1 (if correct), 0 (if incorrect) or NA (if not valid).
+get_binary_score <- function(x, answer) {
+  return(
+    unname(
+      sapply(x, function(x) {
+        if(sum(is.na(c(x, answer))) > 0) {
+          NA
+        } else if(tolower(x) %in% tolower(answer)) {
+          1
+        }else {
+          0
+        }
+      })
+    )
+  )
+}
+
 #' Add required CAPL variables to a data frame of raw data if they are missing.
 #'
 #' @description
@@ -88,6 +143,16 @@ get_24_hour_clock <- function(x = NA) {
 #' * feelings_about_pa1
 #' * feelings_about_pa2
 #' * feelings_about_pa3
+#' * pa_guideline
+#' * cardiorespiratory_fitness_means
+#' * muscular_strength_means
+#' * sports_skill
+#' * pa_is
+#' * pa_is_also
+#' * improve
+#' * increase
+#' * when_cooling_down
+#' * heart_rate
 #'
 #' @examples
 #' raw_data <- get_missing_capl_variables(raw_data)
@@ -143,7 +208,17 @@ get_missing_capl_variables <- function(raw_data = NULL) {
         "self_report_pa",
         paste0("csappa", 1:6),
         paste0("why_are_you_active", 1:3),
-        paste0("feelings_about_pa", 1:3)
+        paste0("feelings_about_pa", 1:3),
+        "pa_guideline",
+        "cardiorespiratory_fitness_means",
+        "muscular_strength_means",
+        "sports_skill",
+        "pa_is",
+        "pa_is_also",
+        "improve",
+        "increase",
+        "when_cooling_down",
+        "heart_rate"
       )
       if(sum(required_variables %in% tolower(colnames(raw_data))) < length(required_variables)) {
         new_raw_data <- data.frame(sapply(required_variables, function(x) {
@@ -212,6 +287,45 @@ validate_character <- function(x) {
           x <- NA
         } else {
           x
+        }
+      })
+    )
+  )
+}
+
+#' Check whether a CAPL domain score is numeric and within a valid range.
+#'
+#' @export
+#'
+#' @param x an element or vector representing a CAPL domain score.
+#' @param domain a character element representing domains within CAPL (valid values are "pc", "db", "mc", "ku"; valid values are not
+#' case-sensitive).
+#'
+#' @examples
+#' validate_domain_score(
+#'   x = c(34, 15, 10, 12.5, 25),
+#'   domain = "pc"
+#' )
+#'
+#' # [1]   NA 15.0 10.0 12.5 25.0
+#'
+#' @return returns a numeric element (if valid) or NA (if not valid).
+validate_domain_score <- function(x = NA, domain = NA) {
+  domain <- tolower(domain[1])
+  return(
+    unname(
+      sapply(x, function(x) {
+        x <- validate_number(x)
+        if(is.na(x) | ! domain %in% c("pc", "db", "mc", "ku")) {
+          return(NA)
+        } else if(domain == "ku" & (x < 0 | x > 10)) {
+          return(NA)
+		} else if(domain == "db" & (x < 0 | x > 30 | is.na(validate_integer(x)))) {
+          return(NA)
+        }  else if(domain %in% c("pc", "mc") & (x < 0 | x > 30)) {
+          return(NA)
+        } else {
+          return(x)
         }
       })
     )
@@ -302,7 +416,8 @@ validate_number <- function(x) {
 #'
 #' @param x an element or vector representing a CAPL protocol score.
 #' @param protocol a character element representing protocols within one of the four CAPL domains (valid values currently include "pc", "db", "csappa"
-#' "breq"; valid values are not case-sensitive).
+#' "breq", "pa_guideline", "cardiorespiratory_fitness_means", "muscular_strength_means", "sports_skill", "fill_in_the_blanks"; valid values are not
+#' case-sensitive).
 #'
 #' @examples
 #' validate_protocol_score(
@@ -319,18 +434,62 @@ validate_protocol_score <- function(x = NA, protocol = NA) {
     unname(
       sapply(x, function(x) {
         x <- validate_number(x)
-        if(is.na(x) | ! protocol %in% c("pc", "db", "csappa", "breq")) {
+        if(is.na(x) | ! protocol %in% c("pc", "db", "csappa", "breq", "pa_guideline", "cardiorespiratory_fitness_means", "muscular_strength_means", "sports_skill", "fill_in_the_blanks")) {
           return(NA)
         } else if(protocol == "pc" & (x < 0 | x > 10)) {
           return(NA)
-        } else if(protocol == "db" & (x < 0 | x > 25)) {
+        } else if(protocol == "db" & ! validate_integer(x) | (x < 0 | x > 25)) {
           return(NA)
         } else if(protocol == "csappa" & (x < 1.8 | x > 7.5)) {
           return(NA)
         } else if(protocol == "breq" & (x < 1.5 | x > 7.5)) {
           return(NA)
+        } else if(protocol %in% c("pa_guideline", "cardiorespiratory_fitness_means", "muscular_strength_means", "sports_skill") & (x < 0 | x > 1 | is.na(validate_integer(x)))) {
+          return(NA)
+        }  else if(protocol == "fill_in_the_blanks" & (x < 0 | x > 6 | is.na(validate_integer(x)))) {
+          return(NA)
         } else {
           return(x)
+        }
+      })
+    )
+  )
+}
+
+#' Check whether a response to a given questionnaire item is valid.
+#'
+#' @description
+#' This function checks whether an element for a given questionnaire item is valid. This function calls
+#' [validate_integer()] and [validate_number()] and is called by [get_adequacy_score()] and [get_predilection_score()].
+#'
+#' @export
+#'
+#' @param x a numeric (integer) element or vector representing the response to a questionnaire item (valid values are between the values set by the 
+#' lower_bound and upper_bound argumetns).
+#' #param lower_bound a numeric element representing the value below which x is invalid.
+#' #param upper_bound a numeric element representing the value above which x is invalid.
+#'
+#' @examples
+#' validate_questionnaire_item(
+#'   x = c(0:10, NA, "7"),
+#'   lower_bound = 1,
+#'   upper_bound = 7
+#' )
+#'
+#' # [1] NA  1  2  3  4  5  6  7 NA NA NA NA  7
+#'
+#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
+validate_questionnaire_item <- function(x, lower_bound = NA, upper_bound = NA) {
+  x <- validate_integer(x)
+  lower_bound <- validate_number(lower_bound[1])
+  upper_bound <- validate_number(upper_bound[1])
+  return(
+    unname(
+      sapply(x, function(x) {
+        if(sum(is.na(c(x, lower_bound, upper_bound))) > 0 | x < lower_bound | x > upper_bound) {
+          NA
+        } else {
+          x
         }
       })
     )

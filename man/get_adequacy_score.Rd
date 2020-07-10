@@ -23,7 +23,7 @@ and confidence
 domain score.
 }
 \details{
-This function calls \code{\link[=validate_csappa]{validate_csappa()}} to validate the arguments before computing the adequacy score.
+This function calls \code{\link[=validate_questionnaire_item]{validate_questionnaire_item()}} to validate the arguments before computing the adequacy score.
 
 Valid elements (integers between 1 and 4) represent the following responses:
 \itemize{

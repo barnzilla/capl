@@ -70,6 +70,16 @@ The required CAPL variables include:
 \item feelings_about_pa1
 \item feelings_about_pa2
 \item feelings_about_pa3
+\item pa_guideline
+\item cardiorespiratory_fitness_means
+\item muscular_strength_means
+\item sports_skill
+\item pa_is
+\item pa_is_also
+\item improve
+\item increase
+\item when_cooling_down
+\item heart_rate
 }
 }
 \examples{

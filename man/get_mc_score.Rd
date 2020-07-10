@@ -21,7 +21,7 @@ get_mc_score(
 \item{pa_competence_score}{a numeric element or vector (valid values are between 1.5 and 7.5).}
 }
 \value{
-returns a numeric (integer) element (if valid) or NA (if not valid).
+returns a numeric element between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
 Compute a motivation and confidence domain score based on the predilection, adequacy, intrinsic motivation and physical activity

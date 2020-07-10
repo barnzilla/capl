@@ -15,7 +15,7 @@ get_pc_score(pacer_score = NA, plank_score = NA, camsa_overall_score = NA)
 \item{camsa_overall_score}{a numeric element or vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+returns a numeric element between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
 Compute a physical competence domain score based on the PACER, plank and CAMSA scores. If one protocol score is missing or invalid, a weighted domain

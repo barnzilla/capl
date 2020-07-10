@@ -15,7 +15,7 @@
 #' @param csappa6 a numeric (integer) element or vector representing a response to CSAPPA item 6 (valid values are integers between 1 and 4).
 #'
 #' @details
-#' This function calls [validate_csappa()] to validate the arguments before computing the adequacy score.
+#' This function calls [validate_questionnaire_item()] to validate the arguments before computing the adequacy score.
 #'
 #' Valid elements (integers between 1 and 4) represent the following responses:
 #' * 1 = REALLY TRUE for me for "some kids" statements
@@ -39,9 +39,9 @@ get_adequacy_score <- function(csappa2 = NA, csappa4 = NA, csappa6 = NA) {
       return(
         unname(
           apply(data.frame(csappa2, csappa4, csappa6), 1, function(x) {
-            csappa2 <- validate_csappa(x[1])
-            csappa4 <- validate_csappa(x[2])
-            csappa6 <- validate_csappa(x[3])
+            csappa2 <- validate_questionnaire_item(x[1], 1, 4)
+            csappa4 <- validate_questionnaire_item(x[2], 1, 4)
+            csappa6 <- validate_questionnaire_item(x[3], 1, 4)
             if(sum(is.na(c(csappa2, csappa4, csappa6))) > 0) {
               return(NA)
             } else {
@@ -72,7 +72,7 @@ get_adequacy_score <- function(csappa2 = NA, csappa4 = NA, csappa6 = NA) {
 #' @param why_are_you_active3 a numeric (integer) element or vector representing a response to BREQ item 3 (valid values are integers between 1 and 5).
 #' 
 #' @details
-#' This function calls [validate_breq()] to validate the arguments before computing the intrinsic motivation score.
+#' This function calls [validate_questionnaire_item()] to validate the arguments before computing the intrinsic motivation score.
 #'
 #' Valid elements (integers between 1 and 5) represent the following responses:
 #' * 1 = Not true for me
@@ -97,9 +97,9 @@ get_intrinsic_motivation_score <- function(why_are_you_active1 = NA, why_are_you
       return(
         unname(
           apply(data.frame(why_are_you_active1, why_are_you_active2, why_are_you_active3), 1, function(x) {
-            why_are_you_active1 <- validate_breq(x[1])
-            why_are_you_active2 <- validate_breq(x[2])
-            why_are_you_active3 <- validate_breq(x[3])
+            why_are_you_active1 <- validate_questionnaire_item(x[1], 1, 5)
+            why_are_you_active2 <- validate_questionnaire_item(x[2], 1, 5)
+            why_are_you_active3 <- validate_questionnaire_item(x[3], 1, 5)
             if(sum(is.na(c(why_are_you_active1, why_are_you_active2, why_are_you_active3))) > 0) {
               return(NA)
             } else {
@@ -141,7 +141,7 @@ get_intrinsic_motivation_score <- function(why_are_you_active1 = NA, why_are_you
 #'
 #' # [1] 24.0 23.0 18.0   NA 13.5
 #'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
+#' @return returns a numeric element between 0 and 30 (if valid) or NA (if not valid).
 get_mc_score <- function(predilection_score = NA, adequacy_score = NA, intrinsic_motivation_score = NA, pa_competence_score = NA) {
   try(
     if(var(c(length(predilection_score), length(adequacy_score), length(intrinsic_motivation_score), length(pa_competence_score))) == 0) {
@@ -183,7 +183,7 @@ get_mc_score <- function(predilection_score = NA, adequacy_score = NA, intrinsic
 #' @param feelings_about_pa3 a numeric (integer) element or vector representing a response to BREQ item 6 (valid values are integers between 1 and 5).
 #' 
 #' @details
-#' This function calls [validate_breq()] to validate the arguments before computing the intrinsic motivation score.
+#' This function calls [validate_questionnaire_item()] to validate the arguments before computing the intrinsic motivation score.
 #'
 #' Valid elements (integers between 1 and 5) represent the following responses:
 #' * 1 = Not true for me
@@ -208,9 +208,9 @@ get_pa_competence_score <- function(feelings_about_pa1 = NA, feelings_about_pa2 
       return(
         unname(
           apply(data.frame(feelings_about_pa1, feelings_about_pa2, feelings_about_pa3), 1, function(x) {
-            feelings_about_pa1 <- validate_breq(x[1])
-            feelings_about_pa2 <- validate_breq(x[2])
-            feelings_about_pa3 <- validate_breq(x[3])
+            feelings_about_pa1 <- validate_questionnaire_item(x[1], 1, 5)
+            feelings_about_pa2 <- validate_questionnaire_item(x[2], 1, 5)
+            feelings_about_pa3 <- validate_questionnaire_item(x[3], 1, 5)
             if(sum(is.na(c(feelings_about_pa1, feelings_about_pa2, feelings_about_pa3))) > 0) {
               return(NA)
             } else {
@@ -241,7 +241,7 @@ get_pa_competence_score <- function(feelings_about_pa1 = NA, feelings_about_pa2 
 #' @param csappa5 a numeric (integer) element or vector representing a response to CSAPPA item 5 (valid values are integers between 1 and 4).
 #' 
 #' @details
-#' This function calls [validate_csappa()] to validate the arguments before computing the predilection score.
+#' This function calls [validate_questionnaire_item()] to validate the arguments before computing the predilection score.
 #'
 #' Valid elements (integers between 1 and 4) represent the following responses:
 #' * 1 = REALLY TRUE for me for "some kids" statements
@@ -265,9 +265,9 @@ get_predilection_score <- function(csappa1 = NA, csappa3 = NA, csappa5 = NA) {
       return(
         unname(
           apply(data.frame(csappa1, csappa3, csappa5), 1, function(x) {
-            csappa1 <- validate_csappa(x[1])
-            csappa3 <- validate_csappa(x[2])
-            csappa5 <- validate_csappa(x[3])
+            csappa1 <- validate_questionnaire_item(x[1], 1, 4)
+            csappa3 <- validate_questionnaire_item(x[2], 1, 4)
+            csappa5 <- validate_questionnaire_item(x[3], 1, 4)
             if(sum(is.na(c(csappa1, csappa3, csappa5))) > 0) {
               return(NA)
             } else {
@@ -280,84 +280,5 @@ get_predilection_score <- function(csappa1 = NA, csappa3 = NA, csappa5 = NA) {
     } else {
       stop("[CAPL error]: the csappa1, csappa3 and csappa5 arguments must be the same length.")
     }
-  )
-}
-
-#' Check whether a response to a given BREQ item is valid.
-#'
-#' @description
-#' This function checks whether an element for a given item on the Behavioral Regulation in Exercise Questionnaire (BREQ) is valid. A valid element is an
-#' integer between 1 and 5 (see Details for more information). This function calls [validate_integer()] and is called by [get_intrinsic_motivation_score()]
-#' and [get_pa_competence_score()].
-#'
-#' @export
-#'
-#' @param x a numeric (integer) element or vector representing the response to a BREQ question (valid values are between 1 and 5).
-#'
-#' @details
-#' Valid elements (integers between 1 and 5) represent the following responses:
-#' * 1 = Not true for me
-#' * 2 = Not really true for me
-#' * 3 = Sometimes true for me
-#' * 4 = Often true for me
-#' * 5 = Very true for me
-#'
-#' @examples
-#' validate_breq(c(1:5, 5.5, NA, "", "3"))
-#'
-#' # [[1]  1  2  3  4  5 NA NA NA  3
-#'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
-validate_breq <- function(x) {
-  x <- validate_integer(x)
-  return(
-    unname(
-      sapply(x, function(x) {
-        if(is.na(x) | x < 1 | x > 5) {
-          NA
-        } else {
-          x
-        }
-      })
-    )
-  )
-}
-
-#' Check whether a response to a given CSAPPA item is valid.
-#'
-#' @description
-#' This function checks whether an element for a given item on the Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity 
-#' (CSAPPA; #' Hay, 1992) questionnaire is valid. A valid element is an integer between 1 and 4 (see Details for more information). This function calls
-#' [validate_integer()] and is called by [get_adequacy_score()] and [get_predilection_score()].
-#'
-#' @export
-#'
-#' @param x a numeric (integer) element or vector representing the response to a CSAPPA item (valid values are between 1 and 4).
-#'
-#' @details
-#' Valid elements (integers between 1 and 4) represent the following responses:
-#' * 1 = REALLY TRUE for me for "some kids" statements
-#' * 2 = SORT OF TRUE for me for "some kids" statements
-#' * 3 = REALLY TRUE for me for "other kids" statements
-#' * 4 = SORT OF TRUE for me for "other kids" statements
-#'
-#' @examples
-#' validate_csappa(c(1:4, 5.5, NA, "", "3"))
-#'
-#' # [1]  1  2  3  4 NA NA NA  3
-#'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
-validate_csappa <- function(x) {
-  x <- validate_integer(x)
-  return(
-    unname(
-      sapply(x, function(x) {
-        if(is.na(x) | x < 1 | x > 4) {
-          NA
-        } else {
-          x
-        }
-      })
-    )
   )
 }

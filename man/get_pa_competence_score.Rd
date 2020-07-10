@@ -25,7 +25,7 @@ This function computes an intrinsic motivation score for responses to items 4-6 
 appear in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence domain score.
 }
 \details{
-This function calls \code{\link[=validate_breq]{validate_breq()}} to validate the arguments before computing the intrinsic motivation score.
+This function calls \code{\link[=validate_questionnaire_item]{validate_questionnaire_item()}} to validate the arguments before computing the intrinsic motivation score.
 
 Valid elements (integers between 1 and 5) represent the following responses:
 \itemize{

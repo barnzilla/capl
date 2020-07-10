@@ -65,6 +65,17 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$mc_score <- get_mc_score(raw_data$predilection_score, raw_data$adequacy_score, raw_data$intrinsic_motivation_score, raw_data$pa_competence_score)
       raw_data$mc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "mc")
       raw_data$mc_status <- get_capl_domain_status(raw_data[c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")])
+      raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(3, "60 minutes or 1 hour"))
+      raw_data$cardiorespiratory_fitness_means_score <- get_binary_score(raw_data$cardiorespiratory_fitness_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
+      raw_data$muscular_strength_means_score <- get_binary_score(raw_data$muscular_strength_means, c(1, "How well the muscles can push, pull or stretch"))
+      raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
+      raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate)
+      raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$cardiorespiratory_fitness_means_score, raw_data$muscular_strength_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
+      raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "ku")
+      raw_data$ku_status <- get_capl_domain_status(raw_data[c("ku_score", "ku_interpretation", "pa_guideline_score", "cardiorespiratory_fitness_means_score", "muscular_strength_means_score", "sports_skill_score", "fill_in_the_blanks_score")])
+      raw_data$capl_score <- get_capl_score(raw_data$pc_score, raw_data$db_score, raw_data$mc_score, raw_data$ku_score)
+      raw_data$capl_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "capl")
+      raw_data$capl_status <- get_capl_domain_status(raw_data[c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")])
       if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
         # Don't sort variables in raw_data
       } else if(sort == "abc") {
@@ -145,7 +156,7 @@ get_capl_domain_status <- function(x = NULL) {
 #' @param gender a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").
 #' @param score a numeric element or vector. If the protocol argument is set to "pacer" or "steps", the element(s) in this argument must be integers.
 #' @param protocol a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc", "steps",
-#' "self_report_pa", "db", "mc"; valid values are not case-sensitive).
+#' "self_report_pa", "db", "mc", "ku", "capl"; valid values are not case-sensitive).
 #'
 #' @examples
 #' get_capl_interpretation(
@@ -173,7 +184,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
             } else {
               score <- validate_number(x[3])
             }
-            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps", "self_report_pa", "db", "mc")) {
+            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps", "self_report_pa", "db", "mc", "ku", "capl")) {
               return(NA)
             } else {
               if(protocol == "pacer") {
@@ -232,6 +243,20 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
                   bound = c(16.3, 23.0, 25.3, 25.3, 16.2, 22.3, 24.8, 24.8, 16.7, 23.3, 25.7, 25.7, 16.2, 22.3, 24.8, 24.8, 16.8, 23.5, 26.0, 26.0, 16.2, 22.3, 24.8, 24.8, 16.8, 23.7, 26.0, 26.0, 16.2, 22.5, 25.0, 25.0, 16.8, 23.7, 26.2, 26.2, 16.3, 22.5, 25.0, 25.0),
                   interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
                 )
+              } else if(protocol == "ku") {
+                lookup <- data.frame(
+                  age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+                  gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+                  bound = c(4.4, 6.4, 7.2, 7.2, 4.8, 6.6, 7.3, 7.3, 4.7, 6.8, 7.6, 7.6, 5.0, 6.9, 7.7, 7.7, 5.0, 7.2, 8.1, 8.1, 5.3, 7.3, 8.1, 8.1, 5.2, 7.5, 8.4, 8.4, 5.5, 7.6, 8.4, 8.4, 5.3, 7.6, 8.5, 8.5, 5.6, 7.8, 8.6, 8.6),
+                  interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+                )
+              } else if(protocol == "capl") {
+                lookup <- data.frame(
+                  age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+                  gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+                  bound = c(47.3, 65.3, 72.7, 72.7, 49.6, 64.8, 71.7, 71.7, 48.8, 67.4, 75.0, 75.0, 50.6, 66.1, 73.1, 73.1, 49.8, 68.7, 76.4, 76.4, 51.2, 66.8, 73.9, 73.9, 50.2, 69.3, 77.1, 77.1, 51.3, 67.0, 74.1, 74.1, 51.6, 71.1, 79.1, 79.1, 52.1, 68.1, 75.3, 75.3),
+                  interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+                )
               } else {
                 lookup <- data.frame(age = NA, gender = NA, bound = NA, interpretation = NA)
               }
@@ -254,6 +279,65 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
       )
     } else {
       stop("[CAPL error]: the age, gender and score arguments must be the same length.")
+    }
+  )
+}
+
+#' Compute an overall physical literacy score. 
+#'
+#' @description Compute an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and
+#' understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
+#'
+#' @export
+#'
+#' @importFrom stats var
+#'
+#' @param pc_score a numeric element or vector (valid values are between 0 and 30).
+#' @param db_score a numeric (integer) element or vector (valid values are between 0 and 30).
+#' @param mc_score a numeric element or vector (valid values are between 0 and 30).
+#' @param ku_score a numeric element or vector (valid values are between 0 and 10).
+#'
+#' @details
+#' This function calls [validate_number()], [validate_integer()] and [validate_domain_score()] to ensure that the computed score is valid.
+#'
+#' @examples
+#' get_capl_score(
+#'   pc_score = c(20, 15, 12, 5, 31),
+#'   db_score = c(20, 15, 6, 4.1, 25),
+#'   mc_score = c(20, 20, 19, 15.4, 25),
+#'   ku_score = c(11, 4, 5, 7.8, 10)
+#' )
+#'
+#' # [1] 66.66667 54.00000 42.00000 40.28571 85.71429
+#'
+#' @return returns a numeric element between 0 and 100 (if valid) or NA (if not valid).
+get_capl_score <- function(pc_score = NA, db_score = NA, mc_score = NA, ku_score = NA) {
+  try(
+    if(var(c(length(pc_score), length(db_score), length(mc_score), length(ku_score))) == 0) {
+      return(
+        unname(
+          apply(data.frame(pc_score, db_score, mc_score, ku_score), 1, function(x) {
+            pc_score <- validate_domain_score(x[1], "pc")
+            db_score <- validate_domain_score(x[2], "db")
+            mc_score <- validate_domain_score(x[3], "mc")
+            ku_score <- validate_domain_score(x[4], "ku")
+            if(sum(is.na(c(pc_score, db_score, mc_score, ku_score))) > 1) {
+              return(NA)
+            } else if(sum(is.na(c(pc_score, db_score, mc_score, ku_score))) == 1) {
+              if(is.na(ku_score)) {
+                denominator <- 90
+              } else {
+                denominator <- 70
+              }
+              return(sum(pc_score, db_score, mc_score, ku_score, na.rm = TRUE) * 100 / denominator)
+            } else {
+              return(sum(pc_score, db_score, mc_score, ku_score))
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the pc_score, db_score, mc_score and ku_score arguments must be the same length.")
     }
   )
 }

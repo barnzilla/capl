@@ -13,7 +13,7 @@ get_db_score(step_score = NA, self_report_pa_score = NA)
 integers between 0 and 5).}
 }
 \value{
-returns a numeric (integer) element (if valid) or NA (if not valid).
+returns a numeric (integer) element between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
 Compute a daily behaviour domain score based on the step and self-reported physical activity scores.

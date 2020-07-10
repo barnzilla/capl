@@ -16,7 +16,7 @@
 #'
 #' # [1] 23  8 14  9 NA NA
 #'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
+#' @return returns a numeric (integer) element between 0 and 30 (if valid) or NA (if not valid).
 get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
   try(
     if(var(c(length(step_score), length(self_report_pa_score))) == 0) {

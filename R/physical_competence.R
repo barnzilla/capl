@@ -387,7 +387,7 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
 #'
 #' # [1]  7.5 10.0 19.0 20.0 18.0
 #'
-#' @return returns a numeric element (if valid) or NA (if not valid).
+#' @return returns a numeric element between 0 and 30 (if valid) or NA (if not valid).
 get_pc_score <- function(pacer_score = NA, plank_score = NA, camsa_overall_score = NA) {
   try(
     if(var(c(length(pacer_score), length(plank_score), length(camsa_overall_score))) == 0) {
