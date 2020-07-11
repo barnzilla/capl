@@ -2,36 +2,35 @@
 % Please edit documentation in R/motivation_and_confidence.R
 \name{get_adequacy_score}
 \alias{get_adequacy_score}
-\title{Compute a score for responses to the CSAPPA items 2, 4 and 6.}
+\title{Compute an adequacy score.}
 \usage{
 get_adequacy_score(csappa2 = NA, csappa4 = NA, csappa6 = NA)
 }
 \arguments{
-\item{csappa2}{a numeric (integer) element or vector representing a response to CSAPPA item 2 (valid values are integers between 1 and 4).}
+\item{csappa2}{A numeric (integer) vector representing a response to CSAPPA item 2 (valid values are integers between 1 and 4).}
 
-\item{csappa4}{a numeric (integer) element or vector representing a response to CSAPPA item 4 (valid values are integers between 1 and 4).}
+\item{csappa4}{A numeric (integer) vector representing a response to CSAPPA item 4 (valid values are integers between 1 and 4).}
 
-\item{csappa6}{a numeric (integer) element or vector representing a response to CSAPPA item 6 (valid values are integers between 1 and 4).}
+\item{csappa6}{A numeric (integer) vector representing a response to CSAPPA item 6 (valid values are integers between 1 and 4).}
 }
 \value{
-returns a numeric element between 1.8 and 7.5 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 1.8 and 7.5 (if valid) or NA (if not valid).
 }
 \description{
-This function computes an adequacy score for responses to items 2, 4 and 6 of the Children's Self-Perceptions of Adequacy in and Predilection
-for Physical #' Activity (CSAPPA; Hay, 1992) questionnaire as they appear in the CAPL-2 questionnaire. This score is used to compute the motivation
-and confidence
-domain score.
+This function computes an adequacy score (\code{adequacy_score}) for responses to items 2, 4 and 6 of the CSAPPA (Children's Self-Perceptions of Adequacy in
+and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in the CAPL-2 questionnaire. This score is used to compute the motivation
+and confidence domain score (\code{mc_score}).
 }
 \details{
-This function calls \code{\link[=validate_scale]{validate_scale()}} to validate the arguments before computing the adequacy score.
-
-Valid elements (integers between 1 and 4) represent the following responses:
+Valid values (integers between 1 and 4) represent the following responses:
 \itemize{
 \item 1 = REALLY TRUE for me for "some kids" statements
 \item 2 = SORT OF TRUE for me for "some kids" statements
 \item 3 = REALLY TRUE for me for "other kids" statements
 \item 4 = SORT OF TRUE for me for "other kids" statements
 }
+
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 }
 \examples{
 get_adequacy_score(

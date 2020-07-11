@@ -2,18 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{validate_character}
 \alias{validate_character}
-\title{Check whether an element is a character and not of length zero or "".}
+\title{Check whether a vector is a character and not of length zero or "".}
 \usage{
 validate_character(x)
 }
 \arguments{
-\item{x}{an element or vector.}
+\item{x}{A vector.}
 }
 \value{
-returns a character element (if valid) or NA (if not valid).
+Returns a character vector (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element is a character and not of length zero or "".
+This function checks whether a vector is a character and not of length zero or "".
 }
 \examples{
 validate_character(c("beginning", "progressing", "achieving", "excelling", "", NA, 7))

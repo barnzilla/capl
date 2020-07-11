@@ -2,7 +2,7 @@
 % Please edit documentation in R/motivation_and_confidence.R
 \name{get_intrinsic_motivation_score}
 \alias{get_intrinsic_motivation_score}
-\title{Compute a score for responses to BREQ items 1-3.}
+\title{Compute an intrinsic motivation score.}
 \usage{
 get_intrinsic_motivation_score(
   why_are_you_active1 = NA,
@@ -11,23 +11,24 @@ get_intrinsic_motivation_score(
 )
 }
 \arguments{
-\item{why_are_you_active1}{a numeric (integer) element or vector representing a response to BREQ item 1 (valid values are integers between 1 and 5).}
+\item{why_are_you_active1}{A numeric (integer) vector representing a response to BREQ item 1 (valid values are integers between 1 and 5).}
 
-\item{why_are_you_active2}{a numeric (integer) element or vector representing a response to BREQ item 2 (valid values are integers between 1 and 5).}
+\item{why_are_you_active2}{a numeric (integer) vector representing a response to BREQ item 2 (valid values are integers between 1 and 5).}
 
-\item{why_are_you_active3}{a numeric (integer) element or vector representing a response to BREQ item 3 (valid values are integers between 1 and 5).}
+\item{why_are_you_active3}{a numeric (integer) vector representing a response to BREQ item 3 (valid values are integers between 1 and 5).}
 }
 \value{
-returns a numeric element between 1.5 and 7.5 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 1.5 and 7.5 (if valid) or NA (if not valid).
 }
 \description{
-This function computes an intrinsic motivation score for responses to items 1-3 of the the Behavioral Regulation in Exercise Questionnaire (BREQ) as they
-appear in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence domain score.
+This function computes an intrinsic motivation score (\code{intrinsic_motivation_score}) for responses to items 1-3 of the the Behavioral Regulation in
+Exercise Questionnaire (BREQ) as they appear in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence domain score
+(\code{mc_score}).
 }
 \details{
-This function calls \code{\link[=validate_scale]{validate_scale()}} to validate the arguments before computing the intrinsic motivation score.
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 
-Valid elements (integers between 1 and 5) represent the following responses:
+Valid values (integers between 1 and 5) represent the following responses:
 \itemize{
 \item 1 = Not true for me
 \item 2 = Not really true for me

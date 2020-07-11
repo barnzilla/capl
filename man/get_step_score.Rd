@@ -13,7 +13,8 @@ get_step_score(step_average = NA)
 Returns a numeric (integer) vector with values between 0 and 25 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a step score based on the average daily steps taken as measured by a pedometer.
+This function computes a step score (\code{step_score}) based on the average daily steps taken as measured by a pedometer. This score is used to compute the
+daily behaviour domain score (\code{db_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.

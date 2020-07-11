@@ -17,7 +17,8 @@ Returns a merged data frame of raw data and CAPL-2 scores and interpretations.
 }
 \description{
 This function is the main function in the \code{capl} package. It is a wrapper function that calls all other \code{capl} functions to compute all CAPL-2 scores and
-interpretations from raw data at once. If required CAPL-2 variables are missing, the function will create the variables and set values for these variables to NA so the function can proceed.
+interpretations from raw data at once. If required CAPL-2 variables are missing, the function will create the variables and set values for these
+variables to NA so the function can proceed.
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=get_missing_capl_variables]{get_missing_capl_variables()}}, \code{\link[=get_pacer_20m_laps]{get_pacer_20m_laps()}}, \code{\link[=get_pacer_score]{get_pacer_score()}},

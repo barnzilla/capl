@@ -4,34 +4,79 @@
 \alias{get_capl_domain_status}
 \title{Compute the status of a CAPL domain.}
 \usage{
-get_capl_domain_status(x = NULL)
+get_capl_domain_status(x = NULL, domain = NA)
 }
 \arguments{
-\item{x}{A data frame. The first column must be scores for a CAPL-2 domain, the second column must be CAPL-2 interpretations for the domain and
-the remaining columns must be protocol scores for the domain.}
+\item{x}{A data frame that includes the required variables for a given domain (see Details).}
+
+\item{domain}{A character vector representing one of the CAPL-2 domains (valid values are "pc", "db", "mc", "ku" and "capl")}
 }
 \value{
 Returns a character vector with a value of "complete", "missing interpretation", "missing protocol" or "incomplete".
 }
 \description{
-This function computes the status of a CAPL domain ("complete", "missing interpretation", "missing protocol" or "incomplete").
+This function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain (e.g., \code{pc_status},
+\code{db_status}, \code{mc_status}, \code{ku_status}, \code{capl_status}).
 }
 \details{
-Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.
+If the \code{domain} argument is set to "pc", the following variables must be included in the \code{x} argument:
+\itemize{
+\item \code{pc_score}
+\item \code{pc_interpretation}
+\item \code{pacer_score}
+\item \code{plank_score}
+\item \code{camsa_overall_score}
+}
+
+If the \code{domain} argument is set to "db", the following variables must be included the \code{x} argument:
+\itemize{
+\item \code{db_score}
+\item \code{db_interpretation}
+\item \code{step_score}
+\item \code{self_report_pa_score}
+}
+
+If the \code{domain} argument is set to "mc", the following variables must be included the \code{x} argument:
+\itemize{
+\item \code{mc_score}
+\item \code{mc_interpretation}
+\item \code{predilection_score}
+\item \code{adequacy_score}
+\item \code{intrinsic_motivation_score}
+\item \code{pa_competence_score}
+}
+
+If the \code{domain} argument is set to "ku", the following variables must be included the \code{x} argument:
+\itemize{
+\item \code{ku_score}
+\item \code{ku_interpretation}
+\item \code{pa_guideline_score}
+\item \code{cardiorespiratory_fitness_means_score}
+\item \code{muscular_strength_means_score}
+\item \code{sports_skill_score}
+\item \code{fill_in_the_blanks_score}
+}
+
+If the \code{domain} argument is set to "capl", the following variables must be included the \code{x} argument:
+\itemize{
+\item \code{capl_score}
+\item \code{capl_interpretation}
+\item \code{pc_score}
+\item \code{db_score}
+\item \code{mc_score}
+\item \code{ku_score}
+\item \code{capl_score}
+}
+
+Other \code{capl} functions called by this function include: \code{\link[=validate_character]{validate_character()}} and \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
-x <- data.frame(
-  domain_score = c(5, 10, 15, 20, 25, "", NA),
-  interpretation = c("beginning", "progressing", NA, "achieving", "excelling", NA, NA),
-  protocol_score1 = c(NA, 2, 3, 7, 10, NA, NA),
-  protocol_score2 = c(3, 5, 7, 12, 10, NA, NA),
-  protocol_score3 = c(2, 3, 10, 6, 10, NA, NA)
-)
+capl_demo_data <- get_capl_demo_data(3)
 
-get_capl_domain_status(x)
+capl_results <- get_capl(capl_demo_data)
 
-# [1] "missing protocol"       "complete"               "missing interpretation"
-# [4] "complete"               "complete"               "incomplete" 
-# [7] "incomplete"
+get_capl_domain_status(capl_results, "pc")
+
+# [1] "complete"               "incomplete"             "missing interpretation" 
 
 }

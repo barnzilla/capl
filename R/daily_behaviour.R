@@ -1,7 +1,8 @@
 #' Compute a daily behaviour domain score.
 #'
 #' @description
-#' This function computes a daily behaviour domain score based on the step and self-reported physical activity scores. 
+#' This function computes a daily behaviour domain score (`db_score`) based on the step and self-reported physical activity scores. This score
+#' is used to compute the overall physical literacy score (`capl_score`).
 #'
 #' @export
 #'
@@ -48,7 +49,8 @@ get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
 #' Compute pedometer wear time in decimal hours for a given day.
 #'
 #' @description
-#' This function computes pedometer wear time in decimal hours for a given day.
+#' This function computes pedometer wear time in decimal hours for a given day (e.g., `wear_time1`). This variable is used to compute the `step_average`
+#' variable and the step score (`step_score`).
 #'
 #' @export
 #'
@@ -115,8 +117,9 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
 #' Compute a score for a response to the self-reported physical activity question.
 #'
 #' @description
-#' This function computes a score for a response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
-#' minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in the CAPL-2 Questionnaire.
+#' This function computes a score (`self_report_pa_score`) for a response to "During the past week (7 days), on how many days were you physically active for
+#' a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in the CAPL-2
+#' Questionnaire. This score is used to compute the daily behaviour domain score (`db_score`).
 #'
 #' @export
 #'
@@ -161,16 +164,40 @@ get_self_report_pa_score <- function(x = NA) {
 #' Compute average daily steps taken.
 #'
 #' @description
-#' This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer. 
+#' This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer (`step_average`). This variable is used to compute
+#' the step score (`step_score`). 
 #'
 #' @export
 #'
 #' @importFrom stats var
 #'
-#' @param raw_data A data frame that includes seven days of pedometer steps (steps1...steps7) and their corresponding on (time_on1...time_on7)
-#' and off (time_off1...time_off7) times.
+#' @param raw_data A data frame that includes seven days of pedometer steps and their corresponding on and off times. See Details for how these variables
+#' must be named.
 #' 
 #' @details
+#' This function will throw an error unless the following variables are found in the `raw_data` argument:
+#' * `steps1`
+#' * `steps2`
+#' * `steps3`
+#' * `steps4`
+#' * `steps5`
+#' * `steps6`
+#' * `steps7` 
+#' * `time_on1`
+#' * `time_on2`
+#' * `time_on3`
+#' * `time_on4`
+#' * `time_on5`
+#' * `time_on6`
+#' * `time_on7`
+#' * `time_off1`
+#' * `time_off2`
+#' * `time_off3`
+#' * `time_off4`
+#' * `time_off5`
+#' * `time_off6`
+#' * `time_off7`
+#'
 #' There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid 
 #' day will be randomly sampled and used for the fourth valid day before computing the mean. 
 #'
@@ -223,7 +250,8 @@ get_step_average <- function(raw_data = NULL) {
 #' Compute a step score.
 #'
 #' @description
-#' This function computes a step score based on the average daily steps taken as measured by a pedometer.
+#' This function computes a step score (`step_score`) based on the average daily steps taken as measured by a pedometer. This score is used to compute the 
+#' daily behaviour domain score (`db_score`).
 #'
 #' @export
 #'
@@ -312,7 +340,8 @@ get_step_score <- function(step_average = NA) {
 #' Check whether daily steps as measured by a pedometer are valid.
 #'
 #' @description
-#' This function checks whether daily steps as measured by a pedometer are valid.
+#' This function checks whether daily steps as measured by a pedometer are valid. The variables from this function are used to compute `step_average` and
+#' the step score (`step_score`).
 #'
 #' @export
 #'

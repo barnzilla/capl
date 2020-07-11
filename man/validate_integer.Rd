@@ -2,18 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{validate_integer}
 \alias{validate_integer}
-\title{Check whether an element is an integer.}
+\title{Check whether a vector is an integer.}
 \usage{
 validate_integer(x)
 }
 \arguments{
-\item{x}{an element or vector.}
+\item{x}{A vector.}
 }
 \value{
-returns a numeric (integer) element (if valid) or NA (if not valid).
+Returns a numeric (integer) vector (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element is an integer.
+This function checks whether a vector is an integer.
 }
 \examples{
 validate_integer(c(2, 6, 3.3, "", NA, "6", "hello, world"))

@@ -11,15 +11,15 @@ get_pc_score(pacer_score = NA, plank_score = NA, camsa_overall_score = NA)
 
 \item{plank_score}{a numeric (integer) vector representing the plank score (valid values are integers between 0 and 10).}
 
-\item{camsa_overall_score}{A numeric vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0.36 and 10).}
+\item{camsa_overall_score}{A numeric vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).}
 }
 \value{
 Returns a numeric vector with values between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a physical competence domain score based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and CAMSA
-(Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from
-the other two protocol scores.
+This function computes a physical competence domain score (\code{pc_score}) based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and
+CAMSA (Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from
+the other two protocol scores. This score is used to compute the physical competence domain score (\code{pc_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.

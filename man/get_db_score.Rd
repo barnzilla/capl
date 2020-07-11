@@ -16,7 +16,8 @@ integers between 0 and 5).}
 Returns a numeric (integer) vector with values between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a daily behaviour domain score based on the step and self-reported physical activity scores.
+This function computes a daily behaviour domain score (\code{db_score}) based on the step and self-reported physical activity scores. This score
+is used to compute the overall physical literacy score (\code{capl_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.

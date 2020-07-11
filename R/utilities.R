@@ -1,31 +1,44 @@
-#' Convert a 12-hour clock element to a 24-hour clock element.
+#' Convert 12-hour clock values to 24-hour clock values.
+#'
+#' This function converts 12-hour clock values to 24-hour clock values.
 #'
 #' @export
 #'
-#' @param x a character element or vector in 12-hour clock format.
+#' @param x A character vector representing values in 12-hour clock format.
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_character()] and [validate_integer()].
 #'
 #' @examples
-#' get_24_hour_clock(c("5:00 am", "7:10PM", "21:37", NA, "", 9))
+#' get_24_hour_clock(c("5:00 am", "7:10PM", "9:37", NA, "21:13", "", 9, "6:17"))
 #'
-#' # [1] "05:00" "19:10" "21:37" NA      NA      "9" 
+#' # [1] "05:00" "19:10" "09:37" NA      "21:13" NA      NA      "06:17"
 #'
-#' @return returns a 24-hour clock element (if valid) or the original element as a character element (if not valid).
+#' @return Returns a 24-hour clock vector (if valid) or NA (if not valid).
 get_24_hour_clock <- function(x = NA) {
   return(
     unname(
       sapply(x, function(x) {
         x <- validate_character(x)
         if(grepl("am|pm", tolower(x))) {
-          format(strptime(x, "%I:%M %p"), format = "%H:%M")
+          x <- format(strptime(tolower(x), "%I:%M %p"), format = "%H:%M")
+        } else if(grepl(":", tolower(x))) {
+          explode <- strsplit(tolower(x), ":")
+          hour <- validate_integer(explode[[1]][1])
+          if(! is.na(hour) & hour <= 12) {
+            x <- format(strptime(tolower(x), "%I:%M"), format = "%H:%M")
+          } else {
+            x <- x
+          }
         } else {
-          x
+          x <- NA
         }
       })
     )
   )
 }
 
-#' Compute a binary score for a response to a questionnaire item.
+#' Compute a binary score.
 #'
 #' @description
 #' This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the values set as 
@@ -33,9 +46,9 @@ get_24_hour_clock <- function(x = NA) {
 #'
 #' @export
 #'
-#' @param x an element or vector representing a response to a questionnaire item.
-#' @param answer an element or vector representing the correct answer(s) to the questionnaire item. The answer argument does not have to match x in case 
-#' for a correct answer to be computed.
+#' @param x A character or numeric vector representing a response to a questionnaire item.
+#' @param answer A character or numeric vector representing the correct answer(s) to the questionnaire item. The answer argument does not have to match x
+#' in case for a correct answer to be computed.
 #' 
 #' @details
 #' This function is called to compute scores for several knowledge and understanding questions in the CAPL-2 questionnaire and is also called by 
@@ -63,7 +76,7 @@ get_24_hour_clock <- function(x = NA) {
 #'
 #' # [1]  0  0  1  0  0  1  0 NA
 #'
-#' @return returns 1 (if correct), 0 (if incorrect) or NA (if not valid).
+#' @return Returns 1 (if correct), 0 (if incorrect) or NA (if not valid).
 get_binary_score <- function(x, answer) {
   return(
     unname(
@@ -90,10 +103,6 @@ get_binary_score <- function(x, answer) {
 #'
 #' @param n A numeric (integer) vector representing the number of rows of data to generate. By default, `n` is set to 500. 
 #' 
-#' @details
-#' Other `capl` functions called by this function include: [validate_integer()].
-#' [get_fill_in_the_blanks_score()]. 
-#'
 #' @examples
 #' capl_demo_data <- get_capl_demo_data(10000)
 #'
@@ -238,7 +247,7 @@ get_capl_demo_data <- function(n = 500) {
 #' Add required CAPL-2 variables to a data frame of raw data if they are missing.
 #'
 #' @description
-#' This function adds required CAPL-2 variables (see the Details section for a full list) to a data frame of raw data if they are missing. When missing
+#' This function adds required CAPL-2 variables (see Details for a full list) to a data frame of raw data if they are missing. When missing
 #' variables are added, the values for a given missing variable are set to NA. This function is called within [get_capl()] so that CAPL-2 score and
 #' interpretation computations will run without errors in the presence of missing variables.
 #'
@@ -321,7 +330,7 @@ get_missing_capl_variables <- function(raw_data = NULL) {
       stop("[CAPL error]: the raw_data argument is missing.")
     }
     else if(! isTRUE("data.frame" %in% class(raw_data))) {
-      stop("[CAPL error]: the raw_data argument must be a data frame or a tibble.")
+      stop("[CAPL error]: the raw_data argument must be a data frame.")
     }
     else {
       required_variables <- c(
@@ -395,18 +404,27 @@ get_missing_capl_variables <- function(raw_data = NULL) {
   )
 }
 
-#' Check whether an element is numeric and between 8 and 12.
+#' Check whether an age is valid for CAPL-2.
+#'
+#' @description
+#' This function checks whether an age is valid (numeric and between 8 and 12). CAPL-2 scores and interpretations are valid for children between the ages
+#' of 8 and 12 years.
 #'
 #' @export
 #'
-#' @param x an element or vector.
+#' @param x A numeric vector.
+#'
+#' @details
+#' If `x` contains a decimal value that is otherwise valid (e.g., 8.5, 10.1), this function will return the [floor()] of the value.
+#' 
+#' Other `capl` functions called by this function include: [validate_number()].
 #'
 #' @examples
-#' validate_age(c(7:13, "", NA, "12"))
+#' validate_age(c(7:13, "", NA, "12", 8.5))
 #'
-#' # [1] NA  8  9 10 11 12 NA NA NA 12
+#' # [1] NA  8  9 10 11 12 NA NA NA 12  8
 #'
-#' @return returns a numeric (integer) vector with a value between 8 and 12 (if valid) or NA (if not valid).
+#' @return returns A numeric (integer) vector with a value between 8 and 12 (if valid) or NA (if not valid). 
 validate_age <- function(x) {
   return(
     unname(
@@ -422,11 +440,14 @@ validate_age <- function(x) {
   )
 }
 
-#' Check whether an element is a character and not of length zero or "".
+#' Check whether a vector is a character and not of length zero or "".
+#'
+#' @description
+#' This function checks whether a vector is a character and not of length zero or "".
 #'
 #' @export
 #'
-#' @param x an element or vector.
+#' @param x A vector.
 #'
 #' @examples
 #' validate_character(c("beginning", "progressing", "achieving", "excelling", "", NA, 7))
@@ -434,7 +455,7 @@ validate_age <- function(x) {
 #' # [1] "beginning"   "progressing" "achieving"   "excelling"   NA            NA 
 #' # [7] "7"
 #'
-#' @return returns a character element (if valid) or NA (if not valid).
+#' @return Returns a character vector (if valid) or NA (if not valid).
 validate_character <- function(x) {
   return(
     unname(
@@ -450,13 +471,19 @@ validate_character <- function(x) {
   )
 }
 
-#' Check whether a CAPL domain score is numeric and within a valid range.
+#' Check whether a CAPL-2 domain score is valid.
+#'
+#' @description
+#' This function checks whether a CAPL-2 domain score is numeric and within a valid range.
 #'
 #' @export
 #'
-#' @param x an element or vector representing a CAPL domain score.
-#' @param domain a character element representing domains within CAPL (valid values are "pc", "db", "mc", "ku"; valid values are not
+#' @param x A vector representing a CAPL domain score.
+#' @param domain A character vector representing domains within CAPL (valid values are "pc", "db", "mc", "ku"; valid values are not
 #' case-sensitive).
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_number()] and [validate_integer()].
 #'
 #' @examples
 #' validate_domain_score(
@@ -466,7 +493,7 @@ validate_character <- function(x) {
 #'
 #' # [1]   NA 15.0 10.0 12.5 25.0
 #'
-#' @return returns a numeric element (if valid) or NA (if not valid).
+#' @return Returns a numeric vector (if valid) or NA (if not valid).
 validate_domain_score <- function(x = NA, domain = NA) {
   domain <- tolower(domain[1])
   return(
@@ -489,22 +516,25 @@ validate_domain_score <- function(x = NA, domain = NA) {
   )
 }
 
-#' Check whether an element can be classified as girl or boy.
+#' Check whether a vector can be classified as "girl" or "boy".
+#'
+#' @description
+#' This function checks whether a vector can be classified as "girl" or "boy".
 #'
 #' @export
 #'
-#' @param x an element or vector.
+#' @param x A vector (see Examples for valid values).
 #'
 #' @examples
-#' validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA))
+#' validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
 #'
-#' # [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA
+#' # [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA     "girl"
 #'
-#' validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA))
+#' validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA, 0))
 #'
-#' # [1] "boy" "boy" "boy" "boy" "boy" "boy" "boy" NA    NA
+#' # [1] "boy" "boy" "boy" "boy" "boy" "boy" "boy" NA    NA    "boy"
 #'
-#' @return returns a character element with a value of "girl" or "boy" (if valid) or NA (if not valid).
+#' @return Returns a character vector with values of "girl" or "boy" (if valid) or NA (if not valid).
 validate_gender <- function(x) {
   return(
     unname(
@@ -512,9 +542,9 @@ validate_gender <- function(x) {
         x <- tolower(as.character(x))
         if(is.na(x)) {
           x <- NA
-        } else if(x %in% c("girl", "female", "f", "g")) {
+        } else if(x %in% c("girl", "female", "f", "g", "1")) {
           x <- "girl"
-        } else if(x %in% c("boy", "male", "m", "b")) {
+        } else if(x %in% c("boy", "male", "m", "b", "0")) {
           x <- "boy"
         } else {
           x <- NA
@@ -524,18 +554,21 @@ validate_gender <- function(x) {
   )
 }
 
-#' Check whether an element is an integer.
+#' Check whether a vector is an integer.
 #'
+#' @description
+#' This function checks whether a vector is an integer.
+#' 
 #' @export
 #'
-#' @param x an element or vector.
+#' @param x A vector.
 #'
 #' @examples
 #' validate_integer(c(2, 6, 3.3, "", NA, "6", "hello, world"))
 #'
 #' # [1]  2  6 NA NA NA  6 NA
 #'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
+#' @return Returns a numeric (integer) vector (if valid) or NA (if not valid).
 validate_integer <- function(x) {
   x <- validate_number(x)
   return(
@@ -551,81 +584,36 @@ validate_integer <- function(x) {
   )
 }
 
-#' Check whether an element is numeric.
+#' Check whether a vector is numeric.
+#'
+#' @description
+#' This function checks whether a vector is numeric.
 #'
 #' @export
 #'
-#' @param x an element or vector.
+#' @param x A vector.
 #'
 #' @examples
 #' validate_number(c(1:5, "5", "", NA, "hello, world!"))
 #'
 #' # [1]  1  2  3  4  5  5 NA NA NA
 #'
-#' @return returns a numeric element (if valid) or NA (if not valid).
+#' @return Returns a numeric vector (if valid) or NA (if not valid).
 validate_number <- function(x) {
   return(unname(sapply(x, function(x) suppressWarnings(as.numeric(x)))))
-}
-
-#' Check whether a CAPL protocol score is numeric and within a valid range.
-#'
-#' @export
-#'
-#' @param x an element or vector representing a CAPL protocol score.
-#' @param protocol a character element representing protocols within one of the four CAPL domains (valid values currently include "pc", "db", "csappa"
-#' "breq", "pa_guideline", "cardiorespiratory_fitness_means", "muscular_strength_means", "sports_skill", "fill_in_the_blanks"; valid values are not
-#' case-sensitive).
-#'
-#' @examples
-#' validate_protocol_score(
-#'   x = c(1, 5, 10, 11, -1, NA, "6"),
-#'   protocol = "pc"
-#' )
-#'
-#' # [1]  1  5 10 NA NA NA  6
-#'
-#' @return returns a numeric element (if valid) or NA (if not valid).
-validate_protocol_score <- function(x = NA, protocol = NA) {
-  protocol <- tolower(protocol[1])
-  return(
-    unname(
-      sapply(x, function(x) {
-        x <- validate_number(x)
-        if(is.na(x) | ! protocol %in% c("pc", "db", "csappa", "breq", "pa_guideline", "cardiorespiratory_fitness_means", "muscular_strength_means", "sports_skill", "fill_in_the_blanks")) {
-          return(NA)
-        } else if(protocol == "pc" & (x < 0 | x > 10)) {
-          return(NA)
-        } else if(protocol == "db" & ! validate_integer(x) | (x < 0 | x > 25)) {
-          return(NA)
-        } else if(protocol == "csappa" & (x < 1.8 | x > 7.5)) {
-          return(NA)
-        } else if(protocol == "breq" & (x < 1.5 | x > 7.5)) {
-          return(NA)
-        } else if(protocol %in% c("pa_guideline", "cardiorespiratory_fitness_means", "muscular_strength_means", "sports_skill") & (x < 0 | x > 1 | is.na(validate_integer(x)))) {
-          return(NA)
-        }  else if(protocol == "fill_in_the_blanks" & (x < 0 | x > 6 | is.na(validate_integer(x)))) {
-          return(NA)
-        } else {
-          return(x)
-        }
-      })
-    )
-  )
 }
 
 #' Check whether a response to a given questionnaire item or scale is valid.
 #'
 #' @description
-#' This function checks whether a vector for a given questionnaire item or scale is valid. This function calls
-#' [validate_integer()] and [validate_number()] and is called by [get_adequacy_score()] and [get_predilection_score()]. This function can also be called
-#' using `validate_scale()`.
+#' This function checks whether a vector for a given questionnaire item or scale is valid. 
 #'
 #' @export
 #'
-#' @param x a numeric (integer) element or vector representing the response to a questionnaire item (valid values are between the values set by the 
-#' lower_bound and upper_bound argumetns).
-#' @param lower_bound a numeric element representing the value below which x is invalid.
-#' @param upper_bound a numeric element representing the value above which x is invalid.
+#' @param x A numeric (integer) vector representing the response to a questionnaire item (valid values are between the values set by the 
+#' `lower_bound` and `upper_bound` argumetns).
+#' @param lower_bound A numeric (integer) vector representing the value below which x is invalid.
+#' @param upper_bound A numeric (integer) vector representing the value above which x is invalid.
 #'
 #' @examples
 #' validate_scale(

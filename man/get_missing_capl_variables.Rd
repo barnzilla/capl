@@ -13,7 +13,7 @@ get_missing_capl_variables(raw_data = NULL)
 returns a merged data frame of raw data and missing required CAPL-2 variables (values are set to NA).
 }
 \description{
-This function adds required CAPL-2 variables (see the Details section for a full list) to a data frame of raw data if they are missing. When missing
+This function adds required CAPL-2 variables (see Details for a full list) to a data frame of raw data if they are missing. When missing
 variables are added, the values for a given missing variable are set to NA. This function is called within \code{\link[=get_capl]{get_capl()}} so that CAPL-2 score and
 interpretation computations will run without errors in the presence of missing variables.
 }

@@ -2,18 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{get_binary_score}
 \alias{get_binary_score}
-\title{Compute a binary score for a response to a questionnaire item.}
+\title{Compute a binary score.}
 \usage{
 get_binary_score(x, answer)
 }
 \arguments{
-\item{x}{an element or vector representing a response to a questionnaire item.}
+\item{x}{A character or numeric vector representing a response to a questionnaire item.}
 
-\item{answer}{an element or vector representing the correct answer(s) to the questionnaire item. The answer argument does not have to match x in case
-for a correct answer to be computed.}
+\item{answer}{A character or numeric vector representing the correct answer(s) to the questionnaire item. The answer argument does not have to match x
+in case for a correct answer to be computed.}
 }
 \value{
-returns 1 (if correct), 0 (if incorrect) or NA (if not valid).
+Returns 1 (if correct), 0 (if incorrect) or NA (if not valid).
 }
 \description{
 This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the values set as

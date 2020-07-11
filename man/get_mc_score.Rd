@@ -2,7 +2,7 @@
 % Please edit documentation in R/motivation_and_confidence.R
 \name{get_mc_score}
 \alias{get_mc_score}
-\title{Compute a motivation and confidence domain score based on the step and self-reported physical activity scores.}
+\title{Compute a motivation and confidence domain score.}
 \usage{
 get_mc_score(
   predilection_score = NA,
@@ -12,23 +12,25 @@ get_mc_score(
 )
 }
 \arguments{
-\item{predilection_score}{a numeric element or vector (valid values are between 1.8 and 7.5).}
+\item{predilection_score}{A numeric vector (valid values are between 1.8 and 7.5).}
 
-\item{adequacy_score}{a numeric element or vector (valid values are between 1.8 and 7.5).}
+\item{adequacy_score}{A numeric vector (valid values are between 1.8 and 7.5).}
 
-\item{intrinsic_motivation_score}{a numeric element or vector (valid values are between 1.5 and 7.5).}
+\item{intrinsic_motivation_score}{A numericvector (valid values are between 1.5 and 7.5).}
 
-\item{pa_competence_score}{a numeric element or vector (valid values are between 1.5 and 7.5).}
+\item{pa_competence_score}{A numeric vector (valid values are between 1.5 and 7.5).}
 }
 \value{
-returns a numeric element between 0 and 30 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
-Compute a motivation and confidence domain score based on the predilection, adequacy, intrinsic motivation and physical activity
-competence scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other three scores.
+Compute a motivation and confidence domain score (\code{mc_score}) based on the predilection (\code{predilection_score}), adequacy (\code{adequacy_score}),
+intrinsic motivation (\code{intrinsic_motivation_score}) and physical activity competence (\code{pa_competence_score}) scores. If one of the scores is missing or
+invalid, a weighted domain score will be computed from the other three scores. This score is used to compute the overall physical literacy score
+(\code{capl_score}).
 }
 \details{
-This function calls \code{\link[=validate_number]{validate_number()}} and \code{\link[=validate_protocol_score]{validate_protocol_score()}} to ensure that the computed score is valid.
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
 get_mc_score(

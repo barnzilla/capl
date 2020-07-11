@@ -2,7 +2,7 @@
 % Please edit documentation in R/physical_competence.R
 \name{get_camsa_overall_score}
 \alias{get_camsa_overall_score}
-\title{Compute the maximum CAMSA skill + time score for two trials.}
+\title{Compute the maximum CAMSA skill + time score.}
 \usage{
 get_camsa_overall_score(camsa_score1 = NA, camsa_score2 = NA)
 }
@@ -12,11 +12,11 @@ get_camsa_overall_score(camsa_score1 = NA, camsa_score2 = NA)
 \item{camsa_score2}{A numeric (integer) vector representing the skill + time score from trial 2 (valid values are between 1 and 28).}
 }
 \value{
-Returns a numeric vector with values between 0.36 and 10 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
 }
 \description{
-This function computes the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for two trials and then divides by 2.8 so
-that the score is out of 10.
+This function computes the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score (\code{camsa_overall_score}) for two trials
+and then divides by 2.8 so that the score is out of 10. This score is used to compute the physical literacy score (\code{pc_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.

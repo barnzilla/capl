@@ -1,23 +1,21 @@
-#' Compute a score for responses to the fill in the blanks items in the CAPL-2 questionnaire.
+#' Compute a fill in the blanks score.
 #'
 #' @description
-#' This function computes a score for responses to the fill in the blanks items (story about Sally) in the CAPL-2 questionnaire. This score is used to
-#' compute the knowledge and understanding  domain score.
+#' This function computes a score (`fill_in_the_blanks_score`) for responses to the fill in the blanks items (story about Sally) in the CAPL-2
+#' questionnaire. This score is used to compute the knowledge and understanding domain score (`ku_score`).
 #'
 #' @export
 #'
 #' @importFrom stats var
 #'
-#' @param pa_is an element or vector representing a response to the first fill in the blank item (correct answers are 1, 7, "Fun" or "Good").
-#' @param pa_is_also an element or vector representing a response to the second fill in the blank item (correct answers are 1, 7, "Fun" or "Good").
-#' @param improve an element or vector representing a response to the third fill in the blank item (correct answers are 3 or "Endurance").
-#' @param increase an element or vector representing a response to the fourth fill in the blank item (correct answers are 8 or "Strength").
-#' @param when_cooling_down an element or vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").
-#' @param heart_rate an element or vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").
+#' @param pa_is A vector representing a response to the first fill in the blank item (correct answers are 1, 7, "Fun" or "Good").
+#' @param pa_is_also A vector representing a response to the second fill in the blank item (correct answers are 1, 7, "Fun" or "Good").
+#' @param improve A vector representing a response to the third fill in the blank item (correct answers are 3 or "Endurance").
+#' @param increase A vector representing a response to the fourth fill in the blank item (correct answers are 8 or "Strength").
+#' @param when_cooling_down A vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").
+#' @param heart_rate A vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").
 #' 
 #' @details
-#' This function calls [get_binary_score()] to score the arguments before computing the fill in the blanks score.
-#'
 #' The following integers represent the responses for the items/arguments in this function:
 #' * 1 = Fun
 #' * 2 = Stretches
@@ -30,6 +28,8 @@
 #' * 9 = Bad
 #' * 10 = Sport
 #' 
+#' Other `capl` functions called by this function include: [get_binary_score()].
+#'
 #' @examples
 #' get_fill_in_the_blanks_score(
 #'   pa_is = c(2, 3, "fun", 9),
@@ -42,7 +42,7 @@
 #'
 #' # [1] 0 1 3 1
 #'
-#' @return returns a numeric (integer) element between 0 and 5 (if valid) or NA (if not valid).
+#' @return Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA (if not valid).
 get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = NA, increase = NA, when_cooling_down = NA, heart_rate = NA) {
   try(
     if(var(c(length(pa_is), length(pa_is_also), length(improve), length(increase), length(when_cooling_down), length(heart_rate))) == 0) {
@@ -71,22 +71,23 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 
 #' Compute a knowledge and understanding domain score. 
 #'
-#' @description Compute a knowledge and understanding domain score based on the physical activity guideline, cardiorespiratory fitness means, muscular
-#' strength and endurance means, sports skill and fill in the blanks scores. If one of the scores is missing or invalid, a weighted domain score will be 
-#' computed from the other four scores.
+#' @description Compute a knowledge and understanding domain score (`ku_score`) based on the physical activity guideline (`pa_guideline_score`), 
+#' cardiorespiratory fitness means (`cardiorespiratory_fitness_means_score), muscular strength and endurance means (`muscular_strength_means_score`), 
+#' sports skill (`sports_skill_score`) and fill in the blanks (`fill_in_the_blanks_score`) scores. If one of the scores is missing or invalid, a weighted
+#' domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (`capl_score`).
 #'
 #' @export
 #'
 #' @importFrom stats var
 #'
-#' @param pa_guideline_score a numeric (integer) element or vector (valid values are between 0 and 1).
-#' @param cardiorespiratory_fitness_means_score a numeric (integer) element or vector (valid values are between 0 and 1).
-#' @param muscular_strength_means_score a numeric (integer) element or vector (valid values are between 0 and 1).
-#' @param sports_skill_score a numeric (integer) element or vector (valid values are between 0 and 1).
-#' @param fill_in_the_blanks_score a numeric (integer) element or vector (valid values are between 0 and 6).
+#' @param pa_guideline_score A numeric (integer) vector (valid values are between 0 and 1).
+#' @param cardiorespiratory_fitness_means_score A numeric (integer) vector (valid values are between 0 and 1).
+#' @param muscular_strength_means_score A numeric (integer) vector (valid values are between 0 and 1).
+#' @param sports_skill_score A numeric (integer) vector (valid values are between 0 and 1).
+#' @param fill_in_the_blanks_score A numeric (integer) vector (valid values are between 0 and 6).
 #'
 #' @details
-#' This function calls [validate_number()], [validate_integer()] and [validate_protocol_score()] to ensure that the computed score is valid.
+#' Other `capl` functions called by this function include: [validate_scale()].
 #'
 #' @examples
 #' get_ku_score(
@@ -99,18 +100,18 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 #'
 #' # [1] 7.000000 8.000000 6.666667 2.222222 4.444444
 #'
-#' @return returns a numeric element between 0 and 10 (if valid) or NA (if not valid).
+#' @return Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
 get_ku_score <- function(pa_guideline_score = NA, cardiorespiratory_fitness_means_score = NA, muscular_strength_means_score = NA, sports_skill_score = NA, fill_in_the_blanks_score = NA) {
   try(
     if(var(c(length(pa_guideline_score), length(cardiorespiratory_fitness_means_score), length(muscular_strength_means_score), length(sports_skill_score), length(fill_in_the_blanks_score))) == 0) {
       return(
         unname(
           apply(data.frame(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score), 1, function(x) {
-            pa_guideline_score <- validate_protocol_score(x[1], "pa_guideline")
-            cardiorespiratory_fitness_means_score <- validate_protocol_score(x[2], "cardiorespiratory_fitness_means")
-            muscular_strength_means_score <- validate_protocol_score(x[3], "muscular_strength_means")
-            sports_skill_score <- validate_protocol_score(x[4], "sports_skill")
-            fill_in_the_blanks_score <- validate_protocol_score(x[5], "fill_in_the_blanks")
+            pa_guideline_score <- validate_scale(x[1], 0, 1)
+            cardiorespiratory_fitness_means_score <- validate_scale(x[2], 0, 1)
+            muscular_strength_means_score <- validate_scale(x[3], 0, 1)
+            sports_skill_score <- validate_scale(x[4], 0, 1)
+            fill_in_the_blanks_score <- validate_scale(x[5], 0, 6)
             if(sum(is.na(c(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score))) > 1) {
               return(NA)
             } else if(sum(is.na(c(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score))) == 1) {

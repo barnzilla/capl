@@ -2,18 +2,18 @@
 % Please edit documentation in R/utilities.R
 \name{validate_number}
 \alias{validate_number}
-\title{Check whether an element is numeric.}
+\title{Check whether a vector is numeric.}
 \usage{
 validate_number(x)
 }
 \arguments{
-\item{x}{an element or vector.}
+\item{x}{A vector.}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric vector (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element is numeric.
+This function checks whether a vector is numeric.
 }
 \examples{
 validate_number(c(1:5, "5", "", NA, "hello, world!"))

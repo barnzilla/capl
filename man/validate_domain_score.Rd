@@ -2,21 +2,24 @@
 % Please edit documentation in R/utilities.R
 \name{validate_domain_score}
 \alias{validate_domain_score}
-\title{Check whether a CAPL domain score is numeric and within a valid range.}
+\title{Check whether a CAPL-2 domain score is valid.}
 \usage{
 validate_domain_score(x = NA, domain = NA)
 }
 \arguments{
-\item{x}{an element or vector representing a CAPL domain score.}
+\item{x}{A vector representing a CAPL domain score.}
 
-\item{domain}{a character element representing domains within CAPL (valid values are "pc", "db", "mc", "ku"; valid values are not
+\item{domain}{A character vector representing domains within CAPL (valid values are "pc", "db", "mc", "ku"; valid values are not
 case-sensitive).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric vector (if valid) or NA (if not valid).
 }
 \description{
-Check whether a CAPL domain score is numeric and within a valid range.
+This function checks whether a CAPL-2 domain score is numeric and within a valid range.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}} and \code{\link[=validate_integer]{validate_integer()}}.
 }
 \examples{
 validate_domain_score(

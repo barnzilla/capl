@@ -19,8 +19,9 @@ get_capl_score(pc_score = NA, db_score = NA, mc_score = NA, ku_score = NA)
 Returns a numeric vector with values between 0 and 100 (if valid) or NA (if not valid).
 }
 \description{
-This function computes an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and
-understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
+This function computes an overall physical literacy score (\code{capl_score}) based on the physical competence (\code{pc_score}), daily behaviour (\code{db_score}),
+motivation and confidence (\code{mc_score}), and knowledge and understanding (\code{ku_score}) domain scores. If one of the scores is missing or invalid, a
+weighted score will be computed from the other three scores.
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}, \code{\link[=validate_integer]{validate_integer()}} and \code{\link[=validate_domain_score]{validate_domain_score()}}.

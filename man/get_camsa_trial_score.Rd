@@ -15,7 +15,8 @@ get_camsa_trial_score(camsa_skill_score = NA, camsa_time_score = NA)
 Returns a numeric (integer) vector with values between 1 and 28 (if valid) or NA (if not valid).
 }
 \description{
-This function computes the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial.
+This function computes the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score (e.g., \code{camsa_score1}) for a given trial.
+This score is used to compute the CAMSA overall score (\code{camsa_overall_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.

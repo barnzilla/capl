@@ -13,7 +13,8 @@ get_plank_score(plank_time = NA)
 Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a plank score based on the duration of time (in seconds) for which a plank is held.
+This function computes a plank score (\code{plank_score}) based on the duration of time (in seconds) for which a plank is held. This score is used to
+compute the physical competence domain score (\code{pc_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.

@@ -2,35 +2,35 @@
 % Please edit documentation in R/motivation_and_confidence.R
 \name{get_predilection_score}
 \alias{get_predilection_score}
-\title{Compute a score for responses to the CSAPPA items 1, 3 and 5.}
+\title{Compute a predilection score.}
 \usage{
 get_predilection_score(csappa1 = NA, csappa3 = NA, csappa5 = NA)
 }
 \arguments{
-\item{csappa1}{a numeric (integer) element or vector representing a response to CSAPPA item 1 (valid values are integers between 1 and 4).}
+\item{csappa1}{A numeric (integer) vector representing a response to CSAPPA item 1 (valid values are integers between 1 and 4).}
 
-\item{csappa3}{a numeric (integer) element or vector representing a response to CSAPPA item 3 (valid values are integers between 1 and 4).}
+\item{csappa3}{A numeric (integer) vector representing a response to CSAPPA item 3 (valid values are integers between 1 and 4).}
 
-\item{csappa5}{a numeric (integer) element or vector representing a response to CSAPPA item 5 (valid values are integers between 1 and 4).}
+\item{csappa5}{A numeric (integer) vector representing a response to CSAPPA item 5 (valid values are integers between 1 and 4).}
 }
 \value{
-returns a numeric element between 1.8 and 7.5 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 1.8 and 7.5 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a predilection score for responses to items 1, 3 and 5 of the Children's Self-Perceptions of Adequacy in and Predilection
-for Physical Activity (CSAPPA; Hay, 1992) questionnaire as they in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence
-domain score.
+This function computes a predilection score (\code{predilection_score}) for responses to items 1, 3 and 5 of the CSAPPA (Children's Self-Perceptions of
+Adequacy in and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in the CAPL-2 questionnaire. This score is used to compute
+the motivation and confidence domain score (\code{mc_score}).
 }
 \details{
-This function calls \code{\link[=validate_scale]{validate_scale()}} to validate the arguments before computing the predilection score.
-
-Valid elements (integers between 1 and 4) represent the following responses:
+Valid values (integers between 1 and 4) represent the following responses:
 \itemize{
 \item 1 = REALLY TRUE for me for "some kids" statements
 \item 2 = SORT OF TRUE for me for "some kids" statements
 \item 3 = REALLY TRUE for me for "other kids" statements
 \item 4 = SORT OF TRUE for me for "other kids" statements
 }
+
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 }
 \examples{
 get_predilection_score(

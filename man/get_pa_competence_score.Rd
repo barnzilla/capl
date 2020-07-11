@@ -2,7 +2,7 @@
 % Please edit documentation in R/motivation_and_confidence.R
 \name{get_pa_competence_score}
 \alias{get_pa_competence_score}
-\title{Compute a score for responses to BREQ items 4-6.}
+\title{Compute a physical activity competence score.}
 \usage{
 get_pa_competence_score(
   feelings_about_pa1 = NA,
@@ -11,21 +11,22 @@ get_pa_competence_score(
 )
 }
 \arguments{
-\item{feelings_about_pa1}{a numeric (integer) element or vector representing a response to BREQ item 4 (valid values are integers between 1 and 5).}
+\item{feelings_about_pa1}{A numeric (integer) vector representing a response to BREQ item 4 (valid values are integers between 1 and 5).}
 
-\item{feelings_about_pa2}{a numeric (integer) element or vector representing a response to BREQ item 5 (valid values are integers between 1 and 5).}
+\item{feelings_about_pa2}{A numeric (integer) vector representing a response to BREQ item 5 (valid values are integers between 1 and 5).}
 
-\item{feelings_about_pa3}{a numeric (integer) element or vector representing a response to BREQ item 6 (valid values are integers between 1 and 5).}
+\item{feelings_about_pa3}{A numeric (integer) vector representing a response to BREQ item 6 (valid values are integers between 1 and 5).}
 }
 \value{
-returns a numeric element between 1.5 and 7.5 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 1.5 and 7.5 (if valid) or NA (if not valid).
 }
 \description{
-This function computes an intrinsic motivation score for responses to items 4-6 of the the Behavioral Regulation in Exercise Questionnaire (BREQ) as they
-appear in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence domain score.
+This function computes a physical activity competence score (\code{pa_competence_score}) for responses to items 4-6 of the the Behavioral Regulation in
+Exercise Questionnaire (BREQ) as they appear in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence domain score
+(\code{mc_score}).
 }
 \details{
-This function calls \code{\link[=validate_scale]{validate_scale()}} to validate the arguments before computing the intrinsic motivation score.
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 
 Valid elements (integers between 1 and 5) represent the following responses:
 \itemize{

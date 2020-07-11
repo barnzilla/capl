@@ -16,8 +16,8 @@ are integers between 1 and 229).}
 Returns a numeric (integer) vector with values between 1 and 229 (if valid) or NA (if not valid).
 }
 \description{
-This function converts PACER (Progressive Aerobic Cardiovascular Endurance Run) shuttle run laps to their equivalent in 20-metre laps. If laps are
-already 20-metre laps, they are returned unless outside the valid range (1-229). This computation is used to compute the PACER score variable
+This function converts PACER (Progressive Aerobic Cardiovascular Endurance Run) shuttle run laps to their equivalent in 20-metre laps (\code{pacer_laps_20m}).
+If laps are already 20-metre laps, they are returned unless outside the valid range (1-229). This variable is used to compute the PACER score
 (\code{pacer_score}).
 }
 \details{

@@ -16,10 +16,6 @@ Returns a data frame containing the 60 required variables that the \code{capl} p
 This function generates a data frame of CAPL-2 demo (fake) raw data containing the 60 required variables that the \code{capl} package needs to compute
 scores and interpretations.
 }
-\details{
-Other \code{capl} functions called by this function include: \code{\link[=validate_integer]{validate_integer()}}.
-\code{\link[=get_fill_in_the_blanks_score]{get_fill_in_the_blanks_score()}}.
-}
 \examples{
 capl_demo_data <- get_capl_demo_data(10000)
 

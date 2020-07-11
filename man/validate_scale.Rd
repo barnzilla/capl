@@ -7,20 +7,18 @@
 validate_scale(x, lower_bound = NA, upper_bound = NA)
 }
 \arguments{
-\item{x}{a numeric (integer) element or vector representing the response to a questionnaire item (valid values are between the values set by the
-lower_bound and upper_bound argumetns).}
+\item{x}{A numeric (integer) vector representing the response to a questionnaire item (valid values are between the values set by the
+\code{lower_bound} and \code{upper_bound} argumetns).}
 
-\item{lower_bound}{a numeric element representing the value below which x is invalid.}
+\item{lower_bound}{A numeric (integer) vector representing the value below which x is invalid.}
 
-\item{upper_bound}{a numeric element representing the value above which x is invalid.}
+\item{upper_bound}{A numeric (integer) vector representing the value above which x is invalid.}
 }
 \value{
 Returns a numeric (integer) vector (if valid) or NA (if not valid).
 }
 \description{
-This function checks whether a vector for a given questionnaire item or scale is valid. This function calls
-\code{\link[=validate_integer]{validate_integer()}} and \code{\link[=validate_number]{validate_number()}} and is called by \code{\link[=get_adequacy_score]{get_adequacy_score()}} and \code{\link[=get_predilection_score]{get_predilection_score()}}. This function can also be called
-using \code{validate_scale()}.
+This function checks whether a vector for a given questionnaire item or scale is valid.
 }
 \examples{
 validate_scale(

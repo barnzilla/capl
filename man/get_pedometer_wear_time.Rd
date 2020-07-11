@@ -18,7 +18,8 @@ day.}
 Returns a numeric vector with values >= 0 (if valid) or NA (if not valid).
 }
 \description{
-This function computes pedometer wear time in decimal hours for a given day.
+This function computes pedometer wear time in decimal hours for a given day (e.g., \code{wear_time1}). This variable is used to compute the \code{step_average}
+variable and the step score (\code{step_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=get_24_hour_clock]{get_24_hour_clock()}} and \code{\link[=validate_number]{validate_number()}}.

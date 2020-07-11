@@ -1,8 +1,8 @@
-#' Compute the maximum CAMSA skill + time score for two trials.
+#' Compute the maximum CAMSA skill + time score.
 #'
 #' @description
-#' This function computes the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for two trials and then divides by 2.8 so
-#' that the score is out of 10.
+#' This function computes the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score (`camsa_overall_score`) for two trials 
+#' and then divides by 2.8 so that the score is out of 10. This score is used to compute the physical literacy score (`pc_score`).
 #'
 #' @export
 #'
@@ -22,7 +22,7 @@
 #'
 #' # [1]  5  7 12 NA NA
 #'
-#' @return Returns a numeric vector with values between 0.36 and 10 (if valid) or NA (if not valid).
+#' @return Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
 get_camsa_overall_score <- function(camsa_score1 = NA, camsa_score2 = NA) {
   try(
     if(var(c(length(camsa_score1), length(camsa_score2))) == 0) {
@@ -109,7 +109,8 @@ get_camsa_time_score <- function(camsa_time = NA) {
 #' Compute the CAMSA skill + time score.
 #'
 #' @description
-#' This function computes the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial.
+#' This function computes the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score (e.g., `camsa_score1`) for a given trial.
+#' This score is used to compute the CAMSA overall score (`camsa_overall_score`).
 #'
 #' @export
 #'
@@ -155,8 +156,8 @@ get_camsa_trial_score <- function(camsa_skill_score = NA, camsa_time_score = NA)
 #' Convert PACER shuttle run laps to their equivalent in 20-metre laps.
 #'
 #' @description 
-#' This function converts PACER (Progressive Aerobic Cardiovascular Endurance Run) shuttle run laps to their equivalent in 20-metre laps. If laps are
-#' already 20-metre laps, they are returned unless outside the valid range (1-229). This computation is used to compute the PACER score variable
+#' This function converts PACER (Progressive Aerobic Cardiovascular Endurance Run) shuttle run laps to their equivalent in 20-metre laps (`pacer_laps_20m`).
+#' If laps are already 20-metre laps, they are returned unless outside the valid range (1-229). This variable is used to compute the PACER score
 #' (`pacer_score`).
 #'
 #' @export
@@ -346,11 +347,11 @@ get_pacer_20m_laps <- function(lap_distance = NA, laps_run = NA) {
   )
 }
 
-#' Compute a PACER score based on the number of PACER laps run at a 20-metre distance.
+#' Compute a PACER score.
 #'
 #' @description
-#' This function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score based on the number of PACER laps run at a 20-metre distance.
-#' This score is used to compute the physical competence domain score variable (`pc_score`).
+#' This function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score (`pacer_score`) based on the number of PACER laps run at a 
+#' 20-metre distance. This score is used to compute the physical competence domain score variable (`pc_score`).
 #'
 #' @export
 #'
@@ -406,9 +407,9 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
 #' Compute a physical competence domain score.
 #'
 #' @description
-#' This function computes a physical competence domain score based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and CAMSA 
-#' (Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from 
-#' the other two protocol scores.
+#' This function computes a physical competence domain score (`pc_score`) based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and
+#' CAMSA (Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from 
+#' the other two protocol scores. This score is used to compute the physical competence domain score (`pc_score`).
 #'
 #' @export
 #'
@@ -416,7 +417,7 @@ get_pacer_score <- function(pacer_laps_20m = NA) {
 #'
 #' @param pacer_score A numeric (integer) vector representing the PACER score (valid values are integers between 0 and 10).
 #' @param plank_score a numeric (integer) vector representing the plank score (valid values are integers between 0 and 10).
-#' @param camsa_overall_score A numeric vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0.36 and 10).
+#' @param camsa_overall_score A numeric vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).
 #'
 #' @details
 #' Other `capl` functions called by this function include: [validate_scale()].
@@ -459,7 +460,8 @@ get_pc_score <- function(pacer_score = NA, plank_score = NA, camsa_overall_score
 #' Compute a plank score.
 #'
 #' @description
-#' This function computes a plank score based on the duration of time (in seconds) for which a plank is held. 
+#' This function computes a plank score (`plank_score`) based on the duration of time (in seconds) for which a plank is held. This score is used to 
+#' compute the physical competence domain score (`pc_score`).
 #'
 #' @export
 #'

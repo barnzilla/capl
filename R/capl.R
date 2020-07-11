@@ -1,7 +1,8 @@
 #' Compute all CAPL-2 scores and interpretations at once.
 #'
 #' This function is the main function in the `capl` package. It is a wrapper function that calls all other `capl` functions to compute all CAPL-2 scores and
-#' interpretations from raw data at once. If required CAPL-2 variables are missing, the function will create the variables and set values for these variables to NA so the function can proceed.
+#' interpretations from raw data at once. If required CAPL-2 variables are missing, the function will create the variables and set values for these
+#' variables to NA so the function can proceed.
 #'
 #' @export
 #'
@@ -27,14 +28,14 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       stop("[CAPL error]: the raw_data argument is missing.")
     }
     else if(! isTRUE("data.frame" %in% class(raw_data))) {
-      stop("[CAPL error]: the raw_data argument must be a data frame or a tibble.")
+      stop("[CAPL error]: the raw_data argument must be a data frame.")
     }
     else {
       sort <- tolower(sort[1])
       # Add required CAPL-2 raw variables if missing
-	  raw_data <- get_missing_capl_variables(raw_data)
-	  
-	  # Physical competence computations
+      raw_data <- get_missing_capl_variables(raw_data)
+
+      # Physical competence computations
       raw_data$pacer_laps_20m <- get_pacer_20m_laps(raw_data$pacer_lap_distance, raw_data$pacer_laps)
       raw_data$pacer_score <- get_pacer_score(raw_data$pacer_laps_20m)
       raw_data$pacer_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pacer_laps_20m, "pacer")
@@ -48,10 +49,10 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$camsa_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$camsa_overall_score, "camsa")
       raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_overall_score)
       raw_data$pc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pc_score, "pc")
-      raw_data$pc_status <- get_capl_domain_status(raw_data[c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_overall_score")])
-      
-	  # Daily behaviour computations
-	  step_df <- get_step_average(raw_data)
+      raw_data$pc_status <- get_capl_domain_status(raw_data, "pc")
+
+      # Daily behaviour computations
+      step_df <- get_step_average(raw_data)
       raw_data$valid_days <- step_df$valid_days
       raw_data$step_average <- step_df$step_average
       raw_data$step_score <- get_step_score(raw_data$step_average)
@@ -59,34 +60,34 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$self_report_pa_score <- get_self_report_pa_score(raw_data$self_report_pa)
       raw_data$db_score <- get_db_score(raw_data$step_score, raw_data$self_report_pa_score)
       raw_data$db_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$db_score, "db")
-      raw_data$db_status <- get_capl_domain_status(raw_data[c("db_score", "db_interpretation", "step_score", "self_report_pa_score")])
-      
-	  # Motivation and confidence computations
-	  raw_data$predilection_score <- get_predilection_score(raw_data$csappa1, raw_data$csappa3, raw_data$csappa5)
+      raw_data$db_status <- get_capl_domain_status(raw_data, "db")
+
+      # Motivation and confidence computations
+      raw_data$predilection_score <- get_predilection_score(raw_data$csappa1, raw_data$csappa3, raw_data$csappa5)
       raw_data$adequacy_score <- get_adequacy_score(raw_data$csappa2, raw_data$csappa4, raw_data$csappa6)
       raw_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(raw_data$why_are_you_active1, raw_data$why_are_you_active2, raw_data$why_are_you_active3)
       raw_data$pa_competence_score <- get_pa_competence_score(raw_data$feelings_about_pa1, raw_data$feelings_about_pa2, raw_data$feelings_about_pa3)
       raw_data$mc_score <- get_mc_score(raw_data$predilection_score, raw_data$adequacy_score, raw_data$intrinsic_motivation_score, raw_data$pa_competence_score)
       raw_data$mc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "mc")
-      raw_data$mc_status <- get_capl_domain_status(raw_data[c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")])
-      
-	  # Knowledge and understanding computations
-	  raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(3, "60 minutes or 1 hour"))
+      raw_data$mc_status <- get_capl_domain_status(raw_data, "mc")
+
+      # Knowledge and understanding computations
+      raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(3, "60 minutes or 1 hour"))
       raw_data$cardiorespiratory_fitness_means_score <- get_binary_score(raw_data$cardiorespiratory_fitness_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
       raw_data$muscular_strength_means_score <- get_binary_score(raw_data$muscular_strength_means, c(1, "How well the muscles can push, pull or stretch"))
       raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
       raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate)
       raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$cardiorespiratory_fitness_means_score, raw_data$muscular_strength_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
       raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$ku_score, "ku")
-      raw_data$ku_status <- get_capl_domain_status(raw_data[c("ku_score", "ku_interpretation", "pa_guideline_score", "cardiorespiratory_fitness_means_score", "muscular_strength_means_score", "sports_skill_score", "fill_in_the_blanks_score")])
-      
-	  # Overall physical literacy computations
-	  raw_data$capl_score <- get_capl_score(raw_data$pc_score, raw_data$db_score, raw_data$mc_score, raw_data$ku_score)
+      raw_data$ku_status <- get_capl_domain_status(raw_data, "ku")
+
+      # Overall physical literacy computations
+      raw_data$capl_score <- get_capl_score(raw_data$pc_score, raw_data$db_score, raw_data$mc_score, raw_data$ku_score)
       raw_data$capl_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$capl_score, "capl")
-      raw_data$capl_status <- get_capl_domain_status(raw_data[c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")])
-      
-	  # Sorting
-	  if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
+      raw_data$capl_status <- get_capl_domain_status(raw_data, "capl")
+
+      # Sorting
+      if(is.na(sort) | is.null(sort) | sort == "" | length(sort) == 0 | sort == "asis") {
         # Don't sort variables in raw_data
       } else if(sort == "abc") {
         raw_data <- raw_data[order(colnames(raw_data), decreasing = FALSE)]
@@ -103,60 +104,116 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' Compute the status of a CAPL domain.
 #'
 #' @description
-#' This function computes the status of a CAPL domain ("complete", "missing interpretation", "missing protocol" or "incomplete").
+#' This function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain (e.g., `pc_status`, 
+#' `db_status`, `mc_status`, `ku_status`, `capl_status`).
 #'
 #' @export
 #'
-#' @param x A data frame. The first column must be scores for a CAPL-2 domain, the second column must be CAPL-2 interpretations for the domain and 
-#' the remaining columns must be protocol scores for the domain.
+#' @param x A data frame that includes the required variables for a given domain (see Details).
+#' @param domain A character vector representing one of the CAPL-2 domains (valid values are "pc", "db", "mc", "ku" and "capl")
 #'
 #' @details
-#' Other `capl` functions called by this function include: [validate_number()].
+#' If the `domain` argument is set to "pc", the following variables must be included in the `x` argument:
+#' * `pc_score`
+#' * `pc_interpretation`
+#' * `pacer_score`
+#' * `plank_score`
+#' * `camsa_overall_score` 
+#'
+#' If the `domain` argument is set to "db", the following variables must be included the `x` argument:
+#' * `db_score`
+#' * `db_interpretation`
+#' * `step_score`
+#' * `self_report_pa_score`
+#'
+#' If the `domain` argument is set to "mc", the following variables must be included the `x` argument:
+#' * `mc_score`
+#' * `mc_interpretation`
+#' * `predilection_score`
+#' * `adequacy_score`
+#' * `intrinsic_motivation_score`
+#' * `pa_competence_score`
+#'
+#' If the `domain` argument is set to "ku", the following variables must be included the `x` argument:
+#' * `ku_score`
+#' * `ku_interpretation`
+#' * `pa_guideline_score`
+#' * `cardiorespiratory_fitness_means_score`
+#' * `muscular_strength_means_score`
+#' * `sports_skill_score`
+#' * `fill_in_the_blanks_score`
+#'
+#' If the `domain` argument is set to "capl", the following variables must be included the `x` argument:
+#' * `capl_score`
+#' * `capl_interpretation`
+#' * `pc_score`
+#' * `db_score`
+#' * `mc_score`
+#' * `ku_score`
+#' * `capl_score`
+#'
+#' Other `capl` functions called by this function include: [validate_character()] and [validate_number()].
 #'
 #' @examples
-#' x <- data.frame(
-#'   domain_score = c(5, 10, 15, 20, 25, "", NA),
-#'   interpretation = c("beginning", "progressing", NA, "achieving", "excelling", NA, NA),
-#'   protocol_score1 = c(NA, 2, 3, 7, 10, NA, NA),
-#'   protocol_score2 = c(3, 5, 7, 12, 10, NA, NA),
-#'   protocol_score3 = c(2, 3, 10, 6, 10, NA, NA)
-#' )
+#' capl_demo_data <- get_capl_demo_data(3)
 #'
-#' get_capl_domain_status(x)
+#' capl_results <- get_capl(capl_demo_data)
+#'
+#' get_capl_domain_status(capl_results, "pc")
 #' 
-#' # [1] "missing protocol"       "complete"               "missing interpretation"
-#' # [4] "complete"               "complete"               "incomplete" 
-#' # [7] "incomplete"
+#' # [1] "complete"               "incomplete"             "missing interpretation" 
 #'
 #' @return Returns a character vector with a value of "complete", "missing interpretation", "missing protocol" or "incomplete".
-get_capl_domain_status <- function(x = NULL) {
+get_capl_domain_status <- function(x = NULL, domain = NA) {
+  domain <- validate_character(domain[1])
   try(
     if(is.null(x)) {
       stop("[CAPL error]: the x argument is missing.")
-    }
-    else if(! isTRUE("data.frame" %in% class(x))) {
+    } else if(! isTRUE("data.frame" %in% class(x))) {
       stop("[CAPL error]: the x argument must be a data frame.")
+    } else if(is.na(domain)) {
+      stop("[CAPL error]: the domain argument is missing.")
+    } else if(! domain %in% c("pc", "db", "mc", "ku", "capl")) {
+      stop("[CAPL error]: the domain argument value is not valid (valid values are 'pc', 'db', 'mc', 'ku' or 'capl').")
     } else {
-      x[, 2] <- sapply(x[, 2], validate_character)
-      x[, -2] <- data.frame(apply(data.frame(x[, -2]), 2, validate_number))
-      number_of_columns = ncol(x)
-      return(
-        unname(
-          apply(x, 1, function(x) {
-            if(sum(is.na(x[1:number_of_columns])) == 0) {
-              "complete"
-            } else if(is.na(x[1])) {
-              "incomplete"
-            } else if(is.na(x[2])) {
-              "missing interpretation"
-            } else if(sum(is.na(x[3:number_of_columns])) > 0) {
-              "missing protocol"
-            } else {
-              "incomplete"
-            }
-          })
+      if(domain == "pc") {
+        required_variables <- c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_overall_score")
+      } else if(domain == "db") {
+        required_variables <- c("db_score", "db_interpretation", "step_score", "self_report_pa_score")
+      } else if(domain == "mc") {
+        required_variables <- c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")
+      } else if(domain == "ku") {
+        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "cardiorespiratory_fitness_means_score", "muscular_strength_means_score", "sports_skill_score", "fill_in_the_blanks_score")
+      } else if(domain == "capl") {
+        required_variables <- c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")
+      } else {
+        required_variables <- NA
+      }
+      if(sum(required_variables %in% colnames(x)) < length(required_variables)) {
+        stop("[CAPL error]: x is missing some of the required variables that are necessary to compute the domain status.")
+      } else {
+        x <- x[required_variables]
+        x[, 2] <- sapply(x[, 2], validate_character)
+        x[, -2] <- data.frame(apply(data.frame(x[, -2]), 2, validate_number))
+        number_of_columns = ncol(x)
+        return(
+          unname(
+            apply(x, 1, function(x) {
+              if(sum(is.na(x[1:number_of_columns])) == 0) {
+                "complete"
+              } else if(is.na(x[1])) {
+                "incomplete"
+              } else if(is.na(x[2])) {
+                "missing interpretation"
+              } else if(sum(is.na(x[3:number_of_columns])) > 0) {
+                "missing protocol"
+              } else {
+                "incomplete"
+              }
+            })
+          )
         )
-      )
+      }
     }
   )
 }
@@ -164,7 +221,7 @@ get_capl_domain_status <- function(x = NULL) {
 #' Compute a CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
 #'
 #' @description
-#' This function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+#' This function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score (e.g., `pc_interpretation`).
 #'
 #' @export
 #'
@@ -273,7 +330,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
               } else if(protocol == "steps") {
                 score <- validate_scale(x[3], 1000, 30000)
               } else if(protocol == "self_report_pa") {
-                score <- validate_scale(x[3], 1, 7)
+                score <- validate_scale(x[3], 0, 7)
               } else if(protocol == "db") {
                 score <- validate_scale(x[3], 0, 30)
               } else {
@@ -332,8 +389,9 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
 #' Compute an overall physical literacy score. 
 #'
 #' @description 
-#' This function computes an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and
-#' understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
+#' This function computes an overall physical literacy score (`capl_score`) based on the physical competence (`pc_score`), daily behaviour (`db_score`),
+#' motivation and confidence (`mc_score`), and knowledge and understanding (`ku_score`) domain scores. If one of the scores is missing or invalid, a
+#' weighted score will be computed from the other three scores.
 #'
 #' @export
 #'

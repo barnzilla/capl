@@ -7,16 +7,42 @@
 get_step_average(raw_data = NULL)
 }
 \arguments{
-\item{raw_data}{A data frame that includes seven days of pedometer steps (steps1...steps7) and their corresponding on (time_on1...time_on7)
-and off (time_off1...time_off7) times.}
+\item{raw_data}{A data frame that includes seven days of pedometer steps and their corresponding on and off times. See Details for how these variables
+must be named.}
 }
 \value{
 Returns a data frame with nine columns: \code{steps1} (validated), \code{steps2} (validated), \code{steps3} (validated), \code{steps4} (validated), \code{steps5} (validated), \code{steps6} (validated), \code{steps6} (validated), \code{valid_days} and \code{step_average}. The steps are validated with the \code{\link[=validate_steps]{validate_steps()}} function.
 }
 \description{
-This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer.
+This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer (\code{step_average}). This variable is used to compute
+the step score (\code{step_score}).
 }
 \details{
+This function will throw an error unless the following variables are found in the \code{raw_data} argument:
+\itemize{
+\item \code{steps1}
+\item \code{steps2}
+\item \code{steps3}
+\item \code{steps4}
+\item \code{steps5}
+\item \code{steps6}
+\item \code{steps7}
+\item \code{time_on1}
+\item \code{time_on2}
+\item \code{time_on3}
+\item \code{time_on4}
+\item \code{time_on5}
+\item \code{time_on6}
+\item \code{time_on7}
+\item \code{time_off1}
+\item \code{time_off2}
+\item \code{time_off3}
+\item \code{time_off4}
+\item \code{time_off5}
+\item \code{time_off6}
+\item \code{time_off7}
+}
+
 There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid
 day will be randomly sampled and used for the fourth valid day before computing the mean.
 

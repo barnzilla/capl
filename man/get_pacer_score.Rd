@@ -2,7 +2,7 @@
 % Please edit documentation in R/physical_competence.R
 \name{get_pacer_score}
 \alias{get_pacer_score}
-\title{Compute a PACER score based on the number of PACER laps run at a 20-metre distance.}
+\title{Compute a PACER score.}
 \usage{
 get_pacer_score(pacer_laps_20m = NA)
 }
@@ -13,8 +13,8 @@ get_pacer_score(pacer_laps_20m = NA)
 Returns a numeric (integer) vector with values between 0 and 10 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score based on the number of PACER laps run at a 20-metre distance.
-This score is used to compute the physical competence domain score variable (\code{pc_score}).
+This function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score (\code{pacer_score}) based on the number of PACER laps run at a
+20-metre distance. This score is used to compute the physical competence domain score variable (\code{pc_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}} and \code{\link[=validate_integer]{validate_integer()}}.

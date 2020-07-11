@@ -2,26 +2,26 @@
 % Please edit documentation in R/utilities.R
 \name{validate_gender}
 \alias{validate_gender}
-\title{Check whether an element can be classified as girl or boy.}
+\title{Check whether a vector can be classified as "girl" or "boy".}
 \usage{
 validate_gender(x)
 }
 \arguments{
-\item{x}{an element or vector.}
+\item{x}{A vector (see Examples for valid values).}
 }
 \value{
-returns a character element with a value of "girl" or "boy" (if valid) or NA (if not valid).
+Returns a character vector with values of "girl" or "boy" (if valid) or NA (if not valid).
 }
 \description{
-Check whether an element can be classified as girl or boy.
+This function checks whether a vector can be classified as "girl" or "boy".
 }
 \examples{
-validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA))
+validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
 
-# [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA
+# [1] "girl" "girl" "girl" "girl" "girl" "girl" "girl" NA     NA     "girl"
 
-validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA))
+validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA, 0))
 
-# [1] "boy" "boy" "boy" "boy" "boy" "boy" "boy" NA    NA
+# [1] "boy" "boy" "boy" "boy" "boy" "boy" "boy" NA    NA    "boy"
 
 }

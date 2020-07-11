@@ -2,7 +2,7 @@
 % Please edit documentation in R/knowledge_and_understanding.R
 \name{get_fill_in_the_blanks_score}
 \alias{get_fill_in_the_blanks_score}
-\title{Compute a score for responses to the fill in the blanks items in the CAPL-2 questionnaire.}
+\title{Compute a fill in the blanks score.}
 \usage{
 get_fill_in_the_blanks_score(
   pa_is = NA,
@@ -14,28 +14,26 @@ get_fill_in_the_blanks_score(
 )
 }
 \arguments{
-\item{pa_is}{an element or vector representing a response to the first fill in the blank item (correct answers are 1, 7, "Fun" or "Good").}
+\item{pa_is}{A vector representing a response to the first fill in the blank item (correct answers are 1, 7, "Fun" or "Good").}
 
-\item{pa_is_also}{an element or vector representing a response to the second fill in the blank item (correct answers are 1, 7, "Fun" or "Good").}
+\item{pa_is_also}{A vector representing a response to the second fill in the blank item (correct answers are 1, 7, "Fun" or "Good").}
 
-\item{improve}{an element or vector representing a response to the third fill in the blank item (correct answers are 3 or "Endurance").}
+\item{improve}{A vector representing a response to the third fill in the blank item (correct answers are 3 or "Endurance").}
 
-\item{increase}{an element or vector representing a response to the fourth fill in the blank item (correct answers are 8 or "Strength").}
+\item{increase}{A vector representing a response to the fourth fill in the blank item (correct answers are 8 or "Strength").}
 
-\item{when_cooling_down}{an element or vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").}
+\item{when_cooling_down}{A vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").}
 
-\item{heart_rate}{an element or vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").}
+\item{heart_rate}{A vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").}
 }
 \value{
-returns a numeric (integer) element between 0 and 5 (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA (if not valid).
 }
 \description{
-This function computes a score for responses to the fill in the blanks items (story about Sally) in the CAPL-2 questionnaire. This score is used to
-compute the knowledge and understanding  domain score.
+This function computes a score (\code{fill_in_the_blanks_score}) for responses to the fill in the blanks items (story about Sally) in the CAPL-2
+questionnaire. This score is used to compute the knowledge and understanding domain score (\code{ku_score}).
 }
 \details{
-This function calls \code{\link[=get_binary_score]{get_binary_score()}} to score the arguments before computing the fill in the blanks score.
-
 The following integers represent the responses for the items/arguments in this function:
 \itemize{
 \item 1 = Fun
@@ -49,6 +47,8 @@ The following integers represent the responses for the items/arguments in this f
 \item 9 = Bad
 \item 10 = Sport
 }
+
+Other \code{capl} functions called by this function include: \code{\link[=get_binary_score]{get_binary_score()}}.
 }
 \examples{
 get_fill_in_the_blanks_score(

@@ -16,7 +16,8 @@ hours).}
 Returns the \code{steps} argument (if valid) or NA (if not valid).
 }
 \description{
-This function checks whether daily steps as measured by a pedometer are valid.
+This function checks whether daily steps as measured by a pedometer are valid. The variables from this function are used to compute \code{step_average} and
+the step score (\code{step_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}} and \code{\link[=validate_number]{validate_number()}}.
