@@ -13,7 +13,7 @@ vignette: >
 ---
 
 <style>
-  img { width: 100%; height: auto; }
+  img { border: 0;}
   p { margin-top: 1rem;line-height: 1.5rem; }
   a, a:visited { color: #00a79d; }
   a:hover { color: #333376; }
@@ -45,7 +45,7 @@ The `capl` R package contains tools that enables users to compute CAPL-2 (Canadi
 ## Installation
 ### GitHub
 
-The most recent version of the `capl` R package is available on GitHub: <a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>. The `devtools` R package allows users to download and install `capl` directly from GitHub.
+The most recent version of the `capl` R package is available on GitHub: <a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>. The `devtools` R package allows users to download and install the `capl` R package directly from GitHub.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 devtools::install_github("barnzilla/capl", upgrade = "never")
@@ -54,7 +54,7 @@ library(capl)
 
 ### Source package
 
-Users can also download and install the source package using the `install.packages` function from the `utils` R package, which comes pre-installed with R.
+Users can also download and install the source package by calling the `install.packages()` function from the `utils` R package, which comes pre-installed with R.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 utils::install.packages(
@@ -71,17 +71,90 @@ library(capl)
 
 ## Getting started
 
-Before using the `capl` R package, users must first import CAPL-2 raw data. 
+Before using the `capl` R package, users must first import raw data. 
+
+<a name="required-variables"></a>
+
+### Required variables
+
+The `capl` R package requires 60 variables in order to compute CAPL-2 scores and interpretations. If users look up the documentation for the `get_missing_capl_variables()` function, they will find a list of all 60 required variables in the Details section of the documentation.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+?get_missing_capl_variables()
+```
+
+The `capl` R package is looking for 60 variables by the following names:
+
+* `age`
+* `gender`
+* `pacer_lap_distance`
+* `pacer_laps`
+* `plank_time`
+* `camsa_skill_score1`
+* `camsa_time1`
+* `camsa_skill_score2`
+* `camsa_time2`
+* `steps1`
+* `time_on1`
+* `time_off1`
+* `non_wear_time1`
+* `steps2`
+* `time_on2`
+* `time_off2`
+* `non_wear_time2`
+* `steps3`
+* `time_on3`
+* `time_off3`
+* `non_wear_time3`
+* `steps4`
+* `time_on4`
+* `time_off4`
+* `non_wear_time4`
+* `steps5`
+* `time_on5`
+* `time_off5`
+* `non_wear_time5`
+* `steps6`
+* `time_on6`
+* `time_off6`
+* `non_wear_time6`
+* `steps7`
+* `time_on7`
+* `time_off7`
+* `non_wear_time7`
+* `self_report_pa`
+* `csappa1`
+* `csappa2`
+* `csappa3`
+* `csappa4`
+* `csappa5`
+* `csappa6`
+* `why_are_you_active1`
+* `why_are_you_active2`
+* `why_are_you_active3`
+* `feelings_about_pa1`
+* `feelings_about_pa2`
+* `feelings_about_pa3`
+* `pa_guideline`
+* `cardiorespiratory_fitness_means`
+* `muscular_strength_means`
+* `sports_skill`
+* `pa_is`
+* `pa_is_also`
+* `improve`
+* `increase`
+* `when_cooling_down`
+* `heart_rate`
 
 ### Loading the pre-installed dataset
 
-The `capl` R package comes with a demo (fake) dataset of raw data, `capl_demo_data`, that can be loaded and which allows users to quickly start exploring. This dataset contains 500 rows of participant data on the 60 variables that are required by the `capl` R package.
+The `capl` R package comes with a demo (fake) dataset of raw data, `capl_demo_data`, that can be loaded and which allows users to quickly start exploring. This dataset contains 500 rows of participant data on <a href="#required-variables">the 60 variables</a> that are required by the `capl` R package.
 
 ```{r warning = FALSE, message = FALSE}
 data(capl_demo_data)
 ```
 
-Calling the `str()` function on the `capl_data` object allows users to get a sense of how CAPL-2 raw data must be structured -- and named -- for upstream use in the `capl` R package.
+Calling the `str()` function on the `capl_demo_data` object allows users to get a sense of how CAPL-2 raw data must be structured -- and named -- for upstream use in the `capl` R package.
 
 ```{r warning = FALSE, message = FALSE}
 str(capl_demo_data)
@@ -89,7 +162,7 @@ str(capl_demo_data)
 
 ### Generating demo raw data
 
-The `capl` R package also comes with a function, `get_capl_demo_data()`, that allows users to randomly generate demo raw data on the fly. The function takes one argument, `n` (set to 500 by default), which must be an integer and greater than 0, and which tells the functions how many rows of demo raw data to randomly generate. For example, users can randomly generate demo raw data for 10,000 participants by executing the following line of code:
+The `capl` R package also comes with a function, `get_capl_demo_data()`, that allows users to randomly generate demo raw data on the fly. The function takes one argument, `n` (set to 500 by default), which must be an integer and greater than 0, and which tells the function how many rows of demo raw data to randomly generate. For example, users can randomly generate demo raw data for 10,000 participants by executing the following line of code.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data2 <- get_capl_demo_data(n = 10000)
@@ -99,4 +172,184 @@ The `str()` function can be called to verify how many rows and columns of data w
 
 ```{r warning = FALSE, message = FALSE}
 str(capl_demo_data2)
+```
+
+### Exporting data to Excel
+
+If users prefer to examine the CAPL demo raw data in a spreadsheet, the `writexl` R package allows them to export data objects to Excel.
+
+First, users must install the `writexl` R package if they haven't done so previously.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+# Install the package
+install.packages("writexl")
+```
+
+Then, they must load the package and call the `write_xlsx()` function.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+# Load the package
+library(writexl)
+
+# Export object to Excel
+write_xlsx(capl_demo_data2, "c:/users/joel/desktop/capl_demo_data2.xlsx")
+```
+
+### Changing variable names
+
+If users have imported their own raw data and need to change the variable names, there are several ways in which this can be done. For example, if users have raw data and named their `steps` variables as `step_counts` variables, here is one way to rename those variables. 
+
+First, some fake data must be created.
+
+```{r}
+# Create fake data
+raw_data <- data.frame(
+  age = sample(8:12, 100, replace = TRUE),
+  gender = sample(c("girl", "boy"), 100, replace = TRUE, prob = c(0.51, 0.49)),
+  step_counts1 = sample(1000:30000, 100, replace = TRUE),
+  step_counts2 = sample(1000:30000, 100, replace = TRUE),
+  step_counts3 = sample(1000:30000, 100, replace = TRUE),
+  step_counts4 = sample(1000:30000, 100, replace = TRUE),
+  step_counts5 = sample(1000:30000, 100, replace = TRUE),
+  step_counts6 = sample(1000:30000, 100, replace = TRUE),
+  step_counts7 = sample(1000:30000, 100, replace = TRUE)
+)
+
+# Examine the structure of this data
+str(raw_data)
+```
+
+The first task is to identify the column numbers for the variables, which require name changes. This can be done by calling the `grepl()` and `colnames()` functions.
+
+```{r}
+column_numbers <- grepl("step_counts", colnames(raw_data))
+```
+
+Next, calling the `colnames()` function allows users to confirm that the correct column numbers of have been identified.
+
+```{r}
+colnames(raw_data[column_numbers])
+```
+
+Finally, these variables can be changed by calling the `colnames()` and `paste0()` functions.
+
+```{r}
+colnames(raw_data)[column_numbers] <- paste0("steps", 1:7)
+```
+
+The name changes can be confirmed by calling the `str()` function again.
+
+```{r}
+str(raw_data)
+```
+
+## Computing CAPL-2 scores and interpretations
+
+The main function in the `capl` R package is the `get_capl()` function. This function takes two arguments, `raw_data` and `sort` and tries to compute 40 CAPL-2 scores and interpretations, row by row, by calling all other functions in the `capl` R package. 
+
+The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means the 40 new variables will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order.
+
+One of the main coding philosophies behind the `capl` R package is to return NA values rather than to throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
+
+Computing the CAPL-2 scores and interpretations is as simple as executing one line of code once the raw data has been imported. This function may take some time to fully execute depending on how many rows of data are in the `raw_data` data frame.
+
+```{r warning = FALSE, message = FALSE}
+capl_results <- get_capl(raw_data = capl_demo_data, sort = "abc")
+```
+
+The addition of the 40 CAPL-2 scores and interpretations can be confirmed by calling the `str()` function. There are now 500 rows of participant data on 100 variables.
+
+```{r}
+str(capl_results, list.len = nrow(capl_results))
+```
+
+### Physical competence functions
+
+Incomplete.
+
+### Daily behaviour functions
+
+Incomplete.
+
+### Motivation and confidence functions
+
+Incomplete.
+
+### Knowledge and understanding functions
+
+Incomplete.
+
+### Overall physical literacy functions
+
+Incomplete.
+
+## Data visualization
+
+### Plots
+
+CAPL-2 domain scores can be grouped by CAPL-2 interpretative categories and plotted. For example, functions from the `dplyr` and `ggpubr` R packages allow users to render beautiful bar plots.
+
+```{r warning = FALSE, message = FALSE, fig.width = 7, fig.height = 7}
+# Load packages
+package_names <- c("dplyr", "ggpubr")
+load_packages <- lapply(package_names, require, character.only = TRUE)
+
+# Create a data frame of the domain score and interpretation of interest and factor the
+# interpretation variable so that the interpretative categories can be ordered
+df <- data.frame(
+  capl_score = capl_results$capl_score,
+  capl_interpretation = factor(
+    capl_results$capl_interpretation, 
+    levels = c("beginning", "progressing", "achieving", "excelling")
+  )
+)
+
+# Create a summary table of complete cases by mean score and interpretative category
+df <- df[complete.cases(df),] %>% 
+  group_by(capl_interpretation) %>% 
+    summarize(capl_score = mean(capl_score))
+
+# Round the mean score to one decimal
+df$capl_score <- round(df$capl_score, 1)
+
+# Capitalize the interpretative categories
+df$capl_interpretation <- paste0(
+  toupper(substring(df$capl_interpretation, 1, 1)), 
+  substring(df$capl_interpretation, 2)
+  )
+
+# Render bar plot
+ggbarplot(
+  data = df, 
+  x = "capl_interpretation",
+  xlab = "Interpretation",
+  y = "capl_score",
+  ylab = "Overall physical literacy score(/100)",
+  fill = "capl_interpretation", 
+  color = "capl_interpretation", 
+  label = TRUE,
+  palette = c("#333376", "#00a79d", "#f26522", "#a6ce39"),
+  size = 0
+) + rremove("legend")
+```
+
+## Export results
+
+If users want to export their data, the `writexl` R package allows them to export their data to Excel.
+
+First, users must install the `writexl` R package if they haven't done so previously.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+# Install the package
+install.packages("writexl")
+```
+
+Then, they must load the package and call the `write_xlsx()` function.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+# Load the package
+library(writexl)
+
+# Export object to Excel
+write_xlsx(capl_results, "c:/users/joel/desktop/capl_results.xlsx")
 ```
