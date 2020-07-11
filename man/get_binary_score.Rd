@@ -20,8 +20,7 @@ This function computes a binary score (0 = incorrect answer, 1 = correct answer)
 answer(s) to the item.
 }
 \details{
-This function is called to compute scores for several knowledge and understanding questions in the CAPL-2 questionnaire and is also called by
-\code{\link[=get_fill_in_the_blanks_score]{get_fill_in_the_blanks_score()}}.
+This function is called by \code{\link[=get_fill_in_the_blanks_score]{get_fill_in_the_blanks_score()}}.
 }
 \examples{
 get_binary_score(

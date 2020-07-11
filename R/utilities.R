@@ -51,8 +51,7 @@ get_24_hour_clock <- function(x = NA) {
 #' in case for a correct answer to be computed.
 #' 
 #' @details
-#' This function is called to compute scores for several knowledge and understanding questions in the CAPL-2 questionnaire and is also called by 
-#' [get_fill_in_the_blanks_score()]. 
+#' This function is called by [get_fill_in_the_blanks_score()]. 
 #'
 #' @examples
 #' get_binary_score(

@@ -1,0 +1,102 @@
+---
+title: "Introduction to the `capl` R package"
+author: "Joel D. Barnes, M.Sc. and Michelle D. Guerrero, Ph.D."
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    fig_caption: yes
+vignette: >
+  %\VignetteIndexEntry{Introduction to the capl R package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+<style>
+  img { width: 100%; height: auto; }
+  p { margin-top: 1rem;line-height: 1.5rem; }
+  a, a:visited { color: #00a79d; }
+  a:hover { color: #333376; }
+</style>
+
+<img src="img/capl-2-logo-bilingual.jpg" style = "height: 78px; max-height: 78px; width: auto; margin-top: 48px; margin-bottom: 24px; border: 0;" alt="logo">
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r klippy, echo=FALSE, include=TRUE}
+klippy::klippy(position = c("top", "right"))
+```
+
+## Introduction
+
+<a href="https://www.capl-eclp.ca" target="_blank">The Canadian Assessment of Physical Literacy (CAPL)</a> is the first comprehensive protocol that can accurately and reliably assess a broad spectrum of skills and abilities that contribute to and characterize the physical literacy level of a participating child.
+
+Physical literacy moves beyond just fitness, motor skill or motivation in isolation. The CAPL is unique in that it can assess the multiple aspects of physical literacy: daily behaviour, motivation & confidence, knowledge & understanding, and physical competence.
+
+<a href="https://www.haloresearch.ca" target="_blank">The Healthy Active Living and Obesity Research Group (HALO)</a> have been responsible for the systematic development of the CAPL since 2008. HALO’s test development efforts have been informed by the assessment of more than 10,000 children and with input from well over 100 researchers and practitioners within related fields of study.
+
+The `capl` R package contains tools that enables users to compute CAPL-2 (Canadian Assessment of Physical Literacy, Second Edition) scores and interpretations from raw data within the R environment without having to use the <a href="https://www.capl-eclp.ca" target="_blank">CAPL-2 website</a>.
+
+## Installation
+### GitHub
+
+The most recent version of the `capl` R package is available on GitHub: <a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>. The `devtools` R package allows users to download and install `capl` directly from GitHub.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+devtools::install_github("barnzilla/capl", upgrade = "never")
+library(capl)
+```
+
+### Source package
+
+Users can also download and install the source package using the `install.packages` function from the `utils` R package, which comes pre-installed with R.
+
+```{r warning = FALSE, message = FALSE, eval = FALSE}
+utils::install.packages(
+  pkgs = "https://github.com/barnzilla/r-package-sources/raw/master/capl_1.0.tar.gz",
+  repos = NULL, 
+  type = "source"
+)
+library(capl)
+```
+
+```{r warning = FALSE, message = FALSE, echo = FALSE}
+library(capl)
+```
+
+## Getting started
+
+Before using the `capl` R package, users must first import CAPL-2 raw data. 
+
+### Loading the pre-installed dataset
+
+The `capl` R package comes with a demo (fake) dataset of raw data, `capl_demo_data`, that can be loaded and which allows users to quickly start exploring. This dataset contains 500 rows of participant data on the 60 variables that are required by the `capl` R package.
+
+```{r warning = FALSE, message = FALSE}
+data(capl_demo_data)
+```
+
+Calling the `str()` function on the `capl_data` object allows users to get a sense of how CAPL-2 raw data must be structured -- and named -- for upstream use in the `capl` R package.
+
+```{r warning = FALSE, message = FALSE}
+str(capl_demo_data)
+```
+
+### Generating demo raw data
+
+The `capl` R package also comes with a function, `get_capl_demo_data()`, that allows users to randomly generate demo raw data on the fly. The function takes one argument, `n` (set to 500 by default), which must be an integer and greater than 0, and which tells the functions how many rows of demo raw data to randomly generate. For example, users can randomly generate demo raw data for 10,000 participants by executing the following line of code:
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data2 <- get_capl_demo_data(n = 10000)
+```
+
+The `str()` function can be called to verify how many rows and columns of data were created.
+
+```{r warning = FALSE, message = FALSE}
+str(capl_demo_data2)
+```
