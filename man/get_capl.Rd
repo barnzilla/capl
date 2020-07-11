@@ -2,21 +2,30 @@
 % Please edit documentation in R/capl.R
 \name{get_capl}
 \alias{get_capl}
-\title{The main (wrapper) function in the CAPL package that computes CAPL scores and interpretations from raw data.}
+\title{Compute all CAPL-2 scores and interpretations at once.}
 \usage{
 get_capl(raw_data = NULL, sort = "asis")
 }
 \arguments{
-\item{raw_data}{a data frame or tibble of raw CAPL data.}
+\item{raw_data}{A data frame of raw CAPL-2 data.}
 
-\item{sort}{a character element representing how the variables in the returned data frame should be sorted (valid values are "asis, "abc" and "zyx"; valid
+\item{sort}{A character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc" and "zyx"; valid
 values are not case-sensitive). This argument is set to "asis" by default.}
 }
 \value{
-returns a merged data frame of raw data and CAPL scores and interpretations.
+Returns a merged data frame of raw data and CAPL-2 scores and interpretations.
 }
 \description{
-The main (wrapper) function in the CAPL package that computes CAPL scores and interpretations from raw data.
+This function is the main function in the \code{capl} package. It is a wrapper function that calls all other \code{capl} functions to compute all CAPL-2 scores and
+interpretations from raw data at once. If required CAPL-2 variables are missing, the function will create the variables and set values for these variables to NA so the function can proceed.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=get_missing_capl_variables]{get_missing_capl_variables()}}, \code{\link[=get_pacer_20m_laps]{get_pacer_20m_laps()}}, \code{\link[=get_pacer_score]{get_pacer_score()}},
+\code{\link[=get_capl_interpretation]{get_capl_interpretation()}}, \code{\link[=get_plank_score]{get_plank_score()}}, \code{\link[=get_camsa_time_score]{get_camsa_time_score()}}, \code{\link[=get_camsa_trial_score]{get_camsa_trial_score()}}, \code{\link[=get_camsa_overall_score]{get_camsa_overall_score()}}, \code{\link[=get_pc_score]{get_pc_score()}},
+\code{\link[=get_capl_domain_status]{get_capl_domain_status()}}, \code{\link[=get_pedometer_wear_time]{get_pedometer_wear_time()}}, \code{\link[=validate_steps]{validate_steps()}}, \code{\link[=get_step_average]{get_step_average()}}, \code{\link[=get_step_score]{get_step_score()}},
+\code{\link[=get_self_report_pa_score]{get_self_report_pa_score()}}, \code{\link[=get_db_score]{get_db_score()}}, \code{\link[=get_predilection_score]{get_predilection_score()}}, \code{\link[=get_adequacy_score]{get_adequacy_score()}},
+\code{\link[=get_intrinsic_motivation_score]{get_intrinsic_motivation_score()}}, \code{\link[=get_pa_competence_score]{get_pa_competence_score()}}, \code{\link[=get_mc_score]{get_mc_score()}}, \code{\link[=get_binary_score]{get_binary_score()}}, \code{\link[=get_fill_in_the_blanks_score]{get_fill_in_the_blanks_score()}},
+\code{\link[=get_ku_score]{get_ku_score()}} and \code{\link[=get_capl_score]{get_capl_score()}}
 }
 \examples{
 get_capl(raw_data)

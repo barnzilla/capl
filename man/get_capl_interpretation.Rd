@@ -2,25 +2,29 @@
 % Please edit documentation in R/capl.R
 \name{get_capl_interpretation}
 \alias{get_capl_interpretation}
-\title{Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol or domain score.}
+\title{Compute a CAPL-2 interpretation for a given CAPL-2 protocol or domain score.}
 \usage{
 get_capl_interpretation(age = NA, gender = NA, score = NA, protocol = NA)
 }
 \arguments{
-\item{age}{a numeric element or vector (valid values are between 8 and 12).}
+\item{age}{A numeric vector (valid values are between 8 and 12).}
 
-\item{gender}{a character element or vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").}
+\item{gender}{A character vector (valid values currently include "girl", "g", "female", "f", "boy", "b", "male", "m").}
 
-\item{score}{a numeric element or vector. If the protocol argument is set to "pacer" or "steps", the element(s) in this argument must be integers.}
+\item{score}{A numeric vector. If the \code{protocol} argument is set to "pacer" or "steps", this argument must contain integers.}
 
-\item{protocol}{a character element representing a CAPL protocol (valid values currently include "pacer", "plank", "camsa", "pc", "steps",
+\item{protocol}{A character vector representing a CAPL protocol (valid values include "pacer", "plank", "camsa", "pc", "steps",
 "self_report_pa", "db", "mc", "ku", "capl"; valid values are not case-sensitive).}
 }
 \value{
-returns a character element with a value of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).
+Returns a character vector with values of "beginning", "progressing", "achieving" or "excelling" (if valid) or NA (if not valid).
 }
 \description{
-Compute an age- and gender-specific CAPL interpretation for a given CAPL protocol or domain score.
+This function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_age]{validate_age()}}, \code{\link[=validate_gender]{validate_gender()}}, \code{\link[=validate_number]{validate_number()}} and \code{\link[=validate_scale]{validate_scale()}}. This function
+will check whether a score for a given protocol is within a valid range; if not, NA will be returned.
 }
 \examples{
 get_capl_interpretation(

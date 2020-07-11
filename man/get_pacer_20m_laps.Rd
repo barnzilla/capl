@@ -7,15 +7,21 @@
 get_pacer_20m_laps(lap_distance = NA, laps_run = NA)
 }
 \arguments{
-\item{lap_distance}{a numeric (integer) element or vector (valid values are 15 or 20).}
+\item{lap_distance}{A numeric (integer) vector (valid values are 15 or 20).}
 
-\item{laps_run}{a numeric (integer) element (if lap_distance = 15, valid values are integers between 1 and 298).}
+\item{laps_run}{A numeric (integer) vector (if \code{lap_distance} = 15, valid values are integers between 1 and 298; if \code{lap_distance} = 20, valid values
+are integers between 1 and 229).}
 }
 \value{
-returns a numeric (integer) element (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 1 and 229 (if valid) or NA (if not valid).
 }
 \description{
-Convert PACER shuttle run laps to their equivalent in 20-metre laps.
+This function converts PACER (Progressive Aerobic Cardiovascular Endurance Run) shuttle run laps to their equivalent in 20-metre laps. If laps are
+already 20-metre laps, they are returned unless outside the valid range (1-229). This computation is used to compute the PACER score variable
+(\code{pacer_score}).
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_integer]{validate_integer()}} and \code{\link[=validate_scale]{validate_scale()}}.
 }
 \examples{
 get_pacer_20m_laps(

@@ -1,12 +1,18 @@
-#' Compute a daily behaviour domain score based on the step and self-reported physical activity scores. 
+#' Compute a daily behaviour domain score.
+#'
+#' @description
+#' This function computes a daily behaviour domain score based on the step and self-reported physical activity scores. 
 #'
 #' @export
 #'
 #' @importFrom stats var
 #'
-#' @param step_score a numeric (integer) element or vector representing the pedometer steps protocol score (valid values are integers between 0 and 25).
-#' @param self_report_pa_score a numeric (integer) element or vector representing the self-reported physical activity protocol score (valid values are
+#' @param step_score A numeric (integer) vector representing the pedometer steps score (valid values are integers between 0 and 25).
+#' @param self_report_pa_score A numeric (integer) vector representing the self-reported physical activity score (valid values are
 #' integers between 0 and 5).
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_scale()].
 #'
 #' @examples
 #' get_db_score(
@@ -16,18 +22,15 @@
 #'
 #' # [1] 23  8 14  9 NA NA
 #'
-#' @return returns a numeric (integer) element between 0 and 30 (if valid) or NA (if not valid).
+#' @return Returns a numeric (integer) vector with values between 0 and 30 (if valid) or NA (if not valid).
 get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
   try(
     if(var(c(length(step_score), length(self_report_pa_score))) == 0) {
       return(
         unname(
           apply(data.frame(step_score, self_report_pa_score), 1, function(x) {
-            step_score <- validate_integer(validate_protocol_score(x[1], "db"))
-            self_report_pa_score <- validate_integer(validate_protocol_score(x[2] * 5, "db"))
-            if(! is.na(self_report_pa_score)) {
-              self_report_pa_score <- self_report_pa_score / 5
-            }
+            step_score <- validate_scale(x[1], 0, 25)
+            self_report_pa_score <- validate_scale(x[2], 0, 5)
             if(sum(is.na(c(step_score, self_report_pa_score))) > 0) {
               return(NA)
             } else {
@@ -44,15 +47,21 @@ get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
 
 #' Compute pedometer wear time in decimal hours for a given day.
 #'
+#' @description
+#' This function computes pedometer wear time in decimal hours for a given day.
+#'
 #' @export
 #'
 #' @importFrom lubridate as.duration dminutes hm 
 #' @importFrom stats var
 #'
-#' @param time_on a character element or vector representing the time (in 12- or 24-hour clock format) when the pedometer was first worn on a given day.
-#' @param time_off a character element or vector representing the time (in 12- or 24-hour clock format) when the pedometer was removed at the end of a given
+#' @param time_on A character vector representing the time (in 12- or 24-hour clock format) when the pedometer was first worn on a given day.
+#' @param time_off A character vector representing the time (in 12- or 24-hour clock format) when the pedometer was removed at the end of a given
 #' day.
-#' @param non_wear_time a numeric element or vector representing the total time (in minutes) the pedometer was not worn during waking hours on a given day.
+#' @param non_wear_time A numeric vector representing the total time (in minutes) the pedometer was not worn during waking hours on a given day.
+#'
+#' @details
+#' Other `capl` functions called by this function include: [get_24_hour_clock()] and [validate_number()].
 #'
 #' @examples
 #' get_pedometer_wear_time(
@@ -63,7 +72,7 @@ get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
 #'
 #' # [1] 14.23 13.95    NA
 #'
-#' @return returns a numeric element (if valid) or NA (if not valid).
+#' @return Returns a numeric vector with values >= 0 (if valid) or NA (if not valid).
 get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time = NA) {
   try(
     if(var(c(length(time_on), length(time_off), length(non_wear_time))) == 0) {
@@ -107,24 +116,26 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
 #'
 #' @description
 #' This function computes a score for a response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
-#' minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?". This score is used to compute the 
-#' daily behaviour domain score.
+#' minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in the CAPL-2 Questionnaire.
 #'
 #' @export
 #'
-#' @param x a numeric (integer) element or vector representing the self-reported physical activity question (valid values are integers between 0 and 7).
+#' @param x A numeric (integer) vector representing the self-reported physical activity question (valid values are integers between 0 and 7).
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_scale()].
 #'
 #' @examples
 #' get_self_report_pa_score(c(1, 8, 3, 4, 5, 2, 7))
 #'
 #' # [1]  0 NA  2  3  4  1  5
 #'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
+#' @return Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA (if not valid).
 get_self_report_pa_score <- function(x = NA) {
   return(
     unname(
       sapply(x, function(x) {
-        x <- validate_integer(x)
+        x <- validate_scale(x, 0, 7)
         if(is.na(x)) {
           return(NA)
         } else if(x > 0 & x <= 1) {
@@ -147,132 +158,90 @@ get_self_report_pa_score <- function(x = NA) {
   )
 }
 
-#' Compute the daily arithmetic mean of a week of steps taken as measured by a pedometer. 
+#' Compute average daily steps taken.
+#'
+#' @description
+#' This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer. 
 #'
 #' @export
 #'
 #' @importFrom stats var
 #'
-#' @param steps a data frame or tibble with seven numeric columns where each column represents steps taken on a given day. 
-#' @param valid_steps a data frame or tibble with seven character columns with "yes" or "no" elements representing whether the steps taken on a given day
-#' are valid. See [validate_steps()].
+#' @param raw_data A data frame that includes seven days of pedometer steps (steps1...steps7) and their corresponding on (time_on1...time_on7)
+#' and off (time_off1...time_off7) times.
 #' 
 #' @details
-#' There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step elements from a valid 
-#' day will be randomly sampled and used for the fourth valid day before computing the mean. The [set.seed()] function is set to 93 so that the results can
-#' be duplicated if necessary.
+#' There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid 
+#' day will be randomly sampled and used for the fourth valid day before computing the mean. 
+#'
+#' Other `capl` functions called by this function include: [validate_steps()] and [get_pedometer_wear_time()].
 #'
 #' @examples
-#' set.seed(93)
+#' capl_demo_data <- get_capl_demo_data(10)
 #' 
-#' steps <- data.frame(
-#'   steps1 = sample(900:31000, 10, replace = TRUE),
-#'   steps2 = sample(900:31000, 10, replace = TRUE),
-#'   steps3 = sample(900:31000, 10, replace = TRUE),
-#'   steps4 = sample(900:31000, 10, replace = TRUE),
-#'   steps5 = sample(900:31000, 10, replace = TRUE),
-#'   steps6 = sample(900:31000, 10, replace = TRUE),
-#'   steps7 = sample(900:31000, 10, replace = TRUE)
-#' )
+#' get_step_average(capl_demo_data)$step_average
+#' 
+#' # [1] 18365 12655 15493 12966 11396 13954 18456 13589 17543 11276
 #'
-#' valid_steps <- data.frame(
-#'   valid_steps1 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-#'   valid_steps2 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.15, 0.85)) == 0, "no", "yes"),
-#'   valid_steps3 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-#'   valid_steps4 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.4, 0.6)) == 0, "no", "yes"),
-#'   valid_steps5 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-#'   valid_steps6 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.5, 0.5)) == 0, "no", "yes"),
-#'   valid_steps7 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes")
-#' )
-#' 
-#' get_step_average(steps, valid_steps)
-#' 
-#' # [1] 15833 13599 21178 22654 17994 17194 24472  8791  9058 20756
-#'
-#' @return returns a rounded numeric element (if valid) or NA (if not valid).
-get_step_average <- function(steps = NULL, valid_steps = NULL) {
+#' @return Returns a data frame with nine columns: `steps1` (validated), `steps2` (validated), `steps3` (validated), `steps4` (validated), `steps5` (validated), `steps6` (validated), `steps6` (validated), `valid_days` and `step_average`. The steps are validated with the [validate_steps()] function.
+get_step_average <- function(raw_data = NULL) {
   try(
-    if(is.null(steps)) {
-      stop("[CAPL error]: the steps argument is missing.")
-    } else if(is.null(valid_steps)) {
-      stop("[CAPL error]: the valid_steps argument is missing.")
-    } else if(! isTRUE("data.frame" %in% class(steps))) {
-      stop("[CAPL error]: the steps argument must be a data frame or a tibble.")
-    } else if(! isTRUE("data.frame" %in% class(valid_steps))) {
-      stop("[CAPL error]: the valid_steps argument must be a data frame or a tibble.")
-    } else if(ncol(steps) != 7) {
-      stop("[CAPL error]: the steps argument must have 7 columns (steps1, steps2, steps3, steps4, steps5, steps6, steps7.")
-    } else if(ncol(valid_steps) != 7) {
-      stop("[CAPL error]: the valid_steps argument must have 7 columns (valid_steps1, valid_steps2, valid_steps3, valid_steps4, valid_steps5, valid_steps6, valid_steps7.")
-    } else if(var(c(nrow(steps), nrow(valid_steps))) != 0) {
-      stop("[CAPL error]: the steps and valid_steps arguments must be the same length.")
+    if(is.null(raw_data)) {
+      stop("[CAPL error]: the raw_data argument is missing.")
+    } else if(! isTRUE("data.frame" %in% class(raw_data))) {
+      stop("[CAPL error]: the raw_data argument must be a data frame.")
     } else {
-      steps <- apply(steps, 2, validate_number)
-      valid_steps <- apply(valid_steps, 2, validate_character)
-      valid_days <- apply(valid_steps, 1, function(x) sum(x == "yes", na.rm = TRUE))
-      for(i in 1:7) {
-        steps[, i] <- ifelse(is.na(valid_steps[, i]) | valid_steps[, i] == "no", NA, steps[, i])
+      required_variables <- c(paste0("steps", 1:7), paste0("time_on", 1:7), paste0("time_off", 1:7), paste0("non_wear_time", 1:7))
+      if(sum(required_variables %in% colnames(raw_data)) != length(required_variables)) {
+        stop("[CAPL error]: the raw_data argument does not include all required variables.")
+      } else {
+        steps_df <- data.frame(rows = 1:nrow(raw_data))
+        for(i in 1:7) {
+          steps_df[paste0("day", i)] <- validate_steps(as.vector(raw_data[[paste0("steps", i)]]), get_pedometer_wear_time(raw_data[paste0("time_on", i)], raw_data[paste0("time_off", i)], raw_data[paste0("non_wear_time", i)]))
+        }
+        steps_df <- steps_df[,-1]
+        steps_df$valid_days <- apply(steps_df, 1, function(x) sum(! is.na(x)))
+        
+        steps_df$step_average <- apply(steps_df, 1, function(x) {
+          valid_days <- x[8]
+          if(is.na(valid_days) | valid_days < 3) {
+            NA
+          } else if(valid_days == 3) {
+            round(mean(c(x[-8], sample(x[-8][which(! is.na(x[-8]))], 1)), na.rm = TRUE))
+          } else if(valid_days >= 4) {
+            round(mean(x[-8], na.rm = TRUE))
+          } else {
+            NA
+          }
+        })
+        return(steps_df)
       }
-      x <- cbind(steps, valid_days)
-      number_of_columns <- ncol(x)
-      return(
-        unname(
-          apply(x, 1, function(x) {
-            valid_days <- x[number_of_columns]
-            missing_steps <- sum(is.na(x[-number_of_columns]))
-            if(is.na(valid_days) | missing_steps > 4 | valid_days < 3) {
-              NA
-            } else if(valid_days == 3) {
-			  set.seed(93)
-              round(mean(c(x[-number_of_columns], sample(x[-number_of_columns][which(! is.na(x[-number_of_columns]))], 1)), na.rm = TRUE))
-            } else if(valid_days >= 4) {
-              round(mean(x[-number_of_columns], na.rm = TRUE))
-            } else {
-              NA
-            }
-          })
-        )
-      )
     }
   )
 }
 
-#' Compute a step score based on the average daily steps taken as measured by a pedometer.
+#' Compute a step score.
+#'
+#' @description
+#' This function computes a step score based on the average daily steps taken as measured by a pedometer.
 #'
 #' @export
 #'
-#' @param step_average a numeric element or vector representing average daily steps taken. See [get_step_average()].
+#' @param step_average A numeric vector representing average daily steps taken. See [get_step_average()].
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_number()].
 #'
 #' @examples
-#' set.seed(93)
-#' 
-#' steps <- data.frame(
-#'   steps1 = sample(900:31000, 10, replace = TRUE),
-#'   steps2 = sample(900:31000, 10, replace = TRUE),
-#'   steps3 = sample(900:31000, 10, replace = TRUE),
-#'   steps4 = sample(900:31000, 10, replace = TRUE),
-#'   steps5 = sample(900:31000, 10, replace = TRUE),
-#'   steps6 = sample(900:31000, 10, replace = TRUE),
-#'   steps7 = sample(900:31000, 10, replace = TRUE)
-#' )
+#' capl_demo_data <- get_capl_demo_data(10)
 #'
-#' valid_steps <- data.frame(
-#'   valid_steps1 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-#'   valid_steps2 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.15, 0.85)) == 0, "no", "yes"),
-#'   valid_steps3 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-#'   valid_steps4 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.4, 0.6)) == 0, "no", "yes"),
-#'   valid_steps5 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-#'   valid_steps6 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.5, 0.5)) == 0, "no", "yes"),
-#'   valid_steps7 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes")
-#' )
-#' 
-#' step_average <- get_step_average(steps, valid_steps)
+#' step_average <- get_step_average(capl_demo_data)$step_average
 #'
 #' get_step_score(step_average)
 #'
-#' # [1] 22 20 25 25 24 24 25 10 11 25
+#' # [1] 25 18 22 18 15 20 25 20 24 15
 #'
-#' @return returns a numeric element (if valid) or NA (if not valid).
+#' @return Returns a numeric (integer) vector with values between 0 and 25 (if valid) or NA (if not valid).
 get_step_score <- function(step_average = NA) {
   return(
     unname(
@@ -340,84 +309,21 @@ get_step_score <- function(step_average = NA) {
   )
 }
 
-#' Sum the number of valid days that a pedometer was worn.
-#'
-#' @export
-#'
-#' @param x a data frame or tibble with seven columns where each column represents a day of the week when a pedometer was worn and contains "yes" or 
-#' "no" values. See [validate_steps()].
-#'
-#' @examples
-#' x <- data.frame(
-#'   valid_steps1 = c("yes", "no", "yes"),
-#'   valid_steps2 = c("no", "no", "yes"),
-#'   valid_steps3 = c("yes", "yes", "yes"),
-#'   valid_steps4 = c(NA, "no", "yes"),
-#'   valid_steps5 = c("yes", "", "yes"),
-#'   valid_steps6 = c("no", "yes", "yes"),
-#'   valid_steps7 = c("yes", "yes", "no")
-#' )
-#'
-#' get_valid_days(x)
-#'
-#' # [1] 4 3 6
-#'
-#' @return returns a numeric element (if valid) or 0 (if not valid).
-get_valid_days <- function(x = NULL) {
-  try(
-    if(is.null(x)) {
-      stop("[CAPL error]: the x argument is missing.")
-    }
-    else if(! isTRUE("data.frame" %in% class(x))) {
-      stop("[CAPL error]: the x argument must be a data frame or a tibble.")
-    } else {
-      x <- apply(x, 2, validate_character)
-      apply(x, 1, function(x) sum(x == "yes", na.rm = TRUE))
-    }
-  )
-}
-
-#' Check whether a response to the self-reported physical activity question is valid.
+#' Check whether daily steps as measured by a pedometer are valid.
 #'
 #' @description
-#' This function checks whether the response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
-#' minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" is valid. A valid response is an integer
-#' between 0 and 7. Data should be processed using this function before calling [get_self_report_pa_score()].
-#'
-#' @export
-#'
-#' @param x a numeric (integer) element or vector representing the steps taken on a given day (valid values are between 0 and 7).
-#'
-#' @examples
-#' validate_self_report_pa(c(1:8, 5.5, NA, "", "5"))
-#'
-#' # [1]  1  2  3  4  5  6  7 NA NA NA NA  5
-#'
-#' @return returns a numeric (integer) element (if valid) or NA (if not valid).
-validate_self_report_pa <- function(x) {
-  x <- validate_integer(x)
-  return(
-    unname(
-      sapply(x, function(x) {
-        if(is.na(x) | x < 0 | x > 7) {
-          NA
-        } else {
-          x
-        }
-      })
-    )
-  )
-}
-
-#' Check whether daily steps as measured by a pedometer are valid.
+#' This function checks whether daily steps as measured by a pedometer are valid.
 #'
 #' @export
 #'
 #' @importFrom stats var
 #'
-#' @param steps a numeric (integer) element or vector representing the steps taken on a given day (valid values are between 1000 and 30000).
-#' @param wear_time a numeric element representing the duration of time (in decimal hours) that a pedometer was worn on a given day (valid values are >= 10.0
+#' @param steps A numeric (integer) vector representing the steps taken on a given day (valid values are between 1000 and 30000).
+#' @param wear_time A numeric vector representing the duration of time (in decimal hours) that a pedometer was worn on a given day (valid values are >= 10.0
 #' hours).
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_scale()] and [validate_number()].
 #'
 #' @examples
 #' validate_steps(
@@ -427,21 +333,19 @@ validate_self_report_pa <- function(x) {
 #'
 #' # [1] "yes" "yes" "no"  "no"  "no" 
 #'
-#' @return returns "yes" (if valid) or "no" (if not valid).
+#' @return Returns the `steps` argument (if valid) or NA (if not valid).
 validate_steps <- function(steps = NA, wear_time = NA) {
   try(
     if(var(c(length(steps), length(wear_time))) == 0) {
       return(
         unname(
           apply(data.frame(steps, wear_time), 1, function(x) {
-            steps <- validate_number(x[1])
+            steps <- validate_scale(x[1], 1000, 30000)
             wear_time <- validate_number(x[2])
-            if(sum(is.na(c(steps, wear_time))) > 0 | steps %% 1 > 0) {
-              "no"
-            } else if(steps < 1000 | steps > 30000 | wear_time < 10) {
-              "no"
+            if(sum(is.na(c(steps, wear_time))) > 0 | wear_time < 10) {
+              NA
             } else {
-              "yes"
+              steps
             }
           })
         )

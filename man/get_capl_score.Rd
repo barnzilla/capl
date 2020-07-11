@@ -7,23 +7,23 @@
 get_capl_score(pc_score = NA, db_score = NA, mc_score = NA, ku_score = NA)
 }
 \arguments{
-\item{pc_score}{a numeric element or vector (valid values are between 0 and 30).}
+\item{pc_score}{A numeric vector (valid values are between 0 and 30).}
 
-\item{db_score}{a numeric (integer) element or vector (valid values are between 0 and 30).}
+\item{db_score}{A numeric (integer) vector (valid values are between 0 and 30).}
 
-\item{mc_score}{a numeric element or vector (valid values are between 0 and 30).}
+\item{mc_score}{A numeric vector (valid values are between 0 and 30).}
 
-\item{ku_score}{a numeric element or vector (valid values are between 0 and 10).}
+\item{ku_score}{A numeric vector (valid values are between 0 and 10).}
 }
 \value{
-returns a numeric element between 0 and 100 (if valid) or NA (if not valid).
+Returns a numeric vector with values between 0 and 100 (if valid) or NA (if not valid).
 }
 \description{
-Compute an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and
+This function computes an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and
 understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
 }
 \details{
-This function calls \code{\link[=validate_number]{validate_number()}}, \code{\link[=validate_integer]{validate_integer()}} and \code{\link[=validate_domain_score]{validate_domain_score()}} to ensure that the computed score is valid.
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}, \code{\link[=validate_integer]{validate_integer()}} and \code{\link[=validate_domain_score]{validate_domain_score()}}.
 }
 \examples{
 get_capl_score(

@@ -7,16 +7,19 @@
 validate_steps(steps = NA, wear_time = NA)
 }
 \arguments{
-\item{steps}{a numeric (integer) element or vector representing the steps taken on a given day (valid values are between 1000 and 30000).}
+\item{steps}{A numeric (integer) vector representing the steps taken on a given day (valid values are between 1000 and 30000).}
 
-\item{wear_time}{a numeric element representing the duration of time (in decimal hours) that a pedometer was worn on a given day (valid values are >= 10.0
+\item{wear_time}{A numeric vector representing the duration of time (in decimal hours) that a pedometer was worn on a given day (valid values are >= 10.0
 hours).}
 }
 \value{
-returns "yes" (if valid) or "no" (if not valid).
+Returns the \code{steps} argument (if valid) or NA (if not valid).
 }
 \description{
-Check whether daily steps as measured by a pedometer are valid.
+This function checks whether daily steps as measured by a pedometer are valid.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}} and \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
 validate_steps(

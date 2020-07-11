@@ -7,18 +7,21 @@
 get_pedometer_wear_time(time_on = NA, time_off = NA, non_wear_time = NA)
 }
 \arguments{
-\item{time_on}{a character element or vector representing the time (in 12- or 24-hour clock format) when the pedometer was first worn on a given day.}
+\item{time_on}{A character vector representing the time (in 12- or 24-hour clock format) when the pedometer was first worn on a given day.}
 
-\item{time_off}{a character element or vector representing the time (in 12- or 24-hour clock format) when the pedometer was removed at the end of a given
+\item{time_off}{A character vector representing the time (in 12- or 24-hour clock format) when the pedometer was removed at the end of a given
 day.}
 
-\item{non_wear_time}{a numeric element or vector representing the total time (in minutes) the pedometer was not worn during waking hours on a given day.}
+\item{non_wear_time}{A numeric vector representing the total time (in minutes) the pedometer was not worn during waking hours on a given day.}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric vector with values >= 0 (if valid) or NA (if not valid).
 }
 \description{
-Compute pedometer wear time in decimal hours for a given day.
+This function computes pedometer wear time in decimal hours for a given day.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=get_24_hour_clock]{get_24_hour_clock()}} and \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
 get_pedometer_wear_time(

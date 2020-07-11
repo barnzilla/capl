@@ -2,46 +2,29 @@
 % Please edit documentation in R/daily_behaviour.R
 \name{get_step_score}
 \alias{get_step_score}
-\title{Compute a step score based on the average daily steps taken as measured by a pedometer.}
+\title{Compute a step score.}
 \usage{
 get_step_score(step_average = NA)
 }
 \arguments{
-\item{step_average}{a numeric element or vector representing average daily steps taken. See \code{\link[=get_step_average]{get_step_average()}}.}
+\item{step_average}{A numeric vector representing average daily steps taken. See \code{\link[=get_step_average]{get_step_average()}}.}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 0 and 25 (if valid) or NA (if not valid).
 }
 \description{
-Compute a step score based on the average daily steps taken as measured by a pedometer.
+This function computes a step score based on the average daily steps taken as measured by a pedometer.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
-set.seed(93)
+capl_demo_data <- get_capl_demo_data(10)
 
-steps <- data.frame(
-  steps1 = sample(900:31000, 10, replace = TRUE),
-  steps2 = sample(900:31000, 10, replace = TRUE),
-  steps3 = sample(900:31000, 10, replace = TRUE),
-  steps4 = sample(900:31000, 10, replace = TRUE),
-  steps5 = sample(900:31000, 10, replace = TRUE),
-  steps6 = sample(900:31000, 10, replace = TRUE),
-  steps7 = sample(900:31000, 10, replace = TRUE)
-)
-
-valid_steps <- data.frame(
-  valid_steps1 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-  valid_steps2 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.15, 0.85)) == 0, "no", "yes"),
-  valid_steps3 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-  valid_steps4 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.4, 0.6)) == 0, "no", "yes"),
-  valid_steps5 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-  valid_steps6 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.5, 0.5)) == 0, "no", "yes"),
-  valid_steps7 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes")
-)
-
-step_average <- get_step_average(steps, valid_steps)
+step_average <- get_step_average(capl_demo_data)$step_average
 
 get_step_score(step_average)
 
-# [1] 22 20 25 25 24 24 25 10 11 25
+# [1] 25 18 22 18 15 20 25 20 24 15
 
 }

@@ -2,18 +2,21 @@
 % Please edit documentation in R/physical_competence.R
 \name{get_plank_score}
 \alias{get_plank_score}
-\title{Compute a plank score based on the number of seconds a plank was held.}
+\title{Compute a plank score.}
 \usage{
 get_plank_score(plank_time = NA)
 }
 \arguments{
-\item{plank_time}{a numeric element or vector representing time (seconds).}
+\item{plank_time}{A numeric vector representing time (in seconds).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
 }
 \description{
-Compute a plank score based on the number of seconds a plank was held.
+This function computes a plank score based on the duration of time (in seconds) for which a plank is held.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
 get_plank_score(c(120.5, 75.6, 40, 10.99, 90))

@@ -2,23 +2,23 @@
 % Please edit documentation in R/utilities.R
 \name{get_missing_capl_variables}
 \alias{get_missing_capl_variables}
-\title{Add required CAPL variables to a data frame of raw data if they are missing.}
+\title{Add required CAPL-2 variables to a data frame of raw data if they are missing.}
 \usage{
 get_missing_capl_variables(raw_data = NULL)
 }
 \arguments{
-\item{raw_data}{a data frame or tibble of raw CAPL data.}
+\item{raw_data}{a data frame of raw CAPL-2 data.}
 }
 \value{
-returns a merged data frame of raw data and missing required CAPL variables (values are set to NA).
+returns a merged data frame of raw data and missing required CAPL-2 variables (values are set to NA).
 }
 \description{
-This function adds required CAPL variables (see the Details section for a full list) to a data frame of raw data if they are missing. When missing
-variables are added, the values for a given missing variable are set to NA. This function is called within \code{\link[=get_capl]{get_capl()}} so that CAPL score and
+This function adds required CAPL-2 variables (see the Details section for a full list) to a data frame of raw data if they are missing. When missing
+variables are added, the values for a given missing variable are set to NA. This function is called within \code{\link[=get_capl]{get_capl()}} so that CAPL-2 score and
 interpretation computations will run without errors in the presence of missing variables.
 }
 \details{
-The required CAPL variables include:
+The required CAPL-2 variables include:
 \itemize{
 \item age
 \item gender
@@ -81,6 +81,8 @@ The required CAPL variables include:
 \item when_cooling_down
 \item heart_rate
 }
+
+Examining the structure (see \code{\link[=str]{str()}}) of some CAPL-2 demo data (see \code{\link[=get_capl_demo_data]{get_capl_demo_data()}}) provides additional information about these variables.
 }
 \examples{
 raw_data <- get_missing_capl_variables(raw_data)

@@ -10,7 +10,7 @@ validate_age(x)
 \item{x}{an element or vector.}
 }
 \value{
-returns a numeric element with a value between 8 and 12 (if valid) or NA (if not valid).
+returns a numeric (integer) vector with a value between 8 and 12 (if valid) or NA (if not valid).
 }
 \description{
 Check whether an element is numeric and between 8 and 12.

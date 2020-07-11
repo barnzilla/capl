@@ -7,15 +7,17 @@
 get_self_report_pa_score(x = NA)
 }
 \arguments{
-\item{x}{a numeric (integer) element or vector representing the self-reported physical activity question (valid values are integers between 0 and 7).}
+\item{x}{A numeric (integer) vector representing the self-reported physical activity question (valid values are integers between 0 and 7).}
 }
 \value{
-returns a numeric (integer) element (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA (if not valid).
 }
 \description{
 This function computes a score for a response to "During the past week (7 days), on how many days were you physically active for a total of at least 60
-minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?". This score is used to compute the
-daily behaviour domain score.
+minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in the CAPL-2 Questionnaire.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 }
 \examples{
 get_self_report_pa_score(c(1, 8, 3, 4, 5, 2, 7))

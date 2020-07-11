@@ -2,52 +2,31 @@
 % Please edit documentation in R/daily_behaviour.R
 \name{get_step_average}
 \alias{get_step_average}
-\title{Compute the daily arithmetic mean of a week of steps taken as measured by a pedometer.}
+\title{Compute average daily steps taken.}
 \usage{
-get_step_average(steps = NULL, valid_steps = NULL)
+get_step_average(raw_data = NULL)
 }
 \arguments{
-\item{steps}{a data frame or tibble with seven numeric columns where each column represents steps taken on a given day.}
-
-\item{valid_steps}{a data frame or tibble with seven character columns with "yes" or "no" elements representing whether the steps taken on a given day
-are valid. See \code{\link[=validate_steps]{validate_steps()}}.}
+\item{raw_data}{A data frame that includes seven days of pedometer steps (steps1...steps7) and their corresponding on (time_on1...time_on7)
+and off (time_off1...time_off7) times.}
 }
 \value{
-returns a rounded numeric element (if valid) or NA (if not valid).
+Returns a data frame with nine columns: \code{steps1} (validated), \code{steps2} (validated), \code{steps3} (validated), \code{steps4} (validated), \code{steps5} (validated), \code{steps6} (validated), \code{steps6} (validated), \code{valid_days} and \code{step_average}. The steps are validated with the \code{\link[=validate_steps]{validate_steps()}} function.
 }
 \description{
-Compute the daily arithmetic mean of a week of steps taken as measured by a pedometer.
+This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer.
 }
 \details{
-There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step elements from a valid
-day will be randomly sampled and used for the fourth valid day before computing the mean. The \code{\link[=set.seed]{set.seed()}} function is set to 93 so that the results can
-be duplicated if necessary.
+There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid
+day will be randomly sampled and used for the fourth valid day before computing the mean.
+
+Other \code{capl} functions called by this function include: \code{\link[=validate_steps]{validate_steps()}} and \code{\link[=get_pedometer_wear_time]{get_pedometer_wear_time()}}.
 }
 \examples{
-set.seed(93)
+capl_demo_data <- get_capl_demo_data(10)
 
-steps <- data.frame(
-  steps1 = sample(900:31000, 10, replace = TRUE),
-  steps2 = sample(900:31000, 10, replace = TRUE),
-  steps3 = sample(900:31000, 10, replace = TRUE),
-  steps4 = sample(900:31000, 10, replace = TRUE),
-  steps5 = sample(900:31000, 10, replace = TRUE),
-  steps6 = sample(900:31000, 10, replace = TRUE),
-  steps7 = sample(900:31000, 10, replace = TRUE)
-)
+get_step_average(capl_demo_data)$step_average
 
-valid_steps <- data.frame(
-  valid_steps1 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-  valid_steps2 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.15, 0.85)) == 0, "no", "yes"),
-  valid_steps3 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-  valid_steps4 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.4, 0.6)) == 0, "no", "yes"),
-  valid_steps5 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes"),
-  valid_steps6 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.5, 0.5)) == 0, "no", "yes"),
-  valid_steps7 = ifelse(sample(0:1, 10, replace = TRUE, prob = c(0.3, 0.7)) == 0, "no", "yes")
-)
-
-get_step_average(steps, valid_steps)
-
-# [1] 15833 13599 21178 22654 17994 17194 24472  8791  9058 20756
+# [1] 18365 12655 15493 12966 11396 13954 18456 13589 17543 11276
 
 }

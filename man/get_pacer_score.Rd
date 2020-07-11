@@ -7,13 +7,17 @@
 get_pacer_score(pacer_laps_20m = NA)
 }
 \arguments{
-\item{pacer_laps_20m}{a numeric (integer) element or vector.}
+\item{pacer_laps_20m}{A numeric (integer) vector (valid values between 1 and 229).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 0 and 10 (if valid) or NA (if not valid).
 }
 \description{
-Compute a PACER score based on the number of PACER laps run at a 20-metre distance.
+This function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score based on the number of PACER laps run at a 20-metre distance.
+This score is used to compute the physical competence domain score variable (\code{pc_score}).
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}} and \code{\link[=validate_integer]{validate_integer()}}.
 }
 \examples{
 get_pacer_score(c(1, 6, 12, 18, NA, 46, 31, 45.1))

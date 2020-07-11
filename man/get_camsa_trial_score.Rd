@@ -2,20 +2,23 @@
 % Please edit documentation in R/physical_competence.R
 \name{get_camsa_trial_score}
 \alias{get_camsa_trial_score}
-\title{Compute the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial.}
+\title{Compute the CAMSA skill + time score.}
 \usage{
 get_camsa_trial_score(camsa_skill_score = NA, camsa_time_score = NA)
 }
 \arguments{
-\item{camsa_skill_score}{a numeric element or vector representing the CAMSA skill score (valid values are between 0 and 14).}
+\item{camsa_skill_score}{A numeric (integer) vector representing the CAMSA skill score (valid values are between 0 and 14).}
 
-\item{camsa_time_score}{a numeric element or vector representing the CAMSA time score (valid values are between 1 and 14).}
+\item{camsa_time_score}{A numeric vector representing the CAMSA time score (valid values are between 1 and 14).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 1 and 28 (if valid) or NA (if not valid).
 }
 \description{
-Compute the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial.
+This function computes the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 }
 \examples{
 get_camsa_trial_score(

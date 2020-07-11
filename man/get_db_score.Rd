@@ -2,21 +2,24 @@
 % Please edit documentation in R/daily_behaviour.R
 \name{get_db_score}
 \alias{get_db_score}
-\title{Compute a daily behaviour domain score based on the step and self-reported physical activity scores.}
+\title{Compute a daily behaviour domain score.}
 \usage{
 get_db_score(step_score = NA, self_report_pa_score = NA)
 }
 \arguments{
-\item{step_score}{a numeric (integer) element or vector representing the pedometer steps protocol score (valid values are integers between 0 and 25).}
+\item{step_score}{A numeric (integer) vector representing the pedometer steps score (valid values are integers between 0 and 25).}
 
-\item{self_report_pa_score}{a numeric (integer) element or vector representing the self-reported physical activity protocol score (valid values are
+\item{self_report_pa_score}{A numeric (integer) vector representing the self-reported physical activity score (valid values are
 integers between 0 and 5).}
 }
 \value{
-returns a numeric (integer) element between 0 and 30 (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with values between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
-Compute a daily behaviour domain score based on the step and self-reported physical activity scores.
+This function computes a daily behaviour domain score based on the step and self-reported physical activity scores.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
 }
 \examples{
 get_db_score(

@@ -7,26 +7,28 @@
 get_capl_domain_status(x = NULL)
 }
 \arguments{
-\item{x}{a data frame or tibble. The first column must be CAPL domain scores, the second column must be CAPL domain interpretations and
+\item{x}{A data frame. The first column must be scores for a CAPL-2 domain, the second column must be CAPL-2 interpretations for the domain and
 the remaining columns must be protocol scores for the domain.}
 }
 \value{
-returns a character element with a value of "complete", "missing interpretation", "missing protocol" or "incomplete".
+Returns a character vector with a value of "complete", "missing interpretation", "missing protocol" or "incomplete".
 }
 \description{
-Compute the status of a CAPL domain.
+This function computes the status of a CAPL domain ("complete", "missing interpretation", "missing protocol" or "incomplete").
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
 x <- data.frame(
   domain_score = c(5, 10, 15, 20, 25, "", NA),
-    interpretation = c("beginning", "progressing", NA, "achieving", "excelling", NA, NA),
-    protocol_score1 = c(NA, 2, 3, 7, 10, NA, NA),
-    protocol_score2 = c(3, 5, 7, 12, 10, NA, NA),
-    protocol_score3 = c(2, 3, 10, 6, 10, NA, NA)
+  interpretation = c("beginning", "progressing", NA, "achieving", "excelling", NA, NA),
+  protocol_score1 = c(NA, 2, 3, 7, 10, NA, NA),
+  protocol_score2 = c(3, 5, 7, 12, 10, NA, NA),
+  protocol_score3 = c(2, 3, 10, 6, 10, NA, NA)
 )
 
 get_capl_domain_status(x)
-
 
 # [1] "missing protocol"       "complete"               "missing interpretation"
 # [4] "complete"               "complete"               "incomplete" 

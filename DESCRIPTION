@@ -1,5 +1,5 @@
 Package: capl
-Title: Compute CAPL-2 Scores and Interpretations
+Title: Compute CAPL-2 scores and interpretations
 Version: 1.0
 Authors@R: 
     c(person(given = "Joel",

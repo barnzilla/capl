@@ -22,7 +22,7 @@ for Physical Activity (CSAPPA; Hay, 1992) questionnaire as they in the CAPL-2 qu
 domain score.
 }
 \details{
-This function calls \code{\link[=validate_questionnaire_item]{validate_questionnaire_item()}} to validate the arguments before computing the predilection score.
+This function calls \code{\link[=validate_scale]{validate_scale()}} to validate the arguments before computing the predilection score.
 
 Valid elements (integers between 1 and 4) represent the following responses:
 \itemize{

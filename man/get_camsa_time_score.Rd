@@ -2,18 +2,21 @@
 % Please edit documentation in R/physical_competence.R
 \name{get_camsa_time_score}
 \alias{get_camsa_time_score}
-\title{Compute the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken to complete a trial.}
+\title{Compute the CAMSA time score.}
 \usage{
 get_camsa_time_score(camsa_time = NA)
 }
 \arguments{
-\item{camsa_time}{a numeric element or vector representing the time (in seconds) taken to complete a CAMSA trial (valid values are > 0).}
+\item{camsa_time}{A numeric vector representing the time taken (in seconds) to complete a CAMSA trial (valid values are > 0).}
 }
 \value{
-returns a numeric element (if valid) or NA (if not valid).
+Returns a numeric vector with values between 1 and 14 (if valid) or NA (if not valid).
 }
 \description{
-Compute the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken to complete a trial.
+This function computes the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken (in seconds) to complete a trial.
+}
+\details{
+Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.
 }
 \examples{
 get_camsa_time_score(c(14, 12, 30, 25, 0))
