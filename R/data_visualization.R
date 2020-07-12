@@ -5,7 +5,8 @@
 #' @export
 #'
 #' @importFrom dplyr group_by summarize
-#' @importFrom ggplot2 aes geom_bar geom_text ggplot position_dodge scale_fill_manual theme theme_minimal xlab ylab    
+#' @importFrom ggplot2 aes element_text geom_bar geom_text ggplot margin position_dodge scale_fill_manual theme theme_minimal 
+#' xlab ylab    
 #' @importFrom magrittr %>%
 #' @importFrom stats complete.cases var
 #'
@@ -67,7 +68,9 @@ get_score_by_interpretation_plot <- function(score = NA, interpretation = NA, x_
         ylab(y_label) +
         scale_fill_manual(values = colors) +
         theme_minimal() +
-        theme(legend.position = "none")
+        theme(legend.position = "none") +
+        theme(axis.title.x = element_text(margin = margin(t = 20, r = 0, b = 0, l = 0))) +
+        theme(axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))
       return(plot)
     }
   )
