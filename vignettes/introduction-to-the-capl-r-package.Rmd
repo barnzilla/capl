@@ -290,47 +290,7 @@ Incomplete.
 CAPL-2 domain scores can be grouped by CAPL-2 interpretative categories and plotted. For example, functions from the `dplyr` and `ggpubr` R packages allow users to render beautiful bar plots.
 
 ```{r warning = FALSE, message = FALSE, fig.width = 7, fig.height = 7}
-# Load packages
-package_names <- c("dplyr", "ggpubr")
-load_packages <- lapply(package_names, require, character.only = TRUE)
 
-# Create a data frame of the domain score and interpretation of interest and factor the
-# interpretation variable so that the interpretative categories can be ordered
-df <- data.frame(
-  capl_score = capl_results$capl_score,
-  capl_interpretation = factor(
-    capl_results$capl_interpretation, 
-    levels = c("beginning", "progressing", "achieving", "excelling")
-  )
-)
-
-# Create a summary table of complete cases by mean score and interpretative category
-df <- df[complete.cases(df),] %>% 
-  group_by(capl_interpretation) %>% 
-    summarize(capl_score = mean(capl_score))
-
-# Round the mean score to one decimal
-df$capl_score <- round(df$capl_score, 1)
-
-# Capitalize the interpretative categories
-df$capl_interpretation <- paste0(
-  toupper(substring(df$capl_interpretation, 1, 1)), 
-  substring(df$capl_interpretation, 2)
-  )
-
-# Render bar plot
-ggbarplot(
-  data = df, 
-  x = "capl_interpretation",
-  xlab = "Interpretation",
-  y = "capl_score",
-  ylab = "Overall physical literacy score(/100)",
-  fill = "capl_interpretation", 
-  color = "capl_interpretation", 
-  label = TRUE,
-  palette = c("#333376", "#00a79d", "#f26522", "#a6ce39"),
-  size = 0
-) + rremove("legend")
 ```
 
 ## Export results

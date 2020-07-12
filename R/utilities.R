@@ -1,3 +1,38 @@
+#' Capitalize a character vector.
+#'
+#' This function capitalizes a character vector.
+#'
+#' @export
+#'
+#' @param x A character vector.
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_character()].
+#'
+#' @examples
+#' capitalize_character(c("beginning", "progressing", "achieving", "excelling"))
+#'
+#' # [1] "Beginning"   "Progressing" "Achieving"   "Excelling"
+#'
+#' @return Returns a character vector (if valid) or NA (if not valid).
+capitalize_character <- function(x = NA) {
+  x <- validate_character(x)
+  return(
+    unname(
+      sapply(x, function(x) {
+        if(is.na(x)) {
+          NA
+        } else {
+          paste0(
+            toupper(substring(x, 1, 1)), 
+            substring(x, 2)
+          )
+        }
+      })
+    )
+  )
+}
+
 #' Convert 12-hour clock values to 24-hour clock values.
 #'
 #' This function converts 12-hour clock values to 24-hour clock values.
@@ -399,6 +434,70 @@ get_missing_capl_variables <- function(raw_data = NULL) {
       } else {
         return(raw_data)
       }
+    }
+  )
+}
+
+#' Rename variables in a data frame.
+#'
+#' @description
+#' This function renames variables in a data frame. 
+#'
+#' @export
+#'
+#' @param x A data frame.
+#' @param search A character vector representing the variable names to be renamed.
+#' @param replace A character vector representing the new names for those variables identified in the `search` argument.
+#'
+#' @details
+#' Other `capl` functions called by this function include: [validate_character()].
+#'
+#' @examples
+#' capl_demo_data <- get_capl_demo_data(n = 25)
+#'
+#' str(capl_demo_data[, 1:2])
+#'
+#' # 'data.frame':	25 obs. of  2 variables:
+#' # $ age   : int  11 9 10 11 9 8 11 9 10 12 ...
+#' # $ gender: chr  "Female" "Girl" "Girl" "f" ...
+#'
+#' capl_demo_data <- rename_variable(
+#'   x = capl_demo_data, 
+#'   search = c("age", "gender"),
+#'   replace = c("hello", "world")
+#' )
+#'
+#' str(capl_demo_data[, 1:2])
+#'
+#' # 'data.frame':	25 obs. of  2 variables:
+#' # $ hello: int  11 9 10 11 9 8 11 9 10 12 ...
+#' # $ world: chr  "Female" "Girl" "Girl" "f" ...
+#'
+#' @return returns The data frame with the renamed variables (if variables in the `search` argument are successfully found and renamed). 
+rename_variable <- function(x = NULL, search = NA, replace = NA) {
+  search <- validate_character(search)
+  replace <- validate_character(replace)
+  try(
+    if(is.null(x)) {
+      stop("[CAPL error]: the x argument is missing.")
+    } else if(! isTRUE("data.frame" %in% class(x))) {
+      stop("[CAPL error]: the x argument must be a data frame.")
+    } else if(sum(is.na(search)) > 0) {
+      stop("[CAPL error]: the search argument is missing or has missing values.")
+    } else if(sum(is.na(replace)) > 0) {
+      stop("[CAPL error]: the replace argument is missing or has missing values.")
+    } else if(length(search) != length(replace)) {
+      stop("[CAPL error]: the search and replace arguments must have the same length.")
+    } else if(sum(search %in% colnames(x)) < length(search)) {
+      stop("[CAPL error]: some of the variable names being searched for cannot be found.")
+    } else {
+        results <- grepl(paste0(search, collapse = "|"), colnames(x))
+        if(sum(results) > 0) {
+          colnames(x)[results] <- replace
+          return(x)
+        } else {
+		  stop("[CAPL error]: the variable names being searched for cannot be found.")
+		}
     }
   )
 }
