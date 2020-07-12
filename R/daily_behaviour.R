@@ -210,7 +210,7 @@ get_self_report_pa_score <- function(x = NA) {
 #' 
 #' # [1] 18365 12655 15493 12966 11396 13954 18456 13589 17543 11276
 #'
-#' @return Returns a data frame with nine columns: `steps1` (validated), `steps2` (validated), `steps3` (validated), `steps4` (validated), `steps5` (validated), `steps6` (validated), `steps6` (validated), `valid_days` and `step_average`. The steps are validated with the [validate_steps()] function.
+#' @return Returns a data frame with nine columns: `steps1` (validated), `steps2` (validated), `steps3` (validated), `steps4` (validated), `steps5` (validated), `steps6` (validated), `steps7` (validated), `valid_days` and `step_average`. The steps are validated with the [validate_steps()] function.
 get_step_average <- function(raw_data = NULL) {
   try(
     if(is.null(raw_data)) {

@@ -22,7 +22,7 @@ Returns a numeric vector with values between 1.5 and 7.5 (if valid) or NA (if no
 }
 \description{
 This function computes an intrinsic motivation score (\code{intrinsic_motivation_score}) for responses to items 1-3 of the the Behavioral Regulation in
-Exercise Questionnaire (BREQ) as they appear in the CAPL-2 questionnaire. This score is used to compute the motivation and confidence domain score
+Exercise Questionnaire (BREQ) as they appear in the CAPL-2 Questionnaire. This score is used to compute the motivation and confidence domain score
 (\code{mc_score}).
 }
 \details{

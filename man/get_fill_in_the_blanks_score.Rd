@@ -31,7 +31,7 @@ Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA 
 }
 \description{
 This function computes a score (\code{fill_in_the_blanks_score}) for responses to the fill in the blanks items (story about Sally) in the CAPL-2
-questionnaire. This score is used to compute the knowledge and understanding domain score (\code{ku_score}).
+Questionnaire. This score is used to compute the knowledge and understanding domain score (\code{ku_score}).
 }
 \details{
 The following integers represent the responses for the items/arguments in this function:

@@ -76,7 +76,7 @@ get_24_hour_clock <- function(x = NA) {
 #' Compute a binary score.
 #'
 #' @description
-#' This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the values set as 
+#' This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as 
 #' answer(s) to the item.
 #'
 #' @export

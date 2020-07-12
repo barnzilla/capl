@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This function computes a score (`fill_in_the_blanks_score`) for responses to the fill in the blanks items (story about Sally) in the CAPL-2
-#' questionnaire. This score is used to compute the knowledge and understanding domain score (`ku_score`).
+#' Questionnaire. This score is used to compute the knowledge and understanding domain score (`ku_score`).
 #'
 #' @export
 #'
@@ -71,7 +71,8 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 
 #' Compute a knowledge and understanding domain score. 
 #'
-#' @description Compute a knowledge and understanding domain score (`ku_score`) based on the physical activity guideline (`pa_guideline_score`), 
+#' @description 
+#' This function computes a knowledge and understanding domain score (`ku_score`) based on the physical activity guideline (`pa_guideline_score`), 
 #' cardiorespiratory fitness means (`cardiorespiratory_fitness_means_score), muscular strength and endurance means (`muscular_strength_means_score`), 
 #' sports skill (`sports_skill_score`) and fill in the blanks (`fill_in_the_blanks_score`) scores. If one of the scores is missing or invalid, a weighted
 #' domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (`capl_score`).

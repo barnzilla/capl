@@ -18,7 +18,7 @@ Returns a numeric vector with values between 1.8 and 7.5 (if valid) or NA (if no
 }
 \description{
 This function computes an adequacy score (\code{adequacy_score}) for responses to items 2, 4 and 6 of the CSAPPA (Children's Self-Perceptions of Adequacy in
-and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in the CAPL-2 questionnaire. This score is used to compute the motivation
+and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in the CAPL-2 Questionnaire. This score is used to compute the motivation
 and confidence domain score (\code{mc_score}).
 }
 \details{

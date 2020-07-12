@@ -37,7 +37,7 @@ klippy::klippy(position = c("top", "right"))
 
 <a href="https://www.capl-eclp.ca" target="_blank">The Canadian Assessment of Physical Literacy (CAPL)</a> is the first comprehensive protocol that can accurately and reliably assess a broad spectrum of skills and abilities that contribute to and characterize the physical literacy level of a participating child.
 
-Physical literacy moves beyond just fitness, motor skill or motivation in isolation. The CAPL is unique in that it can assess the multiple aspects of physical literacy: daily behaviour, motivation & confidence, knowledge & understanding, and physical competence.
+Physical literacy moves beyond just fitness, motor skill or motivation in isolation. The CAPL is unique in that it can assess the multiple aspects of physical literacy: daily behaviour, motivation and confidence, knowledge and understanding, and physical competence.
 
 The domains of physical literacy are nicely summarized in figure 1 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 6:
 
@@ -54,7 +54,7 @@ Users can download and install the source package by calling the `install.packag
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 utils::install.packages(
-  pkgs = "https://github.com/barnzilla/r-package-sources/raw/master/capl_1.0.tar.gz",
+  pkgs = "https://github.com/barnzilla/r-package-sources/raw/master/capl_1.1.tar.gz",
   repos = NULL, 
   type = "source"
 )
@@ -91,7 +91,7 @@ Before using the `capl` R package, users must first import raw data.
 The `capl` R package requires 60 variables in order to compute CAPL-2 scores and interpretations. If users look up the documentation for the `get_missing_capl_variables()` function, they will find a list of all 60 required variables in the Details section of the documentation.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
-?get_missing_capl_variables()
+?get_missing_capl_variables
 ```
 
 The `capl` R package is looking for 60 variables by the following names:
@@ -237,8 +237,28 @@ str(raw_data)
 # Rename the variables
 raw_data <- rename_variable(
   x = raw_data,
-  search = colnames(raw_data),
-  replace = c("age", "gender", "steps1", "steps2", "steps3", "steps4", "steps5", "steps6", "steps7")
+  search = c(
+    "age_years", 
+    "genders", 
+    "step_counts1", 
+    "step_counts2", 
+    "step_counts3", 
+    "step_counts4", 
+    "step_counts5", 
+    "step_counts6", 
+    "step_counts7"
+  ),
+  replace = c(
+    "age", 
+    "gender", 
+    "steps1", 
+    "steps2", 
+    "steps3", 
+    "steps4", 
+    "steps5", 
+    "steps6", 
+    "steps7"
+    )
 )
 
 # Examine the structure of this data
@@ -247,7 +267,7 @@ str(raw_data)
 
 <a name="validation"></a>
 
-### Validation vs. nosiy errors
+### Validation vs. noisy errors
 
 One of the coding philosophies behind the `capl` R package is to return NA values rather than to be "noisy" and throw errors when data is missing or invalid. In order to implement this approach, every `capl` function involves validation of data.
 
@@ -321,7 +341,7 @@ Users can learn more about these functions by accessing the documentation within
 ?validate_steps
 ```
 
-## Computing CAPL-2 scores and interpretations
+## Computing CAPL-2 scores and interpretations all at once
 
 The CAPL-2 scoring system is nicely summarized in figure 2 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 7:
 
@@ -329,21 +349,70 @@ The CAPL-2 scoring system is nicely summarized in figure 2 of <a href="https://w
 
 The main function in the `capl` R package is the `get_capl()` function. This function takes two arguments, `raw_data` and `sort` and tries to compute the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` R package. 
 
-The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means the 40 new variables will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order.
+The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means <a href="#40-new-variables">the 40 new variables</a> will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order.
 
 One of the coding philosophies behind the `capl` R package is <a href="#validation">validation</a>, that is, to return NA values rather than to be "noisy" and throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
 
 Computing the CAPL-2 scores and interpretations is as simple as executing one line of code once the raw data has been imported. This function may take some time to fully execute depending on how many rows of data are in the `raw_data` data frame.
 
 ```{r warning = FALSE, message = FALSE}
-capl_results <- get_capl(raw_data = capl_demo_data, sort = "abc")
+capl_results <- get_capl(raw_data = capl_demo_data, sort = "asis")
 ```
 
-The addition of the 40 variables related to/including the CAPL-2 scores and interpretations can be confirmed by calling the `str()` function. There are now 500 rows of participant data on 100 variables.
+The addition of <a href="#40-new-variables">the 40 variables</a> related to/including the CAPL-2 scores and interpretations can be confirmed by calling the `str()` function. There are now 500 rows of participant data on 100 variables.
 
 ```{r}
 str(capl_results, list.len = nrow(capl_results))
 ```
+
+<a name="40-new-variables"></a>
+
+### Forty variables computed by get_capl() 
+
+As a reference, the 40 new variables related to/including the CAPL-2 scores and interpretations that are output from the `get_capl()` function include:
+
+* `pacer_laps_20m`                        
+* `pacer_score`                       
+* `pacer_interpretation`  
+* `plank_score`                
+* `plank_interpretation`         
+* `camsa_time_score1`               
+* `camsa_time_score2`                    
+* `camsa_score1`                   
+* `camsa_score2`                         
+* `camsa_overall_score`                  
+* `camsa_interpretation`                  
+* `pc_score`                
+* `pc_interpretation`                     
+* `pc_status`                   
+* `step_average` 
+* `valid_days`                
+* `step_score`                        
+* `step_interpretation`                      
+* `self_report_pa_score`                  
+* `db_score`                
+* `db_interpretation`                     
+* `db_status`                   
+* `predilection_score`                  
+* `adequacy_score`                  
+* `intrinsic_motivation_score`           
+* `pa_competence_score`          
+* `mc_score`                  
+* `mc_interpretation`                    
+* `mc_status`                    
+* `pa_guideline_score`         
+* `cardiorespiratory_fitness_means_score`
+* `muscular_strength_means_score`
+* `sports_skill_score`        
+* `fill_in_the_blanks_score`             
+* `ku_score`             
+* `ku_interpretation`                    
+* `ku_status`                    
+* `capl_score`                           
+* `capl_interpretation`        
+* `capl_status`
+
+## Computing CAPL-2 scores and interpretations manually
 
 Some users may want to validate and compute individual variables and scores. The next several sections introduce the functions by domain that are called in the `get_capl()` function.
 
@@ -502,179 +571,6 @@ capl_demo_data$camsa_interpretation <- get_capl_interpretation(
   score = capl_demo_data$camsa_overall_score,
   protocol = "camsa"
 )
-
-j <- function(age = NA, gender = NA, score = NA, protocol = NA) {
-  try(
-    if(var(c(length(age), length(gender), length(score))) == 0) {
-      pacer_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(10, 25, 37, 37, 9, 19, 27, 27, 10, 27, 39, 39, 10, 21, 29, 29, 11, 28, 41, 41, 10, 21, 30, 30, 11, 30, 43, 43, 11, 23, 32, 32, 13, 33, 48, 48, 12, 26, 36, 36),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      plank_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(12.4, 72.0, 101.0, 101.0, 24.4, 59.4, 89.3, 89.3, 15.2, 74.9, 103.8, 103.8, 25.2, 61.4, 92.2, 92.2, 18.1, 77.7, 106.7, 106.7, 26.0, 63.4, 95.2, 95.2, 20.9, 80.6, 109.5, 109.5, 26.8, 65.3, 98.2, 98.2, 23.8, 83.4, 112.4, 112.4, 27.6, 67.3, 101.2, 101.2),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      camsa_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(16, 21, 23, 23, 15, 20, 21, 21, 17, 22, 23, 23, 16, 21, 22, 22, 17, 22, 24, 24, 17, 22, 23, 23, 18, 23, 25, 25, 17, 22, 24, 24, 18, 24, 26, 26, 18, 23, 25, 25),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      pc_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(13.4, 19.4, 22.0, 22.0, 13.2, 18.0, 20.3, 20.3, 13.7, 19.9, 22.5, 22.5, 13.7, 18.6, 20.9, 20.9, 14.0, 20.3, 23.0, 23.0, 14.1, 19.1, 21.6, 21.6, 14.3, 20.8, 23.6, 23.6, 14.5, 19.8, 22.3, 22.3, 14.9, 21.6, 24.5, 24.5, 15.2, 20.7, 23.3, 23.3),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      steps_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(8892, 11999, 17980, 17980, 8059, 11999, 15643, 15643, 8655, 11999, 17500, 17500, 7814, 11999, 15168, 15168, 8417, 11999, 17020, 17020, 7569, 11999, 14692, 14692, 8180, 11999, 16539, 16539, 7324, 11999, 14217, 14217, 7942, 11999, 16059, 16059, 7079, 11999, 13742, 13742),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      self_report_pa_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(4, 4, 6, 6, 4, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      db_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(8.8, 22.3, 26.9, 26.9, 10.8, 21.6, 26.2, 26.2, 8.8, 22.3, 26.9, 26.9, 10.7, 21.5, 26.1, 26.1, 8.8, 22.3, 26.9, 26.9, 10.5, 21.1, 25.7, 25.7, 8.8, 22.3, 26.9, 26.9, 10.1, 20.4, 24.8, 24.8, 8.8, 22.3, 26.9, 26.9, 10.1, 20.3, 24.7, 24.7),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      mc_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(16.3, 23.0, 25.3, 25.3, 16.2, 22.3, 24.8, 24.8, 16.7, 23.3, 25.7, 25.7, 16.2, 22.3, 24.8, 24.8, 16.8, 23.5, 26.0, 26.0, 16.2, 22.3, 24.8, 24.8, 16.8, 23.7, 26.0, 26.0, 16.2, 22.5, 25.0, 25.0, 16.8, 23.7, 26.2, 26.2, 16.3, 22.5, 25.0, 25.0),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      ku_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(4.4, 6.4, 7.2, 7.2, 4.8, 6.6, 7.3, 7.3, 4.7, 6.8, 7.6, 7.6, 5.0, 6.9, 7.7, 7.7, 5.0, 7.2, 8.1, 8.1, 5.3, 7.3, 8.1, 8.1, 5.2, 7.5, 8.4, 8.4, 5.5, 7.6, 8.4, 8.4, 5.3, 7.6, 8.5, 8.5, 5.6, 7.8, 8.6, 8.6),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      capl_lookup <- data.frame(
-        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
-        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
-        bound = c(47.3, 65.3, 72.7, 72.7, 49.6, 64.8, 71.7, 71.7, 48.8, 67.4, 75.0, 75.0, 50.6, 66.1, 73.1, 73.1, 49.8, 68.7, 76.4, 76.4, 51.2, 66.8, 73.9, 73.9, 50.2, 69.3, 77.1, 77.1, 51.3, 67.0, 74.1, 74.1, 51.6, 71.1, 79.1, 79.1, 52.1, 68.1, 75.3, 75.3),
-        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
-      )
-      empty_lookup <- data.frame(age = NA, gender = NA, bound = NA, interpretation = NA)
-      age <- validate_age(age)
-      gender <- validate_gender(gender)
-      score <- validate_number(score)
-      if(protocol == "camsa") score <- score * 2.8
-      protocol <- as.character(protocol)
-      return(
-        unname(
-          apply(data.frame(age, gender, score, rep(tolower(protocol[1]), length(age))), 1, function(x) {
-            age <- validate_age(x[1])
-            gender <- validate_gender(x[2])
-            score <- validate_number(x[3])
-            protocol <- validate_character(x[4])
-            if(! is.na(score)) {
-              if(protocol == "pacer") {
-                score <- validate_scale(score, 1, 229)
-              } else if(protocol == "plank") {
-                score <- ifelse(score < 0, NA, score)
-              } else if(protocol == "camsa") {
-                score <- validate_scale(score, 1, 28)
-                print(score)
-              } else if(protocol == "steps") {
-                score <- validate_scale(score, 1000, 30000)
-              } else if(protocol == "self_report_pa") {
-                score <- validate_scale(score, 0, 7)
-              } else if(protocol == "db") {
-                score <- validate_scale(score, 0, 30)
-              } else {
-                # Do nothing
-              }
-            }
-            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps", "self_report_pa", "db", "mc", "ku", "capl")) {
-              return(NA)
-            } else {
-              if(protocol == "pacer") {
-                lookup <- pacer_lookup
-              } else if(protocol == "plank") {
-                lookup <- plank_lookup
-              } else if(protocol == "camsa") {
-                lookup <- camsa_lookup
-              } else if(protocol == "pc") {
-                lookup <- pc_lookup
-              } else if(protocol == "steps") {
-                lookup <- steps_lookup
-              } else if(protocol == "self_report_pa") {
-                lookup <- self_report_pa_lookup
-              } else if(protocol == "db") {
-                lookup <- db_lookup
-              } else if(protocol == "mc") {
-                lookup <- mc_lookup
-              } else if(protocol == "ku") {
-                lookup <- ku_lookup
-              } else if(protocol == "capl") {
-                lookup <- capl_lookup
-              } else {
-                lookup <- empty_lookup
-              }
-              age <- floor(age)
-              lookup <- lookup[which(lookup$age == age & lookup$gender == gender),]
-              if(score < lookup$bound[lookup$interpretation == "beginning"]) {
-                return("beginning")
-              } else if(score <= lookup$bound[lookup$interpretation == "progressing"]) {
-                return("progressing")
-              } else if(score <= lookup$bound[lookup$interpretation == "achieving"]) {
-                return("achieving")
-              } else if(score > lookup$bound[lookup$interpretation == "excelling"]) {
-                return("excelling")
-              } else {
-                return(NA)
-              }
-            }
-          })
-        )
-      )
-    } else {
-      stop("[CAPL error]: the age, gender and score arguments must be the same length.")
-    }
-  )
-}
-
-capl_demo_data$camsa_interpretation <- j(
-  age = capl_demo_data$age,
-  gender = capl_demo_data$gender,
-  score = capl_demo_data$camsa_overall_score,
-  protocol = "camsa"
-)
-
-k <- validate_number(capl_demo_data$camsa_overall_score)
-k <- k * 2.8
-k
-k <- validate_scale(k, 1, 28)
-k
-
-validate_scale <- function(x, lower_bound = NA, upper_bound = NA) {
-  x <- validate_integer(x)
-  lower_bound <- validate_integer(lower_bound[1])
-  upper_bound <- validate_integer(upper_bound[1])
-  return(
-    unname(
-      sapply(x, function(x) {
-        if(sum(is.na(c(x, lower_bound, upper_bound))) > 0 | x < lower_bound | x > upper_bound) {
-          NA
-        } else {
-          x
-        }
-      })
-    )
-  )
-}
 ```
 
 ```{r warning = FALSE, message = FALSE}
@@ -731,19 +627,429 @@ capl_demo_data$pc_status
 
 ### Daily behaviour functions
 
-Incomplete.
+As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 43, the formula for computing the daily behaviour score is:
+
+<img src="img/daily-behaviour-formula.jpg" alt="daily behaviour formula" style="width: 100%; height: auto;">
+
+#### Step average
+
+The `get_step_average()` function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer. This variable is used to compute the step score.
+
+```{r warning = FALSE, message = FALSE}
+step_df <- get_step_average(
+  capl_demo_data
+)
+```
+
+The `get_step_average()` function returns a data frame with nine columns: `steps1` (validated), `steps2` (validated), `steps3` (validated), `steps4` (validated), `steps5` (validated), `steps6` (validated), `steps7` (validated), `valid_days` and `step_average`.
+
+```{r warning = FALSE, message = FALSE}
+str(step_df)
+```
+
+```{r warning = FALSE, message = FALSE}
+# Add the step average to the dataset
+capl_demo_data$step_average <- step_df$step_average
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$step_average
+```
+
+There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid day will be randomly sampled and used for the fourth valid day before computing the mean. Other important `capl` functions called by the `get_step_average()` function include: `get_pedometer_wear_time()` and `validate_steps()`.
+
+```{r warning = FALSE, message = FALSE}
+wear_time1 <- get_pedometer_wear_time(
+  time_on = capl_demo_data$time_on1,
+  time_off = capl_demo_data$time_off1,
+  non_wear_time = capl_demo_data$non_wear_time1
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+wear_time1
+```
+
+```{r warning = FALSE, message = FALSE}
+valid_steps1 <- validate_steps(
+  steps = capl_demo_data$steps1,
+  wear_time = wear_time1
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+valid_steps1
+```
+
+#### Step score
+
+The `get_step_score()` function computes a step score based on the average daily steps taken as measured by a pedometer. This score is used to compute the daily behaviour domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$step_score <- get_step_score(capl_demo_data$step_average)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$step_score
+```
+
+#### Self-reported physical activity score
+
+The `get_self_report_pa()` function computes a score for a response to "During the past week (7 days), on how many days were you physically active for a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the daily behaviour domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$self_report_pa_score <- get_self_report_pa_score(capl_demo_data$self_report_pa)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$self_report_pa_score
+```
+
+#### Daily behaviour score
+
+The `get_db_score()` function computes a daily behaviour domain score based on the step and self-reported physical activity scores. This score is used to compute the overall physical literacy score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$db_score <- get_db_score(
+  step_score = capl_demo_data$step_score,
+  self_report_pa_score = capl_demo_data$self_report_pa_score
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$db_score
+```
+
+#### Daily behaviour interpretation
+
+The `get_capl_interpretation()` function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$db_interpretation <- get_capl_interpretation(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$db_score,
+  protocol = "db"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$db_interpretation
+```
+
+#### Daily behaviour domain status
+
+The `get_capl_domain_status()` function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$db_status <- get_capl_domain_status(
+  x = capl_demo_data,
+  domain = "db"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$db_status
+```
 
 ### Motivation and confidence functions
 
-Incomplete.
+As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 79, the formula for computing the motivation and confidence score is:
+
+<img src="img/motivation-and-confidence-formula.jpg" alt="motivation and confidence formula" style="width: 100%; height: auto;">
+
+#### Predilection score
+
+The `get_predilection_score()` function computes a predilection score (`predilection_score`) for responses to items 1, 3 and 5 of the CSAPPA (Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$predilection_score <- get_predilection_score(
+  csappa1 = capl_demo_data$csappa1,
+  csappa3 = capl_demo_data$csappa3,
+  csappa5 = capl_demo_data$csappa5
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$predilection_score
+```
+
+#### Adequacy score
+
+The `get_adequacy_score()` function computes an adequacy score for responses to items 2, 4 and 6 of the CSAPPA (Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$adequacy_score <- get_adequacy_score(
+  csappa2 = capl_demo_data$csappa2,
+  csappa4 = capl_demo_data$csappa4,
+  csappa6 = capl_demo_data$csappa6
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$adequacy_score
+```
+
+#### Intrinsic motivation score
+
+The `get_intrinsic_motivation_score()` function computes an intrinsic motivation score for responses to items 1-3 of the the Behavioral Regulation in Exercise Questionnaire (BREQ) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(
+  why_are_you_active1 = capl_demo_data$why_are_you_active1,
+  why_are_you_active2 = capl_demo_data$why_are_you_active2,
+  why_are_you_active3 = capl_demo_data$why_are_you_active3
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$intrinsic_motivation_score
+```
+
+#### Physical activity competence score
+
+The `get_pa_competence_score()` function computes a physical activity competence score for responses to items 4-6 of the the Behavioral Regulation in Exercise Questionnaire (BREQ) as they appear in  <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pa_competence_score <- get_pa_competence_score(
+  feelings_about_pa1 = capl_demo_data$feelings_about_pa1,
+  feelings_about_pa2 = capl_demo_data$feelings_about_pa2,
+  feelings_about_pa3 = capl_demo_data$feelings_about_pa3
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pa_competence_score
+```
+
+#### Motivation and confidence score
+
+The `get_mc_score()` function computes a motivation and confidence domain score based on the predilection, adequacy, intrinsic motivation and physical activity competence scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other three scores. This score is used to compute the overall physical literacy score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$mc_score <- get_mc_score(
+  predilection_score = capl_demo_data$predilection_score,
+  adequacy_score = capl_demo_data$adequacy_score,
+  intrinsic_motivation_score = capl_demo_data$intrinsic_motivation_score,
+  pa_competence_score = capl_demo_data$pa_competence_score
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$mc_score
+```
+
+#### Motivation and confidence interpretation
+
+The `get_capl_interpretation()` function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$mc_interpretation <- get_capl_interpretation(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$mc_score,
+  protocol = "mc"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$mc_interpretation
+```
+
+#### Motivation and confidence domain status
+
+The `get_capl_domain_status()` function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$mc_status <- get_capl_domain_status(
+  x = capl_demo_data,
+  domain = "mc"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$mc_status
+```
 
 ### Knowledge and understanding functions
 
-Incomplete.
+As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 75, the formula for computing the knowledge and understanding score is:
+
+<img src="img/knowledge-and-understanding-formula.jpg" alt="knowledge and understanding formula" style="width: 100%; height: auto;">
+
+#### Physical activity guideline score
+
+The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pa_guideline_score <- get_binary_score(capl_demo_data$pa_guideline, c(3, "60 minutes or 1 hour"))
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pa_guideline_score
+```
+
+#### Cardiorespiratory fitness definition score
+
+The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$cardiorespiratory_fitness_means_score <- get_binary_score(capl_demo_data$cardiorespiratory_fitness_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$cardiorespiratory_fitness_means_score
+```
+
+#### Muscular strength definition score
+
+The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$muscular_strength_means_score <- get_binary_score(capl_demo_data$muscular_strength_means, c(1, "How well the muscles can push, pull or stretch"))
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$muscular_strength_means_score
+```
+
+#### Sports skill score
+
+The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$sports_skill_score <- get_binary_score(capl_demo_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$sports_skill_score
+```
+
+#### Fill in the blanks score
+
+The `get_fill_in_the_blanks_score()` function computes a score for responses to the fill in the blanks items (story about Sally) in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the knowledge and understanding domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(
+  pa_is = capl_demo_data$pa_is,
+  pa_is_also = capl_demo_data$pa_is_also,
+  improve = capl_demo_data$improve,
+  increase = capl_demo_data$increase,
+  when_cooling_down = capl_demo_data$when_cooling_down,
+  heart_rate = capl_demo_data$heart_rate
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$fill_in_the_blanks_score
+```
+
+#### Knowledge and understanding score
+
+The `get_ku_score()` function computes a knowledge and understanding domain score based on the physical activity guideline, cardiorespiratory fitness means, muscular strength and endurance means, sports skill and fill in the blanks scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$ku_score <- get_ku_score(
+  pa_guideline_score = capl_demo_data$pa_guideline_score,
+  cardiorespiratory_fitness_means_score = capl_demo_data$cardiorespiratory_fitness_means_score,
+  muscular_strength_means_score = capl_demo_data$muscular_strength_means_score,
+  sports_skill_score = capl_demo_data$sports_skill_score,
+  fill_in_the_blanks_score = capl_demo_data$fill_in_the_blanks_score
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$ku_score
+```
+
+#### Knowledge and understanding interpretation
+
+The `get_capl_interpretation()` function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$ku_interpretation <- get_capl_interpretation(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$ku_score,
+  protocol = "ku"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$ku_interpretation
+```
+
+#### Knowledge and understanding domain status
+
+The `get_capl_domain_status()` function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$ku_status <- get_capl_domain_status(
+  x = capl_demo_data,
+  domain = "ku"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$ku_status
+```
 
 ### Overall physical literacy functions
 
-Incomplete.
+### Knowledge and understanding functions
+
+As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 17, the formula for computing the overall physical literacy score is:
+
+<img src="img/overall-physical-literacy-formula.jpg" alt="overall physical literacy formula" style="width: 100%; height: auto;">
+
+#### Overall physical literacy score
+
+The `get_capl_score()` function computes an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$capl_score <- get_capl_score(
+  pc_score = capl_demo_data$pc_score,
+  db_score = capl_demo_data$db_score,
+  mc_score = capl_demo_data$mc_score,
+  ku_score = capl_demo_data$ku_score
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$capl_score
+```
+
+#### Overall physical literacy interpretation
+
+The `get_capl_interpretation()` function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$capl_interpretation <- get_capl_interpretation(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$capl_score,
+  protocol = "capl"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$capl_interpretation
+```
+
+#### Overall physical literacy domain status
+
+The `get_capl_domain_status()` function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$capl_status <- get_capl_domain_status(
+  x = capl_demo_data,
+  domain = "capl"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$capl_status
+```
 
 ## Data visualization
 

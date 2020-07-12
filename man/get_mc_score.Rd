@@ -24,10 +24,10 @@ get_mc_score(
 Returns a numeric vector with values between 0 and 30 (if valid) or NA (if not valid).
 }
 \description{
-Compute a motivation and confidence domain score (\code{mc_score}) based on the predilection (\code{predilection_score}), adequacy (\code{adequacy_score}),
-intrinsic motivation (\code{intrinsic_motivation_score}) and physical activity competence (\code{pa_competence_score}) scores. If one of the scores is missing or
-invalid, a weighted domain score will be computed from the other three scores. This score is used to compute the overall physical literacy score
-(\code{capl_score}).
+This function computes a motivation and confidence domain score (\code{mc_score}) based on the predilection (\code{predilection_score}), adequacy
+(\code{adequacy_score}), intrinsic motivation (\code{intrinsic_motivation_score}) and physical activity competence (\code{pa_competence_score}) scores. If one of the
+scores is missing or invalid, a weighted domain score will be computed from the other three scores. This score is used to compute the overall physical
+literacy score (\code{capl_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_number]{validate_number()}}.

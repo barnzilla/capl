@@ -11,7 +11,7 @@ get_step_average(raw_data = NULL)
 must be named.}
 }
 \value{
-Returns a data frame with nine columns: \code{steps1} (validated), \code{steps2} (validated), \code{steps3} (validated), \code{steps4} (validated), \code{steps5} (validated), \code{steps6} (validated), \code{steps6} (validated), \code{valid_days} and \code{step_average}. The steps are validated with the \code{\link[=validate_steps]{validate_steps()}} function.
+Returns a data frame with nine columns: \code{steps1} (validated), \code{steps2} (validated), \code{steps3} (validated), \code{steps4} (validated), \code{steps5} (validated), \code{steps6} (validated), \code{steps7} (validated), \code{valid_days} and \code{step_average}. The steps are validated with the \code{\link[=validate_steps]{validate_steps()}} function.
 }
 \description{
 This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer (\code{step_average}). This variable is used to compute

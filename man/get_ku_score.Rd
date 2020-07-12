@@ -27,7 +27,7 @@ get_ku_score(
 Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
 }
 \description{
-Compute a knowledge and understanding domain score (\code{ku_score}) based on the physical activity guideline (\code{pa_guideline_score}),
+This function computes a knowledge and understanding domain score (\code{ku_score}) based on the physical activity guideline (\code{pa_guideline_score}),
 cardiorespiratory fitness means (\verb{cardiorespiratory_fitness_means_score), muscular strength and endurance means (}muscular_strength_means_score\verb{),  sports skill (}sports_skill_score\verb{) and fill in the blanks (}fill_in_the_blanks_score\verb{) scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (}capl_score`).
 }
 \details{

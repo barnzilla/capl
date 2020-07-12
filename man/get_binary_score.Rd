@@ -16,7 +16,7 @@ in case for a correct answer to be computed.}
 Returns 1 (if correct), 0 (if incorrect) or NA (if not valid).
 }
 \description{
-This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the values set as
+This function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as
 answer(s) to the item.
 }
 \details{
