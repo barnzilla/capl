@@ -41,7 +41,7 @@ Physical literacy moves beyond just fitness, motor skill or motivation in isolat
 
 The domains of physical literacy are nicely summarized in figure 1 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 6:
 
-<img src="img/domains-of-physical-literacy.jpg" alt="domains of physical literacy" style="width: 100%; height: auto;">
+<img src="img/domains-of-physical-literacy.jpg" alt="domains of physical literacy" style="width: 75%; height: auto; display: block; margin-left: auto; margin-right: auto;">
 
 <a href="https://www.haloresearch.ca" target="_blank">The Healthy Active Living and Obesity Research Group (HALO)</a> have been responsible for the systematic development of the CAPL since 2008. HALO’s test development efforts have been informed by the assessment of more than 10,000 children and with input from well over 100 researchers and practitioners within related fields of study.
 
@@ -245,6 +245,82 @@ raw_data <- rename_variable(
 str(raw_data)
 ```
 
+<a name="validation"></a>
+
+### Validation vs. nosiy errors
+
+One of the coding philosophies behind the `capl` R package is to return NA values rather than to be "noisy" and throw errors when data is missing or invalid. In order to implement this approach, every `capl` function involves validation of data.
+
+#### Validation of age
+
+For example, the Canadian Asssessment of Physical Literacy is currently valid for 8- to 12-year-old children. When a function requires the `age` variable in order to execute a computation (e.g., `get_capl_interpretation()`), the `age` variable is validated via the `validate_age()` function.
+
+```{r}
+validated_age <- validate_age(c(7, 8, 9, 10, 11, 12, 13, "", NA, "12", 8.5))
+```
+
+Notice the NA values in the results.
+
+```{r}
+validated_age
+```
+
+The first element is NA because the original value is 7. The next five elements are identical to their original values because they are integers between 8 and 12. The seventh element is NA because the original value is 13. The next two elements are NA because the original values ("" and NA) are obviously invalid. The last element is 8, but notice that the original value is a decimal. Because 8.5 is between 8 and 12, it is considered valid but the floor of the value is returned since CAPL performs age-specific computations based on integer age.
+
+#### Validation of gender
+
+The Canadian Asssessment of Physical Literacy is currently valid for children who identify as boys or girls. When a function requires the `gener` variable in order to execute a computation (e.g., `get_capl_interpretation()`), the `gender` variable is validated via the `validate_gender()` function.
+
+```{r}
+validated_gender <- validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
+```
+
+Notice the results.
+
+```{r}
+validated_gender
+```
+
+This function accepts a number of case-insensitive options (e.g., "Girl", "G", "Female", "F", 1) for the female gender and returns a standardized "girl" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA).
+
+```{r}
+validated_gender <- validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA, 0))
+```
+
+Notice the results again.
+
+```{r}
+validated_gender
+```
+
+This function also accepts a number of case-insensitive options (e.g., "Boy", "B", "Male", "M", 0) for the male gender and returns a standardized "boy" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA).
+
+#### Validation functions
+
+There are eight validation functions included in the `capl` R package to help provide a "quiet" user experience:
+
+* `validate_age()`
+* `validate_character()`
+* `validate_domain_score()`
+* `validate_gender()`
+* `validate_integer()`
+* `validate_number()`
+* `validate_scale()`
+* `validate_steps()`
+
+Users can learn more about these functions by accessing the documentation within the R environment.
+
+```{r eval = FALSE}
+?validate_age
+?validate_character
+?validate_domain_score
+?validate_gender
+?validate_integer
+?validate_number
+?validate_scale
+?validate_steps
+```
+
 ## Computing CAPL-2 scores and interpretations
 
 The CAPL-2 scoring system is nicely summarized in figure 2 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 7:
@@ -255,7 +331,7 @@ The main function in the `capl` R package is the `get_capl()` function. This fun
 
 The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means the 40 new variables will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order.
 
-One of the coding philosophies behind the `capl` R package is to return NA values rather than throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
+One of the coding philosophies behind the `capl` R package is <a href="#validation">validation</a>, that is, to return NA values rather than to be "noisy" and throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
 
 Computing the CAPL-2 scores and interpretations is as simple as executing one line of code once the raw data has been imported. This function may take some time to fully execute depending on how many rows of data are in the `raw_data` data frame.
 
@@ -321,16 +397,6 @@ capl_demo_data$pacer_interpretation <- get_capl_interpretation(
 capl_demo_data$pacer_interpretation
 ```
 
-Note: the `validate_gender()` function is called by the `get_capl_interpretation()` to validate/standardize values for the gender variable before performing any computations. There are a number of values that are currently accepted.
-
-```{r warning = FALSE, message = FALSE}
-validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
-```
-
-```{r warning = FALSE, message = FALSE}
-validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA, 0))
-```
-
 #### Plank score
 
 The `get_plank_score()` function computes a plank score based on the duration of time (in seconds) for which a plank is held. This score is used to compute the physical competence domain score.
@@ -360,16 +426,6 @@ capl_demo_data$plank_interpretation <- get_capl_interpretation(
 capl_demo_data$plank_interpretation
 ```
 
-Note: the `validate_gender()` function is called by the `get_capl_interpretation()` to validate/standardize values for the gender variable before performing any computations. There are a number of values that are currently accepted.
-
-```{r warning = FALSE, message = FALSE}
-validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
-```
-
-```{r warning = FALSE, message = FALSE}
-validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA, 0))
-```
-
 #### CAMSA time score
 
 The `get_camsa_time()` function computes the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken (in seconds) to complete a trial.
@@ -390,6 +446,114 @@ capl_demo_data$camsa_time_score1
 ```{r warning = FALSE, message = FALSE}
 # Time scores for trial 2
 capl_demo_data$camsa_time_score2
+```
+
+#### CAMSA skill + time score
+
+The `get_camsa_trial_score()` function computes the CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for a given trial. This score is used to compute the CAMSA overall score.
+
+```{r warning = FALSE, message = FALSE}
+# Trial 1
+capl_demo_data$camsa_score1 <- get_camsa_trial_score(
+  camsa_skill_score = capl_demo_data$camsa_skill_score1,
+  camsa_time_score = capl_demo_data$camsa_time_score1
+)
+
+# Trial 2
+capl_demo_data$camsa_score2 <- get_camsa_trial_score(
+  camsa_skill_score = capl_demo_data$camsa_skill_score2,
+  camsa_time_score = capl_demo_data$camsa_time_score2
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+# Time scores for trial 1
+capl_demo_data$camsa_score1
+```
+
+```{r warning = FALSE, message = FALSE}
+# Time scores for trial 2
+capl_demo_data$camsa_score2
+```
+
+#### CAMSA overall score
+
+The `get_camsa_overall_score()` function computes the maximum CAMSA (Canadian Agility and Movement Skill Assessment) skill + time score for two trials and then divides by 2.8 so that the score is out of 10. This score is used to compute the physical literacy score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$camsa_overall_score <- get_camsa_overall_score(
+  camsa_score1 = capl_demo_data$camsa_score1,
+  camsa_score2 = capl_demo_data$camsa_score2
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$camsa_overall_score
+```
+
+#### CAMSA interpretation
+
+The `get_capl_interpretation()` function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$camsa_interpretation <- get_capl_interpretation(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$camsa_overall_score,
+  protocol = "camsa"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$camsa_interpretation
+```
+
+#### Physical competence score
+
+The `get_pc_score()` function computes a physical competence domain score based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and CAMSA (Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from the other two protocol scores. This score is used to compute the physical competence domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pc_score <- get_pc_score(
+  pacer_score = capl_demo_data$pacer_score,
+  plank_score = capl_demo_data$plank_score,
+  camsa_overall_score = capl_demo_data$camsa_overall_score
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pc_score
+```
+
+#### Physical competence interpretation
+
+The `get_capl_interpretation()` function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pc_interpretation <- get_capl_interpretation(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$pc_score,
+  protocol = "pc"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pc_interpretation
+```
+
+#### Physical competence domain status
+
+The `get_capl_domain_status()` function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain.
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pc_status <- get_capl_domain_status(
+  x = capl_demo_data,
+  domain = "pc"
+)
+```
+
+```{r warning = FALSE, message = FALSE}
+capl_demo_data$pc_status
 ```
 
 ### Daily behaviour functions
