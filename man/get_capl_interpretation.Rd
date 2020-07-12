@@ -23,8 +23,8 @@ Returns a character vector with values of "beginning", "progressing", "achieving
 This function computes an age- and gender-specific CAPL-2 interpretation for a given CAPL-2 protocol or domain score (e.g., \code{pc_interpretation}).
 }
 \details{
-Other \code{capl} functions called by this function include: \code{\link[=validate_age]{validate_age()}}, \code{\link[=validate_gender]{validate_gender()}}, \code{\link[=validate_number]{validate_number()}} and \code{\link[=validate_scale]{validate_scale()}}. This function
-will check whether a score for a given protocol is within a valid range; if not, NA will be returned.
+Other \code{capl} functions called by this function include: \code{\link[=validate_age]{validate_age()}}, \code{\link[=validate_gender]{validate_gender()}}, \code{\link[=validate_character]{validate_character()}}, \code{\link[=validate_number]{validate_number()}} and
+\code{\link[=validate_scale]{validate_scale()}}. This function will check whether a score for a given protocol is within a valid range; if not, NA will be returned.
 }
 \examples{
 get_capl_interpretation(

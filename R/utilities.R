@@ -672,7 +672,7 @@ validate_integer <- function(x) {
   return(
     unname(
       sapply(x, function(x) {
-        if(is.na(x) | suppressWarnings(grepl("[.]", as.character(x)))) {
+        if(is.na(x) | x %% 1 > 0) {
           NA
         } else {
           x

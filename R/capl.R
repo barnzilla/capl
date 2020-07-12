@@ -234,8 +234,8 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
 #' "self_report_pa", "db", "mc", "ku", "capl"; valid values are not case-sensitive).
 #'
 #' @details
-#' Other `capl` functions called by this function include: [validate_age()], [validate_gender()], [validate_number()] and [validate_scale()]. This function
-#' will check whether a score for a given protocol is within a valid range; if not, NA will be returned.
+#' Other `capl` functions called by this function include: [validate_age()], [validate_gender()], [validate_character()], [validate_number()] and
+#' [validate_scale()]. This function will check whether a score for a given protocol is within a valid range; if not, NA will be returned.
 #'
 #' @examples
 #' get_capl_interpretation(
@@ -313,26 +313,38 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
         interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
       )
       empty_lookup <- data.frame(age = NA, gender = NA, bound = NA, interpretation = NA)
+	  age <- validate_age(age)
+      gender <- validate_gender(gender)
+      score <- validate_number(score)
+	  protocol <- validate_character(protocol)
+      if(protocol == "camsa") {
+		score <- score * 2.8
+	  } 
       return(
         unname(
           apply(data.frame(age, gender, score, rep(tolower(protocol[1]), length(age))), 1, function(x) {
             age <- validate_age(x[1])
             gender <- validate_gender(x[2])
-            protocol <- as.character(x[4])
             score <- validate_number(x[3])
+			protocol <- as.character(x[4])
             if(! is.na(score)) {
               if(protocol == "pacer") {
-                score <- validate_scale(x[3], 1, 229)
+                score <- validate_scale(score, 1, 229)
               } else if(protocol == "plank") {
                 score <- ifelse(score < 0, NA, score)
               } else if(protocol == "camsa") {
-                score <- validate_scale(x[3] * 2.8, 1, 28)
+				score <- suppressWarnings(as.numeric(score))
+                if(is.na(score) | score %% 1 > 0.000001 | score < 1 | score > 28) {
+				  score <- NA
+				} else {
+				  score <- score
+				}
               } else if(protocol == "steps") {
-                score <- validate_scale(x[3], 1000, 30000)
+                score <- validate_scale(score, 1000, 30000)
               } else if(protocol == "self_report_pa") {
-                score <- validate_scale(x[3], 0, 7)
+                score <- validate_scale(score, 0, 7)
               } else if(protocol == "db") {
-                score <- validate_scale(x[3], 0, 30)
+                score <- validate_scale(score, 0, 30)
               } else {
                 # Do nothing
               }

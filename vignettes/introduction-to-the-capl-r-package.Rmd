@@ -502,6 +502,179 @@ capl_demo_data$camsa_interpretation <- get_capl_interpretation(
   score = capl_demo_data$camsa_overall_score,
   protocol = "camsa"
 )
+
+j <- function(age = NA, gender = NA, score = NA, protocol = NA) {
+  try(
+    if(var(c(length(age), length(gender), length(score))) == 0) {
+      pacer_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(10, 25, 37, 37, 9, 19, 27, 27, 10, 27, 39, 39, 10, 21, 29, 29, 11, 28, 41, 41, 10, 21, 30, 30, 11, 30, 43, 43, 11, 23, 32, 32, 13, 33, 48, 48, 12, 26, 36, 36),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      plank_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(12.4, 72.0, 101.0, 101.0, 24.4, 59.4, 89.3, 89.3, 15.2, 74.9, 103.8, 103.8, 25.2, 61.4, 92.2, 92.2, 18.1, 77.7, 106.7, 106.7, 26.0, 63.4, 95.2, 95.2, 20.9, 80.6, 109.5, 109.5, 26.8, 65.3, 98.2, 98.2, 23.8, 83.4, 112.4, 112.4, 27.6, 67.3, 101.2, 101.2),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      camsa_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(16, 21, 23, 23, 15, 20, 21, 21, 17, 22, 23, 23, 16, 21, 22, 22, 17, 22, 24, 24, 17, 22, 23, 23, 18, 23, 25, 25, 17, 22, 24, 24, 18, 24, 26, 26, 18, 23, 25, 25),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      pc_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(13.4, 19.4, 22.0, 22.0, 13.2, 18.0, 20.3, 20.3, 13.7, 19.9, 22.5, 22.5, 13.7, 18.6, 20.9, 20.9, 14.0, 20.3, 23.0, 23.0, 14.1, 19.1, 21.6, 21.6, 14.3, 20.8, 23.6, 23.6, 14.5, 19.8, 22.3, 22.3, 14.9, 21.6, 24.5, 24.5, 15.2, 20.7, 23.3, 23.3),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      steps_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(8892, 11999, 17980, 17980, 8059, 11999, 15643, 15643, 8655, 11999, 17500, 17500, 7814, 11999, 15168, 15168, 8417, 11999, 17020, 17020, 7569, 11999, 14692, 14692, 8180, 11999, 16539, 16539, 7324, 11999, 14217, 14217, 7942, 11999, 16059, 16059, 7079, 11999, 13742, 13742),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      self_report_pa_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(4, 4, 6, 6, 4, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6, 4, 4, 6, 6, 3, 4, 6, 6),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      db_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(8.8, 22.3, 26.9, 26.9, 10.8, 21.6, 26.2, 26.2, 8.8, 22.3, 26.9, 26.9, 10.7, 21.5, 26.1, 26.1, 8.8, 22.3, 26.9, 26.9, 10.5, 21.1, 25.7, 25.7, 8.8, 22.3, 26.9, 26.9, 10.1, 20.4, 24.8, 24.8, 8.8, 22.3, 26.9, 26.9, 10.1, 20.3, 24.7, 24.7),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      mc_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(16.3, 23.0, 25.3, 25.3, 16.2, 22.3, 24.8, 24.8, 16.7, 23.3, 25.7, 25.7, 16.2, 22.3, 24.8, 24.8, 16.8, 23.5, 26.0, 26.0, 16.2, 22.3, 24.8, 24.8, 16.8, 23.7, 26.0, 26.0, 16.2, 22.5, 25.0, 25.0, 16.8, 23.7, 26.2, 26.2, 16.3, 22.5, 25.0, 25.0),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      ku_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(4.4, 6.4, 7.2, 7.2, 4.8, 6.6, 7.3, 7.3, 4.7, 6.8, 7.6, 7.6, 5.0, 6.9, 7.7, 7.7, 5.0, 7.2, 8.1, 8.1, 5.3, 7.3, 8.1, 8.1, 5.2, 7.5, 8.4, 8.4, 5.5, 7.6, 8.4, 8.4, 5.3, 7.6, 8.5, 8.5, 5.6, 7.8, 8.6, 8.6),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      capl_lookup <- data.frame(
+        age = c(rep(8, 8), rep(9, 8), rep(10, 8), rep(11, 8), rep(12, 8)),
+        gender = c(rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4), rep("boy", 4), rep("girl", 4)),
+        bound = c(47.3, 65.3, 72.7, 72.7, 49.6, 64.8, 71.7, 71.7, 48.8, 67.4, 75.0, 75.0, 50.6, 66.1, 73.1, 73.1, 49.8, 68.7, 76.4, 76.4, 51.2, 66.8, 73.9, 73.9, 50.2, 69.3, 77.1, 77.1, 51.3, 67.0, 74.1, 74.1, 51.6, 71.1, 79.1, 79.1, 52.1, 68.1, 75.3, 75.3),
+        interpretation = rep(c("beginning", "progressing", "achieving", "excelling"), 10)
+      )
+      empty_lookup <- data.frame(age = NA, gender = NA, bound = NA, interpretation = NA)
+      age <- validate_age(age)
+      gender <- validate_gender(gender)
+      score <- validate_number(score)
+      if(protocol == "camsa") score <- score * 2.8
+      protocol <- as.character(protocol)
+      return(
+        unname(
+          apply(data.frame(age, gender, score, rep(tolower(protocol[1]), length(age))), 1, function(x) {
+            age <- validate_age(x[1])
+            gender <- validate_gender(x[2])
+            score <- validate_number(x[3])
+            protocol <- validate_character(x[4])
+            if(! is.na(score)) {
+              if(protocol == "pacer") {
+                score <- validate_scale(score, 1, 229)
+              } else if(protocol == "plank") {
+                score <- ifelse(score < 0, NA, score)
+              } else if(protocol == "camsa") {
+                score <- validate_scale(score, 1, 28)
+                print(score)
+              } else if(protocol == "steps") {
+                score <- validate_scale(score, 1000, 30000)
+              } else if(protocol == "self_report_pa") {
+                score <- validate_scale(score, 0, 7)
+              } else if(protocol == "db") {
+                score <- validate_scale(score, 0, 30)
+              } else {
+                # Do nothing
+              }
+            }
+            if(sum(is.na(c(age, gender, score, protocol))) > 0 | ! protocol %in% c("pacer", "plank", "camsa", "pc", "steps", "self_report_pa", "db", "mc", "ku", "capl")) {
+              return(NA)
+            } else {
+              if(protocol == "pacer") {
+                lookup <- pacer_lookup
+              } else if(protocol == "plank") {
+                lookup <- plank_lookup
+              } else if(protocol == "camsa") {
+                lookup <- camsa_lookup
+              } else if(protocol == "pc") {
+                lookup <- pc_lookup
+              } else if(protocol == "steps") {
+                lookup <- steps_lookup
+              } else if(protocol == "self_report_pa") {
+                lookup <- self_report_pa_lookup
+              } else if(protocol == "db") {
+                lookup <- db_lookup
+              } else if(protocol == "mc") {
+                lookup <- mc_lookup
+              } else if(protocol == "ku") {
+                lookup <- ku_lookup
+              } else if(protocol == "capl") {
+                lookup <- capl_lookup
+              } else {
+                lookup <- empty_lookup
+              }
+              age <- floor(age)
+              lookup <- lookup[which(lookup$age == age & lookup$gender == gender),]
+              if(score < lookup$bound[lookup$interpretation == "beginning"]) {
+                return("beginning")
+              } else if(score <= lookup$bound[lookup$interpretation == "progressing"]) {
+                return("progressing")
+              } else if(score <= lookup$bound[lookup$interpretation == "achieving"]) {
+                return("achieving")
+              } else if(score > lookup$bound[lookup$interpretation == "excelling"]) {
+                return("excelling")
+              } else {
+                return(NA)
+              }
+            }
+          })
+        )
+      )
+    } else {
+      stop("[CAPL error]: the age, gender and score arguments must be the same length.")
+    }
+  )
+}
+
+capl_demo_data$camsa_interpretation <- j(
+  age = capl_demo_data$age,
+  gender = capl_demo_data$gender,
+  score = capl_demo_data$camsa_overall_score,
+  protocol = "camsa"
+)
+
+k <- validate_number(capl_demo_data$camsa_overall_score)
+k <- k * 2.8
+k
+k <- validate_scale(k, 1, 28)
+k
+
+validate_scale <- function(x, lower_bound = NA, upper_bound = NA) {
+  x <- validate_integer(x)
+  lower_bound <- validate_integer(lower_bound[1])
+  upper_bound <- validate_integer(upper_bound[1])
+  return(
+    unname(
+      sapply(x, function(x) {
+        if(sum(is.na(c(x, lower_bound, upper_bound))) > 0 | x < lower_bound | x > upper_bound) {
+          NA
+        } else {
+          x
+        }
+      })
+    )
+  )
+}
 ```
 
 ```{r warning = FALSE, message = FALSE}
