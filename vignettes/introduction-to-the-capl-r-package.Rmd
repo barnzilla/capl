@@ -295,7 +295,7 @@ validated_gender
 
 This function also accepts a number of case-insensitive options (e.g., "Boy", "B", "Male", "M", 0) for the male gender and returns a standardized "boy" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA).
 
-#### Validation functions
+#### Validation functions in the capl R package
 
 There are eight validation functions included in the `capl` R package to help provide a "quiet" user experience:
 

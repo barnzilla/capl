@@ -326,7 +326,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
               } else if(protocol == "plank") {
                 score <- ifelse(score < 0, NA, score)
               } else if(protocol == "camsa") {
-                score <- validate_scale(score * 2.8, 1, 28)
+                score <- validate_scale(x[3] * 2.8, 1, 28)
               } else if(protocol == "steps") {
                 score <- validate_scale(x[3], 1000, 30000)
               } else if(protocol == "self_report_pa") {
