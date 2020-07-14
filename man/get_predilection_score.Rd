@@ -18,7 +18,7 @@ Returns a numeric vector with values between 1.8 and 7.5 (if valid) or NA (if no
 }
 \description{
 This function computes a predilection score (\code{predilection_score}) for responses to items 1, 3 and 5 of the CSAPPA (Children's Self-Perceptions of
-Adequacy in and Predilection for Physical Activity; Hay, 1992) Questionnaire as they appear in the CAPL-2 Questionnaire. This score is used to compute
+Adequacy in and Predilection for Physical Activity; Hay, 1992) Questionnaire as they appear in \href{https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf}{the CAPL-2 Questionnaire}. This score is used to compute
 the motivation and confidence domain score (\code{mc_score}).
 }
 \details{
