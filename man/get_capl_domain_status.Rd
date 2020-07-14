@@ -25,7 +25,7 @@ If the \code{domain} argument is set to "pc", the following variables must be in
 \item \code{pc_interpretation}
 \item \code{pacer_score}
 \item \code{plank_score}
-\item \code{camsa_overall_score}
+\item \code{camsa_score}
 }
 
 If the \code{domain} argument is set to "db", the following variables must be included the \code{x} argument:

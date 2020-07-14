@@ -10,7 +10,7 @@ validate_age(x)
 \item{x}{A numeric vector.}
 }
 \value{
-returns A numeric (integer) vector with a value between 8 and 12 (if valid) or NA (if not valid).
+Returns a numeric (integer) vector with a value between 8 and 12 (if valid) or NA (if not valid).
 }
 \description{
 This function checks whether an age is valid (numeric and between 8 and 12). CAPL-2 scores and interpretations are valid for children between the ages

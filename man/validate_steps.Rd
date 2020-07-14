@@ -28,6 +28,6 @@ validate_steps(
   wear_time = c(10.1, 12.6, 10.2, 10.9, 9.5)
 )
 
-# [1] "yes" "yes" "no"  "no"  "no" 
+# [1]  5400 11001    NA    NA    NA
 
 }

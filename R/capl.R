@@ -7,12 +7,12 @@
 #' @export
 #'
 #' @param raw_data A data frame of raw CAPL-2 data.
-#' @param sort A character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc" and "zyx"; valid
-#' values are not case-sensitive). This argument is set to "asis" by default.
+#' @param sort An optional character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc" 
+#' and "zyx"; valid values are not case-sensitive). This argument is set to "asis" by default.
 #'
 #' @details
 #' Other `capl` functions called by this function include: [get_missing_capl_variables()], [get_pacer_20m_laps()], [get_pacer_score()],
-#' [get_capl_interpretation()], [get_plank_score()], [get_camsa_time_score()], [get_camsa_trial_score()], [get_camsa_overall_score()], [get_pc_score()],
+#' [get_capl_interpretation()], [get_plank_score()], [get_camsa_time_score()], [get_camsa_skill_time_score()], [get_camsa_score()], [get_pc_score()],
 #' [get_capl_domain_status()], [get_pedometer_wear_time()], [validate_steps()], [get_step_average()], [get_step_score()],
 #' [get_self_report_pa_score()], [get_db_score()], [get_predilection_score()], [get_adequacy_score()],
 #' [get_intrinsic_motivation_score()], [get_pa_competence_score()], [get_mc_score()], [get_binary_score()], [get_fill_in_the_blanks_score()],
@@ -43,11 +43,11 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$plank_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$plank_time, "plank")
       raw_data$camsa_time_score1 <- get_camsa_time_score(raw_data$camsa_time1)
       raw_data$camsa_time_score2 <- get_camsa_time_score(raw_data$camsa_time2)
-      raw_data$camsa_score1 <- get_camsa_trial_score(raw_data$camsa_skill_score1, raw_data$camsa_time_score1)
-      raw_data$camsa_score2 <- get_camsa_trial_score(raw_data$camsa_skill_score2, raw_data$camsa_time_score2)
-      raw_data$camsa_overall_score <- get_camsa_overall_score(raw_data$camsa_score1, raw_data$camsa_score2)
-      raw_data$camsa_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$camsa_overall_score, "camsa")
-      raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_overall_score)
+      raw_data$camsa_skill_time_score1 <- get_camsa_skill_time_score(raw_data$camsa_skill_score1, raw_data$camsa_time_score1)
+      raw_data$camsa_skill_time_score2 <- get_camsa_skill_time_score(raw_data$camsa_skill_score2, raw_data$camsa_time_score2)
+      raw_data$camsa_score <- get_camsa_score(raw_data$camsa_skill_time_score1, raw_data$camsa_skill_time_score2)
+      raw_data$camsa_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$camsa_score, "camsa")
+      raw_data$pc_score <- get_pc_score(raw_data$pacer_score, raw_data$plank_score, raw_data$camsa_score)
       raw_data$pc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$pc_score, "pc")
       raw_data$pc_status <- get_capl_domain_status(raw_data, "pc")
 
@@ -118,7 +118,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' * `pc_interpretation`
 #' * `pacer_score`
 #' * `plank_score`
-#' * `camsa_overall_score` 
+#' * `camsa_score` 
 #'
 #' If the `domain` argument is set to "db", the following variables must be included the `x` argument:
 #' * `db_score`
@@ -177,7 +177,7 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
       stop("[CAPL error]: the domain argument value is not valid (valid values are 'pc', 'db', 'mc', 'ku' or 'capl').")
     } else {
       if(domain == "pc") {
-        required_variables <- c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_overall_score")
+        required_variables <- c("pc_score", "pc_interpretation", "pacer_score", "plank_score", "camsa_score")
       } else if(domain == "db") {
         required_variables <- c("db_score", "db_interpretation", "step_score", "self_report_pa_score")
       } else if(domain == "mc") {

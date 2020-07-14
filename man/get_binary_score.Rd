@@ -25,14 +25,14 @@ This function is called by \code{\link[=get_fill_in_the_blanks_score]{get_fill_i
 \examples{
 get_binary_score(
   x = c(1:4, NA, ""),
- answer = 3
+  answer = 3
 )
 
 # [1]  0  0  1  0 NA  0
 
 get_binary_score(
   x = c("20 minutes", "30 minutes", "60 minutes or 1 hour", "120 minutes or 2 hours"),
- answer = "60 minutes or 1 hour"
+  answer = "60 minutes or 1 hour"
 )
 
 # [1] 0 0 1 0

@@ -2,7 +2,7 @@
 #'
 #' @description
 #' This function computes an adequacy score (`adequacy_score`) for responses to items 2, 4 and 6 of the CSAPPA (Children's Self-Perceptions of Adequacy in 
-#' and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in the CAPL-2 Questionnaire. This score is used to compute the motivation
+#' and Predilection for Physical Activity; Hay, 1992) Questionnaire as they appear in the CAPL-2 Questionnaire. This score is used to compute the motivation
 #' and confidence domain score (`mc_score`).
 #'
 #' @export
@@ -238,7 +238,7 @@ get_pa_competence_score <- function(feelings_about_pa1 = NA, feelings_about_pa2 
 #'
 #' @description
 #' This function computes a predilection score (`predilection_score`) for responses to items 1, 3 and 5 of the CSAPPA (Children's Self-Perceptions of
-#' Adequacy in and Predilection for Physical Activity; Hay, 1992) questionnaire as they appear in the CAPL-2 Questionnaire. This score is used to compute
+#' Adequacy in and Predilection for Physical Activity; Hay, 1992) Questionnaire as they appear in the CAPL-2 Questionnaire. This score is used to compute
 #' the motivation and confidence domain score (`mc_score`).
 #'
 #' @export

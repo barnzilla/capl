@@ -360,7 +360,7 @@ get_step_score <- function(step_average = NA) {
 #'   wear_time = c(10.1, 12.6, 10.2, 10.9, 9.5)
 #' )
 #'
-#' # [1] "yes" "yes" "no"  "no"  "no" 
+#' # [1]  5400 11001    NA    NA    NA
 #'
 #' @return Returns the `steps` argument (if valid) or NA (if not valid).
 validate_steps <- function(steps = NA, wear_time = NA) {

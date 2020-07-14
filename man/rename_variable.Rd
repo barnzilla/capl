@@ -14,7 +14,7 @@ rename_variable(x = NULL, search = NA, replace = NA)
 \item{replace}{A character vector representing the new names for those variables identified in the \code{search} argument.}
 }
 \value{
-returns The data frame with the renamed variables (if variables in the \code{search} argument are successfully found and renamed).
+Returns a data frame with the renamed variables (if variables in the \code{search} argument are successfully found and renamed).
 }
 \description{
 This function renames variables in a data frame.

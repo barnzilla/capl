@@ -4,14 +4,14 @@
 \alias{get_pc_score}
 \title{Compute a physical competence domain score.}
 \usage{
-get_pc_score(pacer_score = NA, plank_score = NA, camsa_overall_score = NA)
+get_pc_score(pacer_score = NA, plank_score = NA, camsa_score = NA)
 }
 \arguments{
 \item{pacer_score}{A numeric (integer) vector representing the PACER score (valid values are integers between 0 and 10).}
 
 \item{plank_score}{a numeric (integer) vector representing the plank score (valid values are integers between 0 and 10).}
 
-\item{camsa_overall_score}{A numeric vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).}
+\item{camsa_score}{A numeric vector representing the best CAMSA skill + skill score divided by 2.8 (valid values are between 0 and 10).}
 }
 \value{
 Returns a numeric vector with values between 0 and 30 (if valid) or NA (if not valid).
@@ -28,7 +28,7 @@ Other \code{capl} functions called by this function include: \code{\link[=valida
 get_pc_score(
   pacer_score = c(1, 5, 8, 10, NA),
   plank_score = c(4, 5, 5, 6, 9),
-  camsa_overall_score = c(-1, 0, 6, 4, 3)
+  camsa_score = c(-1, 0, 6, 4, 3)
 )
 
 # [1]  7.5 10.0 19.0 20.0 18.0

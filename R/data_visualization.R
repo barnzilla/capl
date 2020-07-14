@@ -12,9 +12,9 @@
 #'
 #' @param score A numeric vector.
 #' @param interpretation A character vector representing CAPL-2 interpretative categories ("beginning", "progressing", "achieving", "excelling").
-#' @param x_label A character vector representing the x-axis label. This argument is set to "Interpretation" by default.
-#' @param y_label A character vector representing the y-axis label. This argument is set to "Score" by default.
-#' @param colors A character vector representing the color palette for the bars. This argument is set to CAPL-2 branding colors by default
+#' @param x_label An optional character vector representing the x-axis label. This argument is set to "Interpretation" by default.
+#' @param y_label An optional character vector representing the y-axis label. This argument is set to "Score" by default.
+#' @param colors An optional character vector representing the color palette for the bars. This argument is set to CAPL-2 branding colors by default
 #' (c("#333376", "#00a79d", "#f26522", "#a6ce39", "#747474")).
 #'
 #' @details
@@ -23,7 +23,7 @@
 #' @examples
 #' capl_results <- get_capl_demo_data(n = 25)
 #'
-#' get_score_by_interpretation_plot(
+#' get_capl_bar_plot(
 #'   score = capl_results$capl_score, 
 #'   interpretation = capl_results$capl_interpretation,
 #'   x_label = "Overall physical literacy interpretation",
@@ -31,7 +31,7 @@
 #' )
 #'
 #' @return Renders a ggplot2 bar plot (if valid).
-get_score_by_interpretation_plot <- function(score = NA, interpretation = NA, x_label = "Interpretation", y_label = "Score", colors = c("#333376", "#00a79d", "#f26522", "#a6ce39")) {
+get_capl_bar_plot <- function(score = NA, interpretation = NA, x_label = "Interpretation", y_label = "Score", colors = c("#333376", "#00a79d", "#f26522", "#a6ce39")) {
   colors <- validate_character(colors)
   if(sum(is.na(colors)) > 0) {
     colors <- c("#333376", "#00a79d", "#f26522", "#a6ce39")
