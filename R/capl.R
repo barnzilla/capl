@@ -65,7 +65,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       # Motivation and confidence computations
       raw_data$predilection_score <- get_predilection_score(raw_data$csappa1, raw_data$csappa3, raw_data$csappa5)
       raw_data$adequacy_score <- get_adequacy_score(raw_data$csappa2, raw_data$csappa4, raw_data$csappa6)
-      raw_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(raw_data$why_are_you_active1, raw_data$why_are_you_active2, raw_data$why_are_you_active3)
+      raw_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(raw_data$why_active1, raw_data$why_active2, raw_data$why_active3)
       raw_data$pa_competence_score <- get_pa_competence_score(raw_data$feelings_about_pa1, raw_data$feelings_about_pa2, raw_data$feelings_about_pa3)
       raw_data$mc_score <- get_mc_score(raw_data$predilection_score, raw_data$adequacy_score, raw_data$intrinsic_motivation_score, raw_data$pa_competence_score)
       raw_data$mc_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$mc_score, "mc")
@@ -73,11 +73,11 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 
       # Knowledge and understanding computations
       raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(3, "60 minutes or 1 hour"))
-      raw_data$cardiorespiratory_fitness_means_score <- get_binary_score(raw_data$cardiorespiratory_fitness_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
-      raw_data$muscular_strength_means_score <- get_binary_score(raw_data$muscular_strength_means, c(1, "How well the muscles can push, pull or stretch"))
+      raw_data$crt_means_score <- get_binary_score(raw_data$crt_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
+      raw_data$ms_means_score <- get_binary_score(raw_data$ms_means, c(1, "How well the muscles can push, pull or stretch"))
       raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
       raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate)
-      raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$cardiorespiratory_fitness_means_score, raw_data$muscular_strength_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
+      raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$crt_means_score, raw_data$ms_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
       raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$ku_score, "ku")
       raw_data$ku_status <- get_capl_domain_status(raw_data, "ku")
 
@@ -138,8 +138,8 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' * `ku_score`
 #' * `ku_interpretation`
 #' * `pa_guideline_score`
-#' * `cardiorespiratory_fitness_means_score`
-#' * `muscular_strength_means_score`
+#' * `crt_means_score`
+#' * `ms_means_score`
 #' * `sports_skill_score`
 #' * `fill_in_the_blanks_score`
 #'
@@ -183,7 +183,7 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
       } else if(domain == "mc") {
         required_variables <- c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")
       } else if(domain == "ku") {
-        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "cardiorespiratory_fitness_means_score", "muscular_strength_means_score", "sports_skill_score", "fill_in_the_blanks_score")
+        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "crt_means_score", "ms_means_score", "sports_skill_score", "fill_in_the_blanks_score")
       } else if(domain == "capl") {
         required_variables <- c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")
       } else {
