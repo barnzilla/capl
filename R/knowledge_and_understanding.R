@@ -1,8 +1,9 @@
 #' Compute a fill in the blanks score.
 #'
 #' @description
-#' This function computes a score (`fill_in_the_blanks_score`) for responses to the fill in the blanks items (story about Sally) in the CAPL-2
-#' Questionnaire. This score is used to compute the knowledge and understanding domain score (`ku_score`).
+#' This function computes a score (`fill_in_the_blanks_score`) for responses to the fill in the blanks items (story about Sally) in 
+#' [the CAPL-2 Questionnaire](https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf). This score is used to compute the knowledge 
+#' and understanding domain score (`ku_score`).
 #'
 #' @export
 #'

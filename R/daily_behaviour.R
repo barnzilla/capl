@@ -118,8 +118,9 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
 #'
 #' @description
 #' This function computes a score (`self_report_pa_score`) for a response to "During the past week (7 days), on how many days were you physically active for
-#' a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in the CAPL-2
-#' Questionnaire. This score is used to compute the daily behaviour domain score (`db_score`).
+#' a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in 
+#' [the CAPL-2 Questionnaire](https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf). This score is used to compute the daily
+#' behaviour domain score (`db_score`).
 #'
 #' @export
 #'
