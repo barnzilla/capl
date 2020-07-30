@@ -54,7 +54,7 @@ Users can download and install the source package by calling the `install.packag
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 utils::install.packages(
-  pkgs = "https://github.com/barnzilla/r-package-sources/raw/master/capl_1.3.tar.gz",
+  pkgs = "https://github.com/barnzilla/r-package-sources/raw/master/capl_1.32.tar.gz",
   repos = NULL, 
   type = "source"
 )

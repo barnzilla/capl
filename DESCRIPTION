@@ -1,6 +1,6 @@
 Package: capl
 Title: Compute and visualize CAPL-2 scores and interpretations
-Version: 1.31
+Version: 1.32
 Authors@R: 
     c(person(given = "Joel",
              family = "Barnes",
@@ -40,6 +40,4 @@ Imports:
     stats,
     writexl
 Suggests: 
-    klippy,
-    knitr,
-    rmarkdown
+    klippy
