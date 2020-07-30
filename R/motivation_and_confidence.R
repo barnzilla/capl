@@ -93,23 +93,23 @@ get_adequacy_score <- function(csappa2 = NA, csappa4 = NA, csappa6 = NA) {
 #' @return Returns a numeric vector with values between 1.5 and 7.5 (if valid) or NA (if not valid).
 get_intrinsic_motivation_score <- function(why_active1 = NA, why_active2 = NA, why_active3 = NA) {
   try(
-    if(var(c(length(why_are_you_active1), length(why_are_you_active2), length(why_are_you_active3))) == 0) {
+    if(var(c(length(why_active1), length(why_active2), length(why_active3))) == 0) {
       return(
         unname(
-          apply(data.frame(why_are_you_active1, why_are_you_active2, why_are_you_active3), 1, function(x) {
-            why_are_you_active1 <- validate_scale(x[1], 1, 5)
-            why_are_you_active2 <- validate_scale(x[2], 1, 5)
-            why_are_you_active3 <- validate_scale(x[3], 1, 5)
-            if(sum(is.na(c(why_are_you_active1, why_are_you_active2, why_are_you_active3))) > 0) {
+          apply(data.frame(why_active1, why_active2, why_active3), 1, function(x) {
+            why_active1 <- validate_scale(x[1], 1, 5)
+            why_active2 <- validate_scale(x[2], 1, 5)
+            why_active3 <- validate_scale(x[3], 1, 5)
+            if(sum(is.na(c(why_active1, why_active2, why_active3))) > 0) {
               return(NA)
             } else {
-              return(sum(why_are_you_active1, why_are_you_active2, why_are_you_active3) / 2)
+              return(sum(why_active1, why_active2, why_active3) / 2)
             }
           })
         )
       )
     } else {
-      stop("[CAPL error]: the why_are_you_active1, why_are_you_active2 and why_are_you_active3 arguments must be the same length.")
+      stop("[CAPL error]: the why_active1, why_active2 and why_active3 arguments must be the same length.")
     }
   )
 }
