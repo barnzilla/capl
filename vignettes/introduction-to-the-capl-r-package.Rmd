@@ -37,15 +37,15 @@ klippy::klippy(position = c("top", "right"))
 
 <a href="https://www.capl-eclp.ca" target="_blank">The Canadian Assessment of Physical Literacy (CAPL)</a> is the first comprehensive protocol that can accurately and reliably assess a broad spectrum of skills and abilities that contribute to and characterize the physical literacy level of a participating child.
 
-Physical literacy moves beyond just fitness, motor skill or motivation in isolation. The CAPL is unique in that it can assess the multiple aspects of physical literacy: daily behaviour, motivation and confidence, knowledge and understanding, and physical competence.
+Physical literacy moves beyond just fitness, motor skill or motivation in isolation. The CAPL is unique in that it can assess the multiple aspects of physical literacy: physical competence, daily behaviour, motivation and confidence, and knowledge and understanding.
 
-The domains of physical literacy are nicely summarized in figure 1 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 6:
+The domains of physical literacy are summarized in figure 1 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 6:
 
 <img src="img/domains-of-physical-literacy.jpg" alt="domains of physical literacy" style="width: 75%; height: auto; display: block; margin-left: auto; margin-right: auto;">
 
 <a href="https://www.haloresearch.ca" target="_blank">The Healthy Active Living and Obesity Research Group (HALO)</a> have been responsible for the systematic development of the CAPL since 2008. HALO’s test development efforts have been informed by the assessment of more than 10,000 children and with input from well over 100 researchers and practitioners within related fields of study.
 
-The `capl` R package contains tools that enables users to compute and visualize CAPL-2 (Canadian Assessment of Physical Literacy, Second Edition) scores and interpretations from raw data, all within the R environment without having to use the <a href="https://www.capl-eclp.ca" target="_blank">CAPL-2 website</a>.
+The `capl` package contains tools that enables users to compute and visualize CAPL-2 (Canadian Assessment of Physical Literacy, Second Edition) scores and interpretations from raw data, all within the R environment without having to use the <a href="https://www.capl-eclp.ca" target="_blank">CAPL-2 website</a>.
 
 ## Installation
 ### Source package
@@ -63,7 +63,7 @@ library(capl)
 
 ### GitHub
 
-The most recent version of the `capl` R package is also available on GitHub: <a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>. The `devtools` R package allows users to download and install the `capl` R package directly from GitHub.
+The most recent version of the `capl` package is also available on GitHub: <a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>. The `devtools` R package allows users to download and install the `capl` package directly from GitHub.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 devtools::install_github("barnzilla/capl", upgrade = "never", build_vignettes = TRUE, force = TRUE)
@@ -74,7 +74,7 @@ library(capl)
 library(capl)
 ```
 
-Once the `capl` R package is loaded, any available tutorials for the package, such as this vignette, can be accessed by calling the `browseVignettes()` function.
+Once the `capl` package is loaded, any available tutorials for the package, such as this vignette, can be accessed by calling the `browseVignettes()` function.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 browseVignettes("capl")
@@ -83,7 +83,7 @@ browseVignettes("capl")
 ## Getting started
 ### Importing raw data
 
-Before using the `capl` R package, users must first import raw data. The `import_capl_data()` function enables users to import data from an Excel workbook into the R environment.
+Before using the `capl` package, users must first import raw data. The `import_capl_data()` function enables users to import data from an Excel workbook into the R environment.
 
 ```{r warning = FALSE, error = FALSE, eval = FALSE}
 data <- import_capl_data(
@@ -96,13 +96,13 @@ data <- import_capl_data(
 
 ### Required variables
 
-The `capl` R package requires 60 variables in order to compute CAPL-2 scores and interpretations. If users look up the documentation for the `get_missing_capl_variables()` function, they will find a list of all 60 required variables in the Details section of the documentation.
+The `capl` package requires 60 variables in order to compute CAPL-2 scores and interpretations. If users look up the documentation for the `get_missing_capl_variables()` function, they will find a list of all 60 required variables in the Details section of the documentation.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 ?get_missing_capl_variables
 ```
 
-The `capl` R package is looking for 60 variables by the following names:
+The `capl` package is looking for 60 variables by the following names:
 
 * `age`
 * `gender`
@@ -148,15 +148,15 @@ The `capl` R package is looking for 60 variables by the following names:
 * `csappa4`
 * `csappa5`
 * `csappa6`
-* `why_are_you_active1`
-* `why_are_you_active2`
-* `why_are_you_active3`
+* `why_active1`
+* `why_active2`
+* `why_active3`
 * `feelings_about_pa1`
 * `feelings_about_pa2`
 * `feelings_about_pa3`
 * `pa_guideline`
-* `cardiorespiratory_fitness_means`
-* `muscular_strength_means`
+* `crt_means`
+* `ms_means`
 * `sports_skill`
 * `pa_is`
 * `pa_is_also`
@@ -167,13 +167,13 @@ The `capl` R package is looking for 60 variables by the following names:
 
 ### Loading the pre-installed dataset
 
-The `capl` R package comes with a demo (fake) dataset of raw data, `capl_demo_data`, that can be loaded and which allows users to quickly start exploring. This dataset contains 500 rows of participant data on <a href="#required-variables">the 60 variables</a> that are required by the `capl` R package.
+The `capl` package comes with a demo (fake) dataset of raw data, `capl_demo_data`, that can be loaded and which allows users to quickly start exploring. This dataset contains 500 rows of participant data on <a href="#required-variables">the 60 variables</a> that are required by the `capl` package.
 
 ```{r warning = FALSE, message = FALSE}
 data(capl_demo_data)
 ```
 
-Calling the `str()` function on the `capl_demo_data` object allows users to get a sense of how CAPL-2 raw data must be structured -- and named -- for upstream use in the `capl` R package.
+Calling the `str()` function on the `capl_demo_data` object allows users to get a sense of how CAPL-2 raw data must be structured -- and named -- for upstream use in the `capl` package.
 
 ```{r warning = FALSE, message = FALSE}
 str(capl_demo_data)
@@ -188,7 +188,7 @@ colnames(capl_demo_data)
 
 ### Generating demo raw data
 
-The `capl` R package also comes with a function, `get_capl_demo_data()`, that allows users to randomly generate demo raw data on the fly. The function takes one argument, `n` (set to 500 by default), which must be an integer and greater than 0, and which tells the function how many rows of demo raw data to randomly generate. For example, users can randomly generate demo raw data for 10,000 participants by executing a single line of code.
+The `capl` package also comes with a function, `get_capl_demo_data()`, that allows users to randomly generate demo raw data on the fly. The function takes one argument, `n` (set to 500 by default), which must be an integer and greater than 0, and which tells the function how many rows of demo raw data to randomly generate. For example, users can randomly generate demo raw data for 10,000 participants by executing a single line of code.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data2 <- get_capl_demo_data(n = 10000)
@@ -264,7 +264,7 @@ str(raw_data)
 
 ### Validation vs. noisy errors
 
-One of the coding philosophies behind the `capl` R package is to return NA values rather than be "noisy" and throw errors when data is missing or invalid. In order to implement this "quiet" approach, every `capl` function involves validation of data.
+One of the coding philosophies behind the `capl` package is to return NA values rather than be "noisy" and throw errors when data is missing or invalid. In order to implement this "quiet" approach, every `capl` function involves validation of data.
 
 #### Validation of age
 
@@ -284,7 +284,7 @@ The first element is NA because the original value is 7. The next five elements 
 
 #### Validation of gender
 
-The Canadian Asssessment of Physical Literacy is currently valid for children who identify as boys or girls. When a function requires the `gener` variable in order to execute a computation (e.g., `get_capl_interpretation()`), the `gender` variable is validated via the `validate_gender()` function.
+The Canadian Asssessment of Physical Literacy is currently valid for children who identify as boys or girls. When a function requires the `gender` variable in order to execute a computation (e.g., `get_capl_interpretation()`), the `gender` variable is validated via the `validate_gender()` function.
 
 ```{r}
 validated_gender <- validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
@@ -310,9 +310,9 @@ validated_gender
 
 This function also accepts a number of case-insensitive options (e.g., "Boy", "B", "Male", "M", 0) for the male gender and returns a standardized "boy" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA).
 
-#### Validation functions in the capl R package
+#### Validation functions in the capl package
 
-There are eight validation functions included in the `capl` R package to help provide a "quiet" user experience:
+There are eight validation functions included in the `capl` package to help provide a "quiet" user experience:
 
 * `validate_age()`
 * `validate_character()`
@@ -342,11 +342,11 @@ The CAPL-2 scoring system is nicely summarized in figure 2 of <a href="https://w
 
 <img src="img/capl-2-comprehensive-scoring-system.jpg" style="width: 100%; height: auto;" alt="capl 2 comprehensive scoring system">
 
-The main function in the `capl` R package is the `get_capl()` function. This function takes two arguments, `raw_data` and `sort` and tries to compute the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` R package. 
+The main function in the `capl` package is the `get_capl()` function. This function takes two arguments, `raw_data` and `sort` and tries to compute the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` package. 
 
 The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means <a href="#40-new-variables">the 40 new variables</a> will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order.
 
-One of the coding philosophies behind the `capl` R package is <a href="#validation">validation</a>, that is, to return NA values rather than be "noisy" and throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
+One of the coding philosophies behind the `capl` package is <a href="#validation">validation</a>, that is, to return NA values rather than be "noisy" and throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
 
 Computing the CAPL-2 scores and interpretations is as simple as executing one line of code once the raw data has been imported. This function may take some time to fully execute depending on how many rows of data are in the `raw_data` data frame.
 
@@ -396,8 +396,8 @@ The 40 new variables related to/including the CAPL-2 scores and interpretations 
 * `mc_interpretation`                    
 * `mc_status`                    
 * `pa_guideline_score`         
-* `cardiorespiratory_fitness_means_score`
-* `muscular_strength_means_score`
+* `crt_means_score`
+* `ms_means_score`
 * `sports_skill_score`        
 * `fill_in_the_blanks_score`             
 * `ku_score`             
@@ -791,9 +791,9 @@ The `get_intrinsic_motivation_score()` function computes an intrinsic motivation
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(
-  why_are_you_active1 = capl_demo_data$why_are_you_active1,
-  why_are_you_active2 = capl_demo_data$why_are_you_active2,
-  why_are_you_active3 = capl_demo_data$why_are_you_active3
+  why_active1 = capl_demo_data$why_active1,
+  why_active2 = capl_demo_data$why_active2,
+  why_active3 = capl_demo_data$why_active3
 )
 ```
 
@@ -889,11 +889,11 @@ capl_demo_data$pa_guideline_score
 The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$cardiorespiratory_fitness_means_score <- get_binary_score(capl_demo_data$cardiorespiratory_fitness_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
+capl_demo_data$crt_means_score <- get_binary_score(capl_demo_data$crt_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
 ```
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$cardiorespiratory_fitness_means_score
+capl_demo_data$crt_means_score
 ```
 
 #### Muscular strength definition score
@@ -901,11 +901,11 @@ capl_demo_data$cardiorespiratory_fitness_means_score
 The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$muscular_strength_means_score <- get_binary_score(capl_demo_data$muscular_strength_means, c(1, "How well the muscles can push, pull or stretch"))
+capl_demo_data$ms_means_score <- get_binary_score(capl_demo_data$ms_means, c(1, "How well the muscles can push, pull or stretch"))
 ```
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$muscular_strength_means_score
+capl_demo_data$ms_means_score
 ```
 
 #### Sports skill score
@@ -946,8 +946,8 @@ The `get_ku_score()` function computes a knowledge and understanding domain scor
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$ku_score <- get_ku_score(
   pa_guideline_score = capl_demo_data$pa_guideline_score,
-  cardiorespiratory_fitness_means_score = capl_demo_data$cardiorespiratory_fitness_means_score,
-  muscular_strength_means_score = capl_demo_data$muscular_strength_means_score,
+  crt_means_score = capl_demo_data$crt_means_score,
+  ms_means_score = capl_demo_data$ms_means_score,
   sports_skill_score = capl_demo_data$sports_skill_score,
   fill_in_the_blanks_score = capl_demo_data$fill_in_the_blanks_score
 )
@@ -1048,7 +1048,7 @@ capl_demo_data$capl_status
 
 ## Data visualization
 
-The `capl` R package makes use of the famous `ggplot2` R package to create custom functions that render beautiful plots for visualizing CAPL-2 results.
+The `capl` package makes use of the famous `ggplot2` R package to create custom functions that render beautiful plots for visualizing CAPL-2 results.
 
 ### Plots
 

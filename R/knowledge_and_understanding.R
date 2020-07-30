@@ -74,7 +74,7 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 #'
 #' @description 
 #' This function computes a knowledge and understanding domain score (`ku_score`) based on the physical activity guideline (`pa_guideline_score`), 
-#' cardiorespiratory fitness means (`cardiorespiratory_fitness_means_score), muscular strength and endurance means (`muscular_strength_means_score`), 
+#' cardiorespiratory fitness means (`crt_means_score`), muscular strength and endurance means (`ms_score`), 
 #' sports skill (`sports_skill_score`) and fill in the blanks (`fill_in_the_blanks_score`) scores. If one of the scores is missing or invalid, a weighted
 #' domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (`capl_score`).
 #'
@@ -83,8 +83,8 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 #' @importFrom stats var
 #'
 #' @param pa_guideline_score A numeric (integer) vector (valid values are between 0 and 1).
-#' @param cardiorespiratory_fitness_means_score A numeric (integer) vector (valid values are between 0 and 1).
-#' @param muscular_strength_means_score A numeric (integer) vector (valid values are between 0 and 1).
+#' @param crt_means_score A numeric (integer) vector (valid values are between 0 and 1).
+#' @param ms_means_score A numeric (integer) vector (valid values are between 0 and 1).
 #' @param sports_skill_score A numeric (integer) vector (valid values are between 0 and 1).
 #' @param fill_in_the_blanks_score A numeric (integer) vector (valid values are between 0 and 6).
 #'
@@ -94,8 +94,8 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 #' @examples
 #' get_ku_score(
 #'   pa_guideline_score = c(1, 0, 1, 1, NA),
-#'   cardiorespiratory_fitness_means_score = c(0, 1, "", 2, 1),
-#'   muscular_strength_means_score = c(1, 1, 1, 0, 0),
+#'   crt_means_score = c(0, 1, "", 2, 1),
+#'   ms_means_score = c(1, 1, 1, 0, 0),
 #'   sports_skill_score = c(0, 0, 1, 0, 1),
 #'   fill_in_the_blanks_score = c(5, 6, 3, 1, 2)
 #' )
@@ -103,34 +103,34 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
 #' # [1] 7.000000 8.000000 6.666667 2.222222 4.444444
 #'
 #' @return Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not valid).
-get_ku_score <- function(pa_guideline_score = NA, cardiorespiratory_fitness_means_score = NA, muscular_strength_means_score = NA, sports_skill_score = NA, fill_in_the_blanks_score = NA) {
+get_ku_score <- function(pa_guideline_score = NA, crt_score = NA, ms_means_score = NA, sports_skill_score = NA, fill_in_the_blanks_score = NA) {
   try(
-    if(var(c(length(pa_guideline_score), length(cardiorespiratory_fitness_means_score), length(muscular_strength_means_score), length(sports_skill_score), length(fill_in_the_blanks_score))) == 0) {
+    if(var(c(length(pa_guideline_score), length(crt_means_score), length(ms_means_score), length(sports_skill_score), length(fill_in_the_blanks_score))) == 0) {
       return(
         unname(
-          apply(data.frame(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score), 1, function(x) {
+          apply(data.frame(pa_guideline_score, crt_means_score, ms_means_score, sports_skill_score, fill_in_the_blanks_score), 1, function(x) {
             pa_guideline_score <- validate_scale(x[1], 0, 1)
-            cardiorespiratory_fitness_means_score <- validate_scale(x[2], 0, 1)
-            muscular_strength_means_score <- validate_scale(x[3], 0, 1)
+            crt_means_score <- validate_scale(x[2], 0, 1)
+            ms_means_score <- validate_scale(x[3], 0, 1)
             sports_skill_score <- validate_scale(x[4], 0, 1)
             fill_in_the_blanks_score <- validate_scale(x[5], 0, 6)
-            if(sum(is.na(c(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score))) > 1) {
+            if(sum(is.na(c(pa_guideline_score, crt_means_score, ms_means_score, sports_skill_score, fill_in_the_blanks_score))) > 1) {
               return(NA)
-            } else if(sum(is.na(c(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score))) == 1) {
+            } else if(sum(is.na(c(pa_guideline_score, crt_means_score, ms_means_score, sports_skill_score, fill_in_the_blanks_score))) == 1) {
               if(is.na(fill_in_the_blanks_score)) {
                 denominator <- 4
               } else {
                 denominator <- 9
               }
-              return(sum(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score, na.rm = TRUE) * 10 / denominator)
+              return(sum(pa_guideline_score, crt_means_score, ms_means_score, sports_skill_score, fill_in_the_blanks_score, na.rm = TRUE) * 10 / denominator)
             } else {
-              return(sum(pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score, fill_in_the_blanks_score))
+              return(sum(pa_guideline_score, crt_means_score, ms_means_score, sports_skill_score, fill_in_the_blanks_score))
             }
           })
         )
       )
     } else {
-      stop("[CAPL error]: the pa_guideline_score, cardiorespiratory_fitness_means_score, muscular_strength_means_score, sports_skill_score and fill_in_the_blanks_score arguments must be the same length.")
+      stop("[CAPL error]: the pa_guideline_score, crt_means_score, ms_means_score, sports_skill_score and fill_in_the_blanks_score arguments must be the same length.")
     }
   )
 }

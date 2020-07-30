@@ -138,8 +138,8 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' * `ku_score`
 #' * `ku_interpretation`
 #' * `pa_guideline_score`
-#' * `crt_means_score`
-#' * `ms_means_score`
+#' * `cardiorespiratory_fitness_means_score`
+#' * `muscular_strength_means_score`
 #' * `sports_skill_score`
 #' * `fill_in_the_blanks_score`
 #'
@@ -183,7 +183,7 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
       } else if(domain == "mc") {
         required_variables <- c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")
       } else if(domain == "ku") {
-        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "crt_means_score", "ms_means_score", "sports_skill_score", "fill_in_the_blanks_score")
+        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "cardiorespiratory_fitness_means_score", "muscular_strength_means_score", "sports_skill_score", "fill_in_the_blanks_score")
       } else if(domain == "capl") {
         required_variables <- c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")
       } else {
