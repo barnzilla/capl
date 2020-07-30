@@ -6,8 +6,8 @@
 \usage{
 get_ku_score(
   pa_guideline_score = NA,
-  cardiorespiratory_fitness_means_score = NA,
-  muscular_strength_means_score = NA,
+  crf_means_score = NA,
+  ms_means_score = NA,
   sports_skill_score = NA,
   fill_in_the_blanks_score = NA
 )
@@ -15,9 +15,9 @@ get_ku_score(
 \arguments{
 \item{pa_guideline_score}{A numeric (integer) vector (valid values are between 0 and 1).}
 
-\item{cardiorespiratory_fitness_means_score}{A numeric (integer) vector (valid values are between 0 and 1).}
+\item{crf_means_score}{A numeric (integer) vector (valid values are between 0 and 1).}
 
-\item{muscular_strength_means_score}{A numeric (integer) vector (valid values are between 0 and 1).}
+\item{ms_means_score}{A numeric (integer) vector (valid values are between 0 and 1).}
 
 \item{sports_skill_score}{A numeric (integer) vector (valid values are between 0 and 1).}
 
@@ -28,7 +28,9 @@ Returns a numeric vector with values between 0 and 10 (if valid) or NA (if not v
 }
 \description{
 This function computes a knowledge and understanding domain score (\code{ku_score}) based on the physical activity guideline (\code{pa_guideline_score}),
-cardiorespiratory fitness means (\verb{cardiorespiratory_fitness_means_score), muscular strength and endurance means (}muscular_strength_means_score\verb{),  sports skill (}sports_skill_score\verb{) and fill in the blanks (}fill_in_the_blanks_score\verb{) scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (}capl_score`).
+cardiorespiratory fitness means (\code{crf_means_score}), muscular strength and endurance means (\code{ms_score}),
+sports skill (\code{sports_skill_score}) and fill in the blanks (\code{fill_in_the_blanks_score}) scores. If one of the scores is missing or invalid, a weighted
+domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (\code{capl_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
@@ -36,8 +38,8 @@ Other \code{capl} functions called by this function include: \code{\link[=valida
 \examples{
 get_ku_score(
   pa_guideline_score = c(1, 0, 1, 1, NA),
-  cardiorespiratory_fitness_means_score = c(0, 1, "", 2, 1),
-  muscular_strength_means_score = c(1, 1, 1, 0, 0),
+  crf_means_score = c(0, 1, "", 2, 1),
+  ms_means_score = c(1, 1, 1, 0, 0),
   sports_skill_score = c(0, 0, 1, 0, 1),
   fill_in_the_blanks_score = c(5, 6, 3, 1, 2)
 )

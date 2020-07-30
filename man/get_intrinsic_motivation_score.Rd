@@ -5,17 +5,17 @@
 \title{Compute an intrinsic motivation score.}
 \usage{
 get_intrinsic_motivation_score(
-  why_are_you_active1 = NA,
-  why_are_you_active2 = NA,
-  why_are_you_active3 = NA
+  why_active1 = NA,
+  why_active2 = NA,
+  why_active3 = NA
 )
 }
 \arguments{
-\item{why_are_you_active1}{A numeric (integer) vector representing a response to BREQ item 1 (valid values are integers between 1 and 5).}
+\item{why_active1}{A numeric (integer) vector representing a response to BREQ item 1 (valid values are integers between 1 and 5).}
 
-\item{why_are_you_active2}{a numeric (integer) vector representing a response to BREQ item 2 (valid values are integers between 1 and 5).}
+\item{why_active2}{a numeric (integer) vector representing a response to BREQ item 2 (valid values are integers between 1 and 5).}
 
-\item{why_are_you_active3}{a numeric (integer) vector representing a response to BREQ item 3 (valid values are integers between 1 and 5).}
+\item{why_active3}{a numeric (integer) vector representing a response to BREQ item 3 (valid values are integers between 1 and 5).}
 }
 \value{
 Returns a numeric vector with values between 1.5 and 7.5 (if valid) or NA (if not valid).
@@ -39,9 +39,9 @@ Valid values (integers between 1 and 5) represent the following responses:
 }
 \examples{
 get_intrinsic_motivation_score(
-  why_are_you_active1 = c(4, 3, 6, 5, "2"),
-  why_are_you_active2 = c(1:5),
-  why_are_you_active3 = c(1, 5, 4, 3, 3)
+  why_active1 = c(4, 3, 6, 5, "2"),
+  why_active2 = c(1:5),
+  why_active3 = c(1, 5, 4, 3, 3)
 )
 
 # [1]  3  5 NA  6  5

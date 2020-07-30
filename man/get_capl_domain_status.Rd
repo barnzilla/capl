@@ -51,8 +51,8 @@ If the \code{domain} argument is set to "ku", the following variables must be in
 \item \code{ku_score}
 \item \code{ku_interpretation}
 \item \code{pa_guideline_score}
-\item \code{cardiorespiratory_fitness_means_score}
-\item \code{muscular_strength_means_score}
+\item \code{crf_means_score}
+\item \code{ms_means_score}
 \item \code{sports_skill_score}
 \item \code{fill_in_the_blanks_score}
 }

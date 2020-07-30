@@ -73,11 +73,11 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 
       # Knowledge and understanding computations
       raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(3, "60 minutes or 1 hour"))
-      raw_data$crt_means_score <- get_binary_score(raw_data$crt_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
+      raw_data$crf_means_score <- get_binary_score(raw_data$crf_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
       raw_data$ms_means_score <- get_binary_score(raw_data$ms_means, c(1, "How well the muscles can push, pull or stretch"))
       raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
       raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate)
-      raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$crt_means_score, raw_data$ms_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
+      raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$crf_means_score, raw_data$ms_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
       raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$ku_score, "ku")
       raw_data$ku_status <- get_capl_domain_status(raw_data, "ku")
 
@@ -138,7 +138,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' * `ku_score`
 #' * `ku_interpretation`
 #' * `pa_guideline_score`
-#' * `crt_means_score`
+#' * `crf_means_score`
 #' * `ms_means_score`
 #' * `sports_skill_score`
 #' * `fill_in_the_blanks_score`
@@ -183,7 +183,7 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
       } else if(domain == "mc") {
         required_variables <- c("mc_score", "mc_interpretation", "predilection_score", "adequacy_score", "intrinsic_motivation_score", "pa_competence_score")
       } else if(domain == "ku") {
-        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "crt_means_score", "ms_means_score", "sports_skill_score", "fill_in_the_blanks_score")
+        required_variables <- c("ku_score", "ku_interpretation", "pa_guideline_score", "crf_means_score", "ms_means_score", "sports_skill_score", "fill_in_the_blanks_score")
       } else if(domain == "capl") {
         required_variables <- c("capl_score", "capl_interpretation", "pc_score", "db_score", "mc_score", "ku_score")
       } else {

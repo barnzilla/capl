@@ -14,8 +14,9 @@ Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA 
 }
 \description{
 This function computes a score (\code{self_report_pa_score}) for a response to "During the past week (7 days), on how many days were you physically active for
-a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in the CAPL-2
-Questionnaire. This score is used to compute the daily behaviour domain score (\code{db_score}).
+a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in
+\href{https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf}{the CAPL-2 Questionnaire}. This score is used to compute the daily
+behaviour domain score (\code{db_score}).
 }
 \details{
 Other \code{capl} functions called by this function include: \code{\link[=validate_scale]{validate_scale()}}.
