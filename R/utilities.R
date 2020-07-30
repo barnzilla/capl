@@ -439,7 +439,7 @@ get_missing_capl_variables <- function(raw_data = NULL) {
         paste0("why_active", 1:3),
         paste0("feelings_about_pa", 1:3),
         "pa_guideline",
-        "crt_means",
+        "crf_means",
         "ms_means",
         "sports_skill",
         "pa_is",
