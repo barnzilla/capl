@@ -103,7 +103,7 @@ get_intrinsic_motivation_score <- function(why_active1 = NA, why_active2 = NA, w
             if(sum(is.na(c(why_are_you_active1, why_are_you_active2, why_are_you_active3))) > 0) {
               return(NA)
             } else {
-              return(sum(why_are_you_active1, why_are_you_active2, why_are_you_active3) / 2)
+              return(sum(why_active1, why_active2, why_active3) / 2)
             }
           })
         )
