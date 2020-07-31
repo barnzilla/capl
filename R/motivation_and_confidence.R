@@ -100,7 +100,7 @@ get_intrinsic_motivation_score <- function(why_active1 = NA, why_active2 = NA, w
             why_active1 <- validate_scale(x[1], 1, 5)
             why_active2 <- validate_scale(x[2], 1, 5)
             why_active3 <- validate_scale(x[3], 1, 5)
-            if(sum(is.na(c(why_are_you_active1, why_are_you_active2, why_are_you_active3))) > 0) {
+            if(sum(is.na(c(why_active1, why_active2, why_active3))) > 0) {
               return(NA)
             } else {
               return(sum(why_active1, why_active2, why_active3) / 2)
@@ -109,7 +109,7 @@ get_intrinsic_motivation_score <- function(why_active1 = NA, why_active2 = NA, w
         )
       )
     } else {
-      stop("[CAPL error]: the why_are_you_active1, why_are_you_active2 and why_are_you_active3 arguments must be the same length.")
+      stop("[CAPL error]: the why_active1, why_active2 and why_active3 arguments must be the same length.")
     }
   )
 }
