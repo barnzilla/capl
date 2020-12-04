@@ -1,6 +1,6 @@
 Package: capl
 Title: Compute and visualize CAPL-2 scores and interpretations
-Version: 1.32
+Version: 1.33
 Authors@R: 
     c(person(given = "Joel",
              family = "Barnes",
@@ -12,8 +12,8 @@ Authors@R:
              role = "aut",
              email = "mguerrero@cheo.on.ca",
              comment = c(ORCID = "0000-0001-8169-5040")))
-Author: Joel Barnes <j@barnzilla.ca> [aut, cre], 
-	Michelle Guerrero <mguerrero@cheo.on.ca> [aut]
+Author: Joel Barnes <j@barnzilla.ca> [aut, cre],
+		Michelle Guerrero <mguerrero@cheo.on.ca> [aut]
 Maintainer: Joel Barnes <j@barnzilla.ca>
 Description: This package contains tools to compute and
     visualize CAPL-2 (Canadian Assessment of Physical Literacy, Second
@@ -30,7 +30,7 @@ Encoding: UTF-8
 Language: en
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: 
     dplyr,
     ggplot2,
@@ -40,4 +40,5 @@ Imports:
     stats,
     writexl
 Suggests: 
-    klippy
+    knitr,
+    rmarkdown

@@ -29,10 +29,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r klippy, echo=FALSE, include=TRUE}
-klippy::klippy(position = c("top", "right"))
-```
-
 ## Introduction
 
 <a href="https://www.capl-eclp.ca" target="_blank">The Canadian Assessment of Physical Literacy (CAPL)</a> is the first comprehensive protocol that can accurately and reliably assess a broad spectrum of skills and abilities that contribute to and characterize the physical literacy level of a participating child.

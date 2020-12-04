@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^capl\.Rproj$
 ^LICENSE\.md$
+^doc$
+^Meta$
