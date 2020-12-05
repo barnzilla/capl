@@ -1,7 +1,7 @@
 ---
 title: "Introduction to the `capl` R package"
 author: "Joel D. Barnes, M.Sc. and Michelle D. Guerrero, Ph.D."
-date: "`r format(Sys.Date(), "%B %d, %Y")`"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
 output: 
   rmarkdown::html_vignette:
     toc: true
