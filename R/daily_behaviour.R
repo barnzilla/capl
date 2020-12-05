@@ -81,8 +81,8 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
       return(
         unname(
           apply(data.frame(time_on, time_off, non_wear_time), 1, function(x) {
-            time_on <- suppressWarnings(hm(get_24_hour_clock(x[1]), quiet = TRUE))
-            time_off <- suppressWarnings(hm(get_24_hour_clock(x[2]), quiet = TRUE))
+            time_on <- suppressMessages(suppressWarnings(hm(get_24_hour_clock(x[1]), quiet = TRUE)))
+            time_off <- suppressMessages(suppressWarnings(hm(get_24_hour_clock(x[2]), quiet = TRUE)))
             non_wear_time <- validate_number(x[3])
             if(is.na(non_wear_time) | non_wear_time < 0) {
               non_wear_time <- dminutes(0)

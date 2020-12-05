@@ -1,6 +1,6 @@
 Package: capl
 Title: Compute and visualize CAPL-2 scores and interpretations
-Version: 1.33
+Version: 1.34
 Authors@R: 
     c(person(given = "Joel",
              family = "Barnes",
