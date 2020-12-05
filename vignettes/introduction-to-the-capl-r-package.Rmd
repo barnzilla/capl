@@ -41,11 +41,9 @@ The domains of physical literacy are summarized in figure 1 of <a href="https://
 
 <a href="https://www.haloresearch.ca" target="_blank">The Healthy Active Living and Obesity Research Group (HALO)</a> has been responsible for the systematic development of the CAPL since 2008. HALO’s test development efforts have been informed by the assessment of more than 10,000 children and with input from well over 100 researchers and practitioners within related fields of study.
 
-The `capl` package contains tools that enables users to compute and visualize CAPL-2 (Canadian Assessment of Physical Literacy, Second Edition) scores and interpretations from raw data, all within the R environment without having to use the <a href="https://www.capl-eclp.ca" target="_blank">CAPL-2 website</a>.
+The `capl` package contains tools enabling users to compute and visualize CAPL-2 (Canadian Assessment of Physical Literacy, Second Edition) scores and interpretations from raw data, all within the R environment without having to use the <a href="https://www.capl-eclp.ca" target="_blank">CAPL-2 website</a>.
 
 ## Installation
-### Source package
-
 ### GitHub
 
 Users can download and install the most recent version of the `capl` package directly from GitHub (<a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>) using the `devtools` R package. 
@@ -68,11 +66,11 @@ browseVignettes("capl")
 ## Getting started
 ### Importing raw data
 
-Users must first import their raw before using the `capl` package to compute CAPL-2 scores and interpretations. The `import_capl_data()` function enables users to import data from an Excel workbook into the R global environment.
+Users must first import their raw data before using the `capl` package to compute CAPL-2 scores and interpretations. The `import_capl_data()` function enables users to import data from an Excel workbook into the R global environment.
 
 ```{r warning = FALSE, error = FALSE, eval = FALSE}
 data <- import_capl_data(
-  file_path = "c:/users/joel/desktop/data.xlsx",
+  file_path = "c:/path/to/raw-data.xlsx",
   sheet_name = "Sheet1"
 )
 ```
@@ -158,7 +156,7 @@ The `capl` package comes with a demo (fake) dataset of raw data, `capl_demo_data
 data("capl_demo_data")
 ```
 
-The base R `str()` function allows users to get a sense of how the CAPL-2 raw data should be structured and named for upstream use in the `capl` package. 
+The base R `str()` function allows users to get a sense of how the CAPL-2 raw data should be structured and named for downstream use in the `capl` package. 
 
 ```{r warning = FALSE, message = FALSE}
 str(capl_demo_data)
@@ -172,7 +170,7 @@ colnames(capl_demo_data)
 
 ### Generating demo raw data
 
-The `capl` package is also equipped with the `get_capl_demo_data()` function. This function allows users to randomly generate demo raw data and takes on parameter, `n` (set to 500 by default). This parameter is used to specify how many rows of demo raw data to generate and must, therefore, be an integer and greater than zero. Users, for example, can randomly generate demo raw data for 10,000 participants by executing a single line of code: 
+The `capl` package is also equipped with the `get_capl_demo_data()` function. This function allows users to randomly generate demo raw data and takes parameter `n` (set to 500 by default). This parameter is used to specify how many rows of demo raw data to generate and must, therefore, be an integer greater than zero. Users, for example, can randomly generate demo raw data for 10,000 participants by executing a single line of code: 
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data2 <- get_capl_demo_data(n = 10000)
@@ -186,15 +184,15 @@ str(capl_demo_data2)
 
 ### Exporting data to Excel
 
-If users prefer to examine the CAPL demo raw data in a workbook, the `export_capl_data()`function allows them to export data objects to Excel.
+If users prefer to examine the CAPL demo raw data in a workbook, the `export_capl_data()` function allows them to export data objects to Excel.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
-export_capl_data(capl_demo_data2, "c:/users/joel/desktop/capl_demo_data2.xlsx")
+export_capl_data(capl_demo_data2, "c:/path/to/store/capl_demo_data2.xlsx")
 ```
 
 ### Renaming variables
 
-If users have imported their own raw data and plan to use the main function `(get_capl())` in the `capl` package to compute CAPL-2 scores and interpretations, they must ensure their variables names match the names of the 60 required variables. Users can rename their variables by calling the `rename_variable()` function. This function has three arguments: `x`, `search`, and `replace`. The `x` parameter must be the raw data object, the `search` parameter must be a character vector representing the variable name(s) to be renamed, and the `replace` parameter must be a character vector representing the new names for the variables specificed in the `search` parameter. Below we show how to rename variables using a fake dataset called `raw_data`.  
+If users have imported their own raw data and plan to use the main function, `get_capl()`, in the `capl` package to compute CAPL-2 scores and interpretations, they must ensure their variables names match the names of the 60 required variables. Users can rename their variables by calling the `rename_variable()` function. This function takes three parameters: `x`, `search`, and `replace`. The `x` parameter must be the raw data object, the `search` parameter must be a character vector representing the variable name(s) to be renamed, and the `replace` parameter must be a character vector representing the new names for the variables specificed in the `search` parameter. Below we show how to rename variables using a fake dataset called `raw_data`.  
 
 ```{r}
 # Create fake data
@@ -248,7 +246,7 @@ str(raw_data)
 
 ### Eliminating noisy errors with validation
 
-One of the coding philosophies behind the `capl` package is to create a "quiet" user experience by suppressing "noisy" error messages via validation. That is, the `capl` package returns missing or invalid values as NA values instead of throwing “noisy” errors that halt code execution. If any variable is missing, for example, the `get_capl()` function will continue to execute without throwing error messages. The `get_missing_capl_variables()` function will create required variables that are missing and populate these variables with NA values. In order to implement the validation philosophy, every `capl` function enlists helper functions to validate the data. If a given value is not of the correct class or out of range, an NA will be returned.
+One of the coding philosophies behind the `capl` package is to create a "quiet" user experience by suppressing "noisy" error and warning messages via validation. That is, the `capl` package returns missing or invalid values as NA values instead of throwing “noisy” errors that halt code execution. If any variable is missing, for example, the `get_capl()` function will continue to execute without throwing error or warning messages. The `get_missing_capl_variables()` function will create required variables that are missing and populate these variables with NA values. In order to implement the validation philosophy, every `capl` function enlists helper functions to validate the data. If a given value is not of the correct class or out of range, an NA will be returned.
 
 #### Validation functions in the `capl` package
 
@@ -316,7 +314,7 @@ The CAPL-2 scoring system is nicely summarized in figure 2 of <a href="https://w
 
 <img src="img/capl-2-comprehensive-scoring-system.jpg" style="width: 100%; height: auto;" alt="capl 2 comprehensive scoring system">
 
-The main function in the `capl` package is the `get_capl()` function. This function takes two parameters, `raw_data` and `sort`. It computes the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` package. The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means <a href="#40-new-variables">the 40 new variables</a> will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order. Once the raw data has been imported, computing the CAPL-2 scores and interpretations is as simple as executing one line of code:
+The main function in the `capl` package is the `get_capl()` function. This function takes two parameters, `raw_data` and `sort`. It computes the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` package. The `raw_data` parameter must be structured as a data frame and contain the raw data. The `sort` parameter is set to "asis" by default. This means <a href="#40-new-variables">the 40 new variables</a> will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order. Once the raw data has been imported, computing the CAPL-2 scores and interpretations is as simple as executing one line of code:
 
 ```{r warning = FALSE, message = FALSE}
 capl_results <- get_capl(raw_data = capl_demo_data, sort = "asis")
@@ -377,7 +375,7 @@ The 40 new variables related to/including the CAPL-2 scores and interpretations 
 
 ## Computing CAPL-2 scores and interpretations manually
 
-Some users may want to validate and compute individual variables and scores. The following sections introduce the helper functions in the order they appear when calle din the `get_capl()` function. 
+Some users may want to validate and compute individual variables and scores. The following sections introduce the helper functions in the order they appear when called in the `get_capl()` function. 
 
 ### Physical competence functions
 
@@ -599,9 +597,7 @@ As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/c
 The `get_step_average()` function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer. This variable is used to compute the step score.
 
 ```{r warning = FALSE, message = FALSE}
-step_df <- get_step_average(
-  capl_demo_data
-)
+step_df <- get_step_average(capl_demo_data)
 ```
 
 The `get_step_average()` function returns a data frame with nine columns: `steps1` (validated), `steps2` (validated), `steps3` (validated), `steps4` (validated), `steps5` (validated), `steps6` (validated), `steps7` (validated), `valid_days` and `step_average`.
@@ -646,7 +642,7 @@ valid_steps1
 
 #### Step score
 
-The `get_step_score()` function computes a step score that ranges from 0 to 25 based on the average daily steps taken as measured by a pedometer. This score is used to compute the daily behaviour domain score.
+The `get_step_score()` function computes a step score that ranges from zero to 25 based on the average daily steps taken as measured by a pedometer. This score is used to compute the daily behaviour domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$step_score <- get_step_score(capl_demo_data$step_average)
@@ -658,7 +654,7 @@ capl_demo_data$step_score
 
 #### Self-reported physical activity score
 
-The `get_self_report_pa()` function computes a score that ranges from zero to five based on the response to "During the past week (7 days), on how many days were you physically active for a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the daily behaviour domain score.
+The `get_self_report_pa()` function computes a score that ranges from zero to five based on the response to "During the past week (7 days), on how many days were you physically active for a total of at least 60 minutes per day (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the daily behaviour domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$self_report_pa_score <- get_self_report_pa_score(capl_demo_data$self_report_pa)
@@ -845,7 +841,10 @@ As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/c
 The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$pa_guideline_score <- get_binary_score(capl_demo_data$pa_guideline, c(3, "60 minutes or 1 hour"))
+capl_demo_data$pa_guideline_score <- get_binary_score(
+  capl_demo_data$pa_guideline, 
+  c(3, "60 minutes or 1 hour")
+)
 ```
 
 ```{r warning = FALSE, message = FALSE}
@@ -857,7 +856,10 @@ capl_demo_data$pa_guideline_score
 The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$crf_means_score <- get_binary_score(capl_demo_data$crf_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
+capl_demo_data$crf_means_score <- get_binary_score(
+  capl_demo_data$crf_means, 
+  c(2, "How well the heart can pump blood and the lungs can provide oxygen")
+)
 ```
 
 ```{r warning = FALSE, message = FALSE}
@@ -869,7 +871,10 @@ capl_demo_data$crf_means_score
 The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$ms_means_score <- get_binary_score(capl_demo_data$ms_means, c(1, "How well the muscles can push, pull or stretch"))
+capl_demo_data$ms_means_score <- get_binary_score(
+  capl_demo_data$ms_means, 
+  c(1, "How well the muscles can push, pull or stretch")
+)
 ```
 
 ```{r warning = FALSE, message = FALSE}
@@ -881,7 +886,10 @@ capl_demo_data$ms_means_score
 The `get_binary()` function computes a binary score (0 = incorrect answer, 1 = correct answer) for a response to a questionnaire item based on the value(s) set as answer(s) to the item.
 
 ```{r warning = FALSE, message = FALSE}
-capl_demo_data$sports_skill_score <- get_binary_score(capl_demo_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
+capl_demo_data$sports_skill_score <- get_binary_score(
+  capl_demo_data$sports_skill, 
+  c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch")
+)
 ```
 
 ```{r warning = FALSE, message = FALSE}
@@ -1029,7 +1037,7 @@ get_capl_bar_plot(
 )
 ```
 
-The color palette can be customized by setting the `colors` argument.
+The color palette can be customized by setting the `colors` parameter.
 
 ```{r warning = FALSE, message = FALSE, fig.width = 7.25, fig.height = 7.25}
 get_capl_bar_plot(
@@ -1048,12 +1056,12 @@ If users want to export their data, the `export_capl_data()` function allows the
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 export_capl_data(
   x = capl_results, 
-  file_path = "c:/users/joel/desktop/capl_results.xlsx"
+  file_path = "c:/path/to/store/capl-results.xlsx"
 )
 
 export_capl_data(
   x = capl_results, 
   type = "spss",
-  file_path = "c:/users/joel/desktop/capl_results.sav"
+  file_path = "c:/path/to/store/capl-results.sav"
 )
 ```
