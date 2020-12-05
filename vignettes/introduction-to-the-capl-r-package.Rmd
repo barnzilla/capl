@@ -1,7 +1,7 @@
 ---
 title: "Introduction to the `capl` R package"
 author: "Joel D. Barnes, M.Sc. and Michelle D. Guerrero, Ph.D."
-date: "`r Sys.Date()`"
+date: "`r format(Sys.Date(), "%B %d, %Y")`"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -39,27 +39,16 @@ The domains of physical literacy are summarized in figure 1 of <a href="https://
 
 <img src="img/domains-of-physical-literacy.jpg" alt="domains of physical literacy" style="width: 75%; height: auto; display: block; margin-left: auto; margin-right: auto;">
 
-<a href="https://www.haloresearch.ca" target="_blank">The Healthy Active Living and Obesity Research Group (HALO)</a> have been responsible for the systematic development of the CAPL since 2008. HALO’s test development efforts have been informed by the assessment of more than 10,000 children and with input from well over 100 researchers and practitioners within related fields of study.
+<a href="https://www.haloresearch.ca" target="_blank">The Healthy Active Living and Obesity Research Group (HALO)</a> has been responsible for the systematic development of the CAPL since 2008. HALO’s test development efforts have been informed by the assessment of more than 10,000 children and with input from well over 100 researchers and practitioners within related fields of study.
 
 The `capl` package contains tools that enables users to compute and visualize CAPL-2 (Canadian Assessment of Physical Literacy, Second Edition) scores and interpretations from raw data, all within the R environment without having to use the <a href="https://www.capl-eclp.ca" target="_blank">CAPL-2 website</a>.
 
 ## Installation
 ### Source package
 
-Users can download and install the source package by calling the `install.packages()` function from the `utils` R package, which comes pre-installed with R.
-
-```{r warning = FALSE, message = FALSE, eval = FALSE}
-utils::install.packages(
-  pkgs = "https://github.com/barnzilla/r-package-sources/raw/master/capl_1.32.tar.gz",
-  repos = NULL, 
-  type = "source"
-)
-library(capl)
-```
-
 ### GitHub
 
-The most recent version of the `capl` package is also available on GitHub: <a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>. The `devtools` R package allows users to download and install the `capl` package directly from GitHub.
+Users can download and install the most recent version of the `capl` package directly from GitHub (<a href="https://github.com/barnzilla/capl" target="_blank">www.github.com/barnzilla/capl</a>) using the `devtools` R package. 
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 devtools::install_github("barnzilla/capl", upgrade = "never", build_vignettes = TRUE, force = TRUE)
@@ -79,7 +68,7 @@ browseVignettes("capl")
 ## Getting started
 ### Importing raw data
 
-Before using the `capl` package, users must first import raw data. The `import_capl_data()` function enables users to import data from an Excel workbook into the R environment.
+Users must first import their raw before using the `capl` package to compute CAPL-2 scores and interpretations. The `import_capl_data()` function enables users to import data from an Excel workbook into the R global environment.
 
 ```{r warning = FALSE, error = FALSE, eval = FALSE}
 data <- import_capl_data(
@@ -92,7 +81,7 @@ data <- import_capl_data(
 
 ### Required variables
 
-The `capl` package requires 60 variables in order to compute CAPL-2 scores and interpretations. If users look up the documentation for the `get_missing_capl_variables()` function, they will find a list of all 60 required variables in the Details section of the documentation.
+The `capl` package requires 60 variables in order to compute CAPL-2 scores and interpretations. Users can use the `get_missing_capl_variables()` function to retrieve a list of the required variables. The required variables are outlined in the Details section of the documentation.
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 ?get_missing_capl_variables
@@ -163,34 +152,33 @@ The `capl` package is looking for 60 variables by the following names:
 
 ### Loading the pre-installed dataset
 
-The `capl` package comes with a demo (fake) dataset of raw data, `capl_demo_data`, that can be loaded and which allows users to quickly start exploring. This dataset contains 500 rows of participant data on <a href="#required-variables">the 60 variables</a> that are required by the `capl` package.
+The `capl` package comes with a demo (fake) dataset of raw data, `capl_demo_data`, which contains 500 rows of participant data on <a href="#required-variables">the 60 variables</a> that are required by the `capl` package. Users can load the demo dataset and start exploring. 
 
 ```{r warning = FALSE, message = FALSE}
-data(capl_demo_data)
+data("capl_demo_data")
 ```
 
-Calling the `str()` function on the `capl_demo_data` object allows users to get a sense of how CAPL-2 raw data must be structured -- and named -- for upstream use in the `capl` package.
+The base R `str()` function allows users to get a sense of how the CAPL-2 raw data should be structured and named for upstream use in the `capl` package. 
 
 ```{r warning = FALSE, message = FALSE}
 str(capl_demo_data)
 ```
 
-<a href="#required-variables">The 60 required variables</a> can also be quickly accessed by calling the `colnames()` function.
+<a href="#required-variables">The 60 required variables</a> can also be quickly accessed by calling the base R `colnames()` function.
 
 ```{r warning = FALSE, message = FALSE}
 colnames(capl_demo_data)
 ```
 
-
 ### Generating demo raw data
 
-The `capl` package also comes with a function, `get_capl_demo_data()`, that allows users to randomly generate demo raw data on the fly. The function takes one argument, `n` (set to 500 by default), which must be an integer and greater than 0, and which tells the function how many rows of demo raw data to randomly generate. For example, users can randomly generate demo raw data for 10,000 participants by executing a single line of code.
+The `capl` package is also equipped with the `get_capl_demo_data()` function. This function allows users to randomly generate demo raw data and takes on parameter, `n` (set to 500 by default). This parameter is used to specify how many rows of demo raw data to generate and must, therefore, be an integer and greater than zero. Users, for example, can randomly generate demo raw data for 10,000 participants by executing a single line of code: 
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data2 <- get_capl_demo_data(n = 10000)
 ```
 
-The `str()` function can be called to verify how many rows and columns of data were created.
+The base R `str()` function can be called to verify how many rows and columns of data were created.
 
 ```{r warning = FALSE, message = FALSE}
 str(capl_demo_data2)
@@ -206,7 +194,7 @@ export_capl_data(capl_demo_data2, "c:/users/joel/desktop/capl_demo_data2.xlsx")
 
 ### Renaming variables
 
-If users have imported their own raw data and need to rename variables so they match <a href="#required-variables">the 60 required variables</a>, they can do so by calling the `rename_variable()` function. This function has three arguments: the `x` argument must be set to the raw data object. The `search` argument must be set to a character vector representing the variable name(s) to be renamed, and the `replace` argument must be set to a character vector representing the new names for the variables specified in the `search` argument.
+If users have imported their own raw data and plan to use the main function `(get_capl())` in the `capl` package to compute CAPL-2 scores and interpretations, they must ensure their variables names match the names of the 60 required variables. Users can rename their variables by calling the `rename_variable()` function. This function has three arguments: `x`, `search`, and `replace`. The `x` parameter must be the raw data object, the `search` parameter must be a character vector representing the variable name(s) to be renamed, and the `replace` parameter must be a character vector representing the new names for the variables specificed in the `search` parameter. Below we show how to rename variables using a fake dataset called `raw_data`.  
 
 ```{r}
 # Create fake data
@@ -258,13 +246,39 @@ str(raw_data)
 
 <a name="validation"></a>
 
-### Validation vs. noisy errors
+### Eliminating noisy errors with validation
 
-One of the coding philosophies behind the `capl` package is to return NA values rather than be "noisy" and throw errors when data is missing or invalid. In order to implement this "quiet" approach, every `capl` function involves validation of data.
+One of the coding philosophies behind the `capl` package is to create a "quiet" user experience by suppressing "noisy" error messages via validation. That is, the `capl` package returns missing or invalid values as NA values instead of throwing “noisy” errors that halt code execution. If any variable is missing, for example, the `get_capl()` function will continue to execute without throwing error messages. The `get_missing_capl_variables()` function will create required variables that are missing and populate these variables with NA values. In order to implement the validation philosophy, every `capl` function enlists helper functions to validate the data. If a given value is not of the correct class or out of range, an NA will be returned.
+
+#### Validation functions in the `capl` package
+
+There are eight functions included in the `capl` package (displayed in alphabetical order) to help provide a "quiet" user experience: 
+
+* `validate_age()`
+*	`validate_character()`
+*	`validate_domain_score()`
+*	`validate_gender()`
+*	`validate_integer()`
+*	`validate_number()`
+*	`validate_scale()`
+*	`validate_steps()`
+
+Users can learn more about these functions by accessing the documentation within the R environment. 
+
+```{r eval = FALSE}
+?validate_age
+?validate_character
+?validate_domain_score
+?validate_gender
+?validate_integer
+?validate_number
+?validate_scale
+?validate_steps
+```
 
 #### Validation of age
 
-For example, the Canadian Asssessment of Physical Literacy is currently valid for 8- to 12-year-old children. When a function requires the `age` variable in order to execute a computation (e.g., `get_capl_interpretation()`), the `age` variable is validated via the `validate_age()` function.
+The CAPL-2 is currently validated with 8- to 12-year-old children. However, when a function requires the `age` variable to execute a computation (e.g., `get_capl_interpretation()`), the `age` variable is validated via the `validate_age()` function.
 
 ```{r}
 validated_age <- validate_age(c(7, 8, 9, 10, 11, 12, 13, "", NA, "12", 8.5))
@@ -280,77 +294,35 @@ The first element is NA because the original value is 7. The next five elements 
 
 #### Validation of gender
 
-The Canadian Asssessment of Physical Literacy is currently valid for children who identify as boys or girls. When a function requires the `gender` variable in order to execute a computation (e.g., `get_capl_interpretation()`), the `gender` variable is validated via the `validate_gender()` function.
+The CAPL-2 is currently validated for children who identify as boys or girls. When a function requires the `gender` variable to execute a computation (e.g., `get_capl_interpretation()`), the `gender` variable is validated via the `validate_gender()` function.
 
 ```{r}
 validated_gender <- validate_gender(c("Girl", "GIRL", "g", "G", "Female", "f", "F", "", NA, 1))
-```
 
-Notice the results.
-
-```{r}
 validated_gender
 ```
 
-This function accepts a number of case-insensitive options (e.g., "Girl", "G", "Female", "F", 1) for the female gender and returns a standardized "girl" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA).
+Notice the results again. This function accepts a number of case-insensitive options (e.g., "Girl", "G", "Female", "F", 1) for the female gender and returns a standardized "girl" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA). The `validate_gender()` function behaves in a similar fashion for the male gender; it also accepts a number of case-insensitive options and returns a standardized “boy” value. 
 
 ```{r}
 validated_gender <- validate_gender(c("Boy", "BOY", "b", "B", "Male", "m", "M", "", NA, 0))
-```
 
-Notice the results again.
-
-```{r}
 validated_gender
 ```
 
-This function also accepts a number of case-insensitive options (e.g., "Boy", "B", "Male", "M", 0) for the male gender and returns a standardized "boy" value. The only two elements that are returned as NA have original values that are obviously invalid ("" and NA).
-
-#### Validation functions in the capl package
-
-There are eight validation functions included in the `capl` package to help provide a "quiet" user experience:
-
-* `validate_age()`
-* `validate_character()`
-* `validate_domain_score()`
-* `validate_gender()`
-* `validate_integer()`
-* `validate_number()`
-* `validate_scale()`
-* `validate_steps()`
-
-Users can learn more about these functions by accessing the documentation within the R environment.
-
-```{r eval = FALSE}
-?validate_age
-?validate_character
-?validate_domain_score
-?validate_gender
-?validate_integer
-?validate_number
-?validate_scale
-?validate_steps
-```
-
-## Computing CAPL-2 scores and interpretations with get_capl()
+## Computing CAPL-2 scores and interpretations 
 
 The CAPL-2 scoring system is nicely summarized in figure 2 of <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 7:
 
 <img src="img/capl-2-comprehensive-scoring-system.jpg" style="width: 100%; height: auto;" alt="capl 2 comprehensive scoring system">
 
-The main function in the `capl` package is the `get_capl()` function. This function takes two arguments, `raw_data` and `sort` and tries to compute the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` package. 
-
-The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means <a href="#40-new-variables">the 40 new variables</a> will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order.
-
-One of the coding philosophies behind the `capl` package is <a href="#validation">validation</a>, that is, to return NA values rather than be "noisy" and throw errors when data is missing or invalid. So, if any of <a href="#required-variables">the 60 required variables</a> are missing, for example, the `get_capl()` function will still execute without throwing errors. It will call the `get_missing_capl_variables()` function and create any missing variables that are required and populate these variables with NA values.
-
-Computing the CAPL-2 scores and interpretations is as simple as executing one line of code once the raw data has been imported. This function may take some time to fully execute depending on how many rows of data are in the `raw_data` data frame.
+The main function in the `capl` package is the `get_capl()` function. This function takes two parameters, `raw_data` and `sort`. It computes the CAPL-2 scores in figure 2 above and their associated age- and gender-specific interpretations, row by row, by calling the other functions in the `capl` package. The `raw_data` argument must be structured as a data frame and contain the raw data. The `sort` argument is set to "asis" by default. This means <a href="#40-new-variables">the 40 new variables</a> will be added to the data frame as they are computed. If `sort` is set to "abc", all variables will be sorted alphabetically whereas if `sort` is set to "zyx", all variables will be sorted in reverse alphabetical order. Once the raw data has been imported, computing the CAPL-2 scores and interpretations is as simple as executing one line of code:
 
 ```{r warning = FALSE, message = FALSE}
 capl_results <- get_capl(raw_data = capl_demo_data, sort = "asis")
 ```
 
-The addition of <a href="#40-new-variables">the 40 variables</a> related to/including the CAPL-2 scores and interpretations can be confirmed by calling the `str()` function. There are now 500 rows of participant data on 100 variables.
+The addition of <a href="#40-new-variables">the 40 variables</a> related to/including the CAPL-2 scores and interpretations can be confirmed by calling the base R `str()` function. As illustrated on the first line of the output, there are now 500 rows of participant data on 100 variables.
 
 ```{r}
 str(capl_results, list.len = nrow(capl_results))
@@ -405,11 +377,11 @@ The 40 new variables related to/including the CAPL-2 scores and interpretations 
 
 ## Computing CAPL-2 scores and interpretations manually
 
-Some users may want to validate and compute individual variables and scores. The next several sections introduce the functions by domain that are called in the `get_capl()` function.
+Some users may want to validate and compute individual variables and scores. The following sections introduce the helper functions in the order they appear when calle din the `get_capl()` function. 
 
 ### Physical competence functions
 
-As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 43, the formula for computing the physical competence score is:
+As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 43, the physical competence score is computed by summing the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank, and CAMSA (Canadian Agility and Movement Skill Assessment) scores:
 
 <img src="img/physical-competence-formula.jpg" alt="physical competence formula" style="width: 100%; height: auto;">
 
@@ -430,7 +402,7 @@ capl_demo_data$pacer_laps_20m
 
 #### PACER score
 
-The `get_pacer_score()` function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score based on the number of PACER laps run at a 20-metre distance. This score is used to compute the physical competence domain score variable.
+The `get_pacer_score()` function computes a PACER (Progressive Aerobic Cardiovascular Endurance Run) score that ranges from zero to 10 based on the number of PACER laps run at a 20-metre distance. This score is used to compute the physical competence domain score variable.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$pacer_score <- get_pacer_score(capl_demo_data$pacer_laps_20m)
@@ -459,7 +431,7 @@ capl_demo_data$pacer_interpretation
 
 #### Plank score
 
-The `get_plank_score()` function computes a plank score based on the duration of time (in seconds) for which a plank is held. This score is used to compute the physical competence domain score.
+The `get_plank_score()` function computes a plank score that ranges from zero to 10 based on the duration of time (in seconds) for which a plank is held. This score is used to compute the physical competence domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$plank_score <- get_plank_score(capl_demo_data$plank_time)
@@ -488,7 +460,7 @@ capl_demo_data$plank_interpretation
 
 #### CAMSA time score
 
-The `get_camsa_time()` function computes the CAMSA (Canadian Agility and Movement Skill Assessment) time score based on the time taken (in seconds) to complete a trial.
+The `get_camsa_time()` function computes the CAMSA (Canadian Agility and Movement Skill Assessment) time score that ranges from one to 14 based on the time taken (in seconds) to complete a trial.
 
 ```{r warning = FALSE, message = FALSE}
 # Trial 1
@@ -570,7 +542,7 @@ capl_demo_data$camsa_interpretation
 
 #### Physical competence score
 
-The `get_pc_score()` function computes a physical competence domain score based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and CAMSA (Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from the other two protocol scores. This score is used to compute the physical competence domain score.
+The `get_pc_score()` function computes a physical competence domain score that ranges from zero to 30 based on the PACER (Progressive Aerobic Cardiovascular Endurance Run), plank and CAMSA (Canadian Agility and Movement Skill Assessment) scores. If one protocol score is missing or invalid, a weighted domain score will be computed from the other two protocol scores. This score is used to compute the physical competence domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$pc_score <- get_pc_score(
@@ -674,7 +646,7 @@ valid_steps1
 
 #### Step score
 
-The `get_step_score()` function computes a step score based on the average daily steps taken as measured by a pedometer. This score is used to compute the daily behaviour domain score.
+The `get_step_score()` function computes a step score that ranges from 0 to 25 based on the average daily steps taken as measured by a pedometer. This score is used to compute the daily behaviour domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$step_score <- get_step_score(capl_demo_data$step_average)
@@ -686,7 +658,7 @@ capl_demo_data$step_score
 
 #### Self-reported physical activity score
 
-The `get_self_report_pa()` function computes a score for a response to "During the past week (7 days), on how many days were you physically active for a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the daily behaviour domain score.
+The `get_self_report_pa()` function computes a score that ranges from zero to five based on the response to "During the past week (7 days), on how many days were you physically active for a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the daily behaviour domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$self_report_pa_score <- get_self_report_pa_score(capl_demo_data$self_report_pa)
@@ -698,7 +670,7 @@ capl_demo_data$self_report_pa_score
 
 #### Daily behaviour score
 
-The `get_db_score()` function computes a daily behaviour domain score based on the step and self-reported physical activity scores. This score is used to compute the overall physical literacy score.
+The `get_db_score()` function computes a daily behaviour domain score that ranges from zero to 30 based on the step and self-reported physical activity scores. This score is used to compute the overall physical literacy score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$db_score <- get_db_score(
@@ -751,7 +723,7 @@ As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/c
 
 #### Predilection score
 
-The `get_predilection_score()` function computes a predilection score (`predilection_score`) for responses to three items from the Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity (Hay, 1992) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+The `get_predilection_score()` function computes a predilection score (`predilection_score`) that ranges from 1.8 to 7.5 based on responses to three items from the Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity (Hay, 1992) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 questionnaire</a>. This score is used to compute the motivation and confidence domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$predilection_score <- get_predilection_score(
@@ -767,7 +739,7 @@ capl_demo_data$predilection_score
 
 #### Adequacy score
 
-The `get_adequacy_score()` function computes an adequacy score based on responses to three items from the Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity Questionnaire (Hay, 1992) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+The `get_adequacy_score()` function computes an adequacy score that ranges from 1.8 to 7.5 based on responses to three items from the Children's Self-Perceptions of Adequacy in and Predilection for Physical Activity Questionnaire (Hay, 1992) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 questionnaire</a>. This score is used to compute the motivation and confidence domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$adequacy_score <- get_adequacy_score(
@@ -783,7 +755,7 @@ capl_demo_data$adequacy_score
 
 #### Intrinsic motivation score
 
-The `get_intrinsic_motivation_score()` function computes an intrinsic motivation score based on responses to three items from the Behavioral Regulation in Exercise Questionnaire (BREQ) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+The `get_intrinsic_motivation_score()` function computes an intrinsic motivation score that ranges from 1.5 to 7.5 based on responses to three items from the Behavioral Regulation in Exercise Questionnaire (BREQ) as they appear in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 questionnaire</a>. This score is used to compute the motivation and confidence domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$intrinsic_motivation_score <- get_intrinsic_motivation_score(
@@ -799,7 +771,7 @@ capl_demo_data$intrinsic_motivation_score
 
 #### Physical activity competence score
 
-The `get_pa_competence_score()` function computes a physical activity competence score based on responses to three items from the Behavioral Regulation in Exercise Questionnaire (BREQ) as they appear in  <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the motivation and confidence domain score.
+The `get_pa_competence_score()` function computes a physical activity competence score that ranges from 1.5 to 7.5 based on responses to three items from the Behavioral Regulation in Exercise Questionnaire (BREQ) as they appear in  <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the motivation and confidence domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$pa_competence_score <- get_pa_competence_score(
@@ -815,7 +787,7 @@ capl_demo_data$pa_competence_score
 
 #### Motivation and confidence score
 
-The `get_mc_score()` function computes a motivation and confidence domain score based on the predilection, adequacy, intrinsic motivation and physical activity competence scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other three scores. This score is used to compute the overall physical literacy score.
+The `get_mc_score()` function computes a motivation and confidence domain score that ranges from zero to 30 based on the predilection, adequacy, intrinsic motivation and physical activity competence scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other three scores. This score is used to compute the overall physical literacy score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$mc_score <- get_mc_score(
@@ -918,7 +890,7 @@ capl_demo_data$sports_skill_score
 
 #### Fill in the blanks score
 
-The `get_fill_in_the_blanks_score()` function computes a score for responses to the fill in the blanks items (story about Sally) in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the knowledge and understanding domain score.
+The `get_fill_in_the_blanks_score()` function computes a score that ranges from zero to five for responses to the fill in the blanks items (story about Sally) in <a href="https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf" target="_blank">the CAPL-2 Questionnaire</a>. This score is used to compute the knowledge and understanding domain score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(
@@ -937,7 +909,7 @@ capl_demo_data$fill_in_the_blanks_score
 
 #### Knowledge and understanding score
 
-The `get_ku_score()` function computes a knowledge and understanding domain score based on the physical activity guideline, cardiorespiratory fitness means, muscular strength and endurance means, sports skill and fill in the blanks scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score.
+The `get_ku_score()` function computes a knowledge and understanding domain score that ranges from zero to 10 based on the physical activity guideline (Q1), cardiorespiratory fitness means (Q2), muscular strength and endurance means (Q3), sports skill (Q4) and fill in the blanks (Q5) scores. If one of the scores is missing or invalid, a weighted domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$ku_score <- get_ku_score(
@@ -987,15 +959,13 @@ capl_demo_data$ku_status
 
 ### Overall physical literacy functions
 
-### Knowledge and understanding functions
-
 As illustrated in <a href="https://www.capl-eclp.ca/wp-content/uploads/2017/10/capl-2-manual-en.pdf" target="_blank">the CAPL-2 manual</a> on page 17, the formula for computing the overall physical literacy score is:
 
 <img src="img/overall-physical-literacy-formula.jpg" alt="overall physical literacy formula" style="width: 100%; height: auto;">
 
 #### Overall physical literacy score
 
-The `get_capl_score()` function computes an overall physical literacy score based on the physical competence, daily behaviour, motivation and confidence, and knowledge and understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
+The `get_capl_score()` function computes an overall physical literacy score that ranges from zero to 100 based on the physical competence, daily behaviour, motivation and confidence, and knowledge and understanding domain scores. If one of the scores is missing or invalid, a weighted score will be computed from the other three scores.
 
 ```{r warning = FALSE, message = FALSE}
 capl_demo_data$capl_score <- get_capl_score(
@@ -1073,11 +1043,17 @@ get_capl_bar_plot(
 
 ## Export results
 
-If users want to export their data, the `export_capl_data()` function allows them to export their data to Excel.
+If users want to export their data, the `export_capl_data()` function allows them to export their data to Excel or SPSS. 
 
 ```{r warning = FALSE, message = FALSE, eval = FALSE}
 export_capl_data(
   x = capl_results, 
   file_path = "c:/users/joel/desktop/capl_results.xlsx"
+)
+
+export_capl_data(
+  x = capl_results, 
+  type = "spss",
+  file_path = "c:/users/joel/desktop/capl_results.sav"
 )
 ```
