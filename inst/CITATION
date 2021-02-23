@@ -1,0 +1,16 @@
+citHeader("To cite capl in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "An R Package for Computing Canadian Assessment of Physical Literacy (CAPL) scores and interpretations from raw data",
+  author   = c(person(given = "Joel D.", family = "Barnes"), person(given = "Michelle D.", family = "Guerrero")),
+  journal  = "PLoS ONE",
+  year     = "2021",
+  volume   = "16",
+  number   = "2",
+  pages    = "e0243841",
+  url      = "https://doi.org/10.1371/journal.pone.0243841",
+  textVersion = paste(
+    "Barnes JD, Guerrero MD (2021) An R Package for Computing Canadian Assessment of Physical Literacy (CAPL) scores and interpretations from raw data. PLoS ONE 16(2): e0243841. https://doi.org/10.1371/journal.pone.0243841"
+  )
+)
