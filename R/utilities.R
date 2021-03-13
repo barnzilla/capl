@@ -48,6 +48,8 @@ capitalize_character <- function(x = NA) {
 #'
 #' @details
 #' Other `capl` functions called by this function include: [validate_character()].
+#'
+#' @return No return value.
 export_capl_data <- function(x = NULL, file_path = NA) {
   file_path <- validate_character(file_path[1])
   try(

@@ -12,6 +12,9 @@ export_capl_data(x = NULL, file_path = NA)
 \item{file_path}{A character vector representing the file path to a location on the user's local computer (e.g., "c:/users/user_name/desktop/file.xlsx")
 where \code{x} will be saved as an Excel workbook on the user's computer. The file path is not case-sensitive.}
 }
+\value{
+No return value.
+}
 \description{
 This function exports CAPL-2 data to an Excel workbook on a local computer.
 }
