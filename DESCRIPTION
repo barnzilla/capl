@@ -1,6 +1,6 @@
 Package: capl
 Title: Compute and Visualize CAPL-2 Scores and Interpretations
-Version: 1.38
+Version: 1.39
 Authors@R: 
     c(person(given = "Joel",
              family = "Barnes",
@@ -15,7 +15,7 @@ Authors@R:
 Maintainer: Joel Barnes <j@barnzilla.ca>
 Description: A toolkit for computing and visualizing CAPL-2
     (Canadian Assessment of Physical Literacy, Second Edition;
-    www.capl-eclp.ca) scores and interpretations from raw data.
+    <https://www.capl-eclp.ca>) scores and interpretations from raw data.
 License: GPL (>= 3)
 URL: https://github.com/barnzilla/capl
 BugReports: https://github.com/barnzilla/capl/issues
