@@ -1,8 +1,8 @@
 #' Compute a fill in the blanks score.
 #'
 #' @description
-#' This function computes a score (`fill_in_the_blanks_score`) for responses to the fill in the blanks items (story about Sally) in 
-#' [the CAPL-2 Questionnaire](https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf). This score is used to compute the knowledge 
+#' This function computes a score (`fill_in_the_blanks_score`) for responses to the fill in the blanks items (story about Sally) in
+#' [the CAPL-2 Questionnaire](https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf). This score is used to compute the knowledge
 #' and understanding domain score (`ku_score`).
 #'
 #' @export
@@ -15,7 +15,9 @@
 #' @param increase A vector representing a response to the fourth fill in the blank item (correct answers are 8 or "Strength").
 #' @param when_cooling_down A vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").
 #' @param heart_rate A vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").
-#' 
+#' @param version An optional numeric vector representing the version of CAPL. This argument is set to 2 by default. If set to 1,
+#' the when_cooling_down parameter will be ignored and the score re-weighted so that it's out of six.
+#'
 #' @details
 #' The following integers represent the responses for the items/arguments in this function:
 #' * 1 = Fun
@@ -28,7 +30,7 @@
 #' * 8 = Strength
 #' * 9 = Bad
 #' * 10 = Sport
-#' 
+#'
 #' Other `capl` functions called by this function include: [get_binary_score()].
 #'
 #' @examples
@@ -44,9 +46,9 @@
 #' # [1] 0 1 3 1
 #'
 #' @return Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA (if not valid).
-get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = NA, increase = NA, when_cooling_down = NA, heart_rate = NA) {
+get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = NA, increase = NA, when_cooling_down = NA, heart_rate = NA, version = 2) {
   try(
-    if(var(c(length(pa_is), length(pa_is_also), length(improve), length(increase), length(when_cooling_down), length(heart_rate))) == 0) {
+    if(! is.na(version) & version == 2 & var(c(length(pa_is), length(pa_is_also), length(improve), length(increase), length(when_cooling_down), length(heart_rate))) == 0) {
       return(
         unname(
           apply(data.frame(pa_is, pa_is_also, improve, increase, when_cooling_down, heart_rate), 1, function(x) {
@@ -64,17 +66,38 @@ get_fill_in_the_blanks_score <- function(pa_is = NA, pa_is_also = NA, improve = 
           })
         )
       )
+    } else if(! is.na(version) & version == 1 & var(c(length(pa_is), length(pa_is_also), length(improve), length(increase), length(heart_rate))) == 0) {
+      return(
+        unname(
+          apply(data.frame(pa_is, pa_is_also, improve, increase, heart_rate), 1, function(x) {
+            pa_is <- get_binary_score(x[1], c(2, 3, "Fun", "Good"))
+            pa_is_also <- get_binary_score(x[2], c(2, 3, "Fun", "Good"))
+            improve <- get_binary_score(x[3], c(1, "Endurance"))
+            increase <- get_binary_score(x[4], c(5, "Strength"))
+            heart_rate <- get_binary_score(x[5], c(4, "Pulse"))
+            if(sum(is.na(c(pa_is, pa_is_also, improve, increase, heart_rate))) > 1) {
+              return(NA)
+            } else {
+              return(sum(pa_is, pa_is_also, improve, increase, heart_rate) * 6 / 5)
+            }
+          })
+        )
+      )
     } else {
-      stop("[CAPL error]: the pa_is, pa_is_also, improve, increase, when_cooling_down and heart_rate arguments must be the same length.")
+      if(! is.na(version) & version == 1) {
+        stop("[CAPL error]: the pa_is, pa_is_also, improve, increase and heart_rate arguments must be the same length.")
+      } else {
+        stop("[CAPL error]: the pa_is, pa_is_also, improve, increase, when_cooling_down and heart_rate arguments must be the same length.")
+      }
     }
   )
 }
 
-#' Compute a knowledge and understanding domain score. 
+#' Compute a knowledge and understanding domain score.
 #'
-#' @description 
-#' This function computes a knowledge and understanding domain score (`ku_score`) based on the physical activity guideline (`pa_guideline_score`), 
-#' cardiorespiratory fitness means (`crf_means_score`), muscular strength and endurance means (`ms_score`), 
+#' @description
+#' This function computes a knowledge and understanding domain score (`ku_score`) based on the physical activity guideline (`pa_guideline_score`),
+#' cardiorespiratory fitness means (`crf_means_score`), muscular strength and endurance means (`ms_score`),
 #' sports skill (`sports_skill_score`) and fill in the blanks (`fill_in_the_blanks_score`) scores. If one of the scores is missing or invalid, a weighted
 #' domain score will be computed from the other four scores. This score is used to compute the overall physical literacy score (`capl_score`).
 #'

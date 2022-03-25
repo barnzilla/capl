@@ -9,6 +9,8 @@
 #' @param raw_data A data frame of raw CAPL-2 data.
 #' @param sort An optional character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc"
 #' and "zyx"; valid values are not case-sensitive). This argument is set to "asis" by default.
+#' @param version An optional numeric vector representing the version of CAPL. This argument is set to 2 by default. If set to 1, [get_fill_in_the_blanks_score()]
+#' will ignore the when_cooling_down parameter and re-weight the score so that it's out of six.
 #'
 #' @details
 #' Other `capl` functions called by this function include: [get_missing_capl_variables()], [get_pacer_20m_laps()], [get_pacer_score()],
@@ -22,7 +24,7 @@
 #' get_capl(raw_data)
 #'
 #' @return Returns a merged data frame of raw data and CAPL-2 scores and interpretations.
-get_capl <- function(raw_data = NULL, sort = "asis") {
+get_capl <- function(raw_data = NULL, sort = "asis", version = 2) {
   try(
     if(is.null(raw_data)) {
       stop("[CAPL error]: the raw_data argument is missing.")
@@ -76,7 +78,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
       raw_data$crf_means_score <- get_binary_score(raw_data$crf_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
       raw_data$ms_means_score <- get_binary_score(raw_data$ms_means, c(1, "How well the muscles can push, pull or stretch"))
       raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
-      raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate)
+      raw_data$fill_in_the_blanks_score <- get_fill_in_the_blanks_score(raw_data$pa_is, raw_data$pa_is_also, raw_data$improve, raw_data$increase, raw_data$when_cooling_down, raw_data$heart_rate, version)
       raw_data$ku_score <- get_ku_score(raw_data$pa_guideline_score, raw_data$crf_means_score, raw_data$ms_means_score, raw_data$sports_skill_score, raw_data$fill_in_the_blanks_score)
       raw_data$ku_interpretation <- get_capl_interpretation(raw_data$age, raw_data$gender, raw_data$ku_score, "ku")
       raw_data$ku_status <- get_capl_domain_status(raw_data, "ku")
