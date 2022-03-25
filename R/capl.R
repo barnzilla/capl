@@ -74,7 +74,7 @@ get_capl <- function(raw_data = NULL, sort = "asis", version = 2) {
       raw_data$mc_status <- get_capl_domain_status(raw_data, "mc")
 
       # Knowledge and understanding computations
-      raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(3, "60 minutes or 1 hour"))
+      raw_data$pa_guideline_score <- get_binary_score(raw_data$pa_guideline, c(ifelse(! is.na(version) & version == 1, 4, 3), "60 minutes or 1 hour"))
       raw_data$crf_means_score <- get_binary_score(raw_data$crf_means, c(2, "How well the heart can pump blood and the lungs can provide oxygen"))
       raw_data$ms_means_score <- get_binary_score(raw_data$ms_means, c(1, "How well the muscles can push, pull or stretch"))
       raw_data$sports_skill_score <- get_binary_score(raw_data$sports_skill, c(4, "Watch a video, take a lesson or have a coach teach you how to kick and catch"))
