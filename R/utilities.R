@@ -99,9 +99,13 @@ get_24_hour_clock <- function(x = NA) {
           explode <- strsplit(tolower(x), ":")
           hour <- validate_integer(explode[[1]][1])
           if(! is.na(hour) & hour <= 12) {
-            x <- format(strptime(tolower(x), "%I:%M"), format = "%H:%M")
+            if(str_count(x, ":") > 1) {
+              x <- format(strptime(tolower(x), "%I:%M:%S"), format = "%H:%M")
+            } else {
+              x <- format(strptime(tolower(x), "%I:%M"), format = "%H:%M")
+            }
           } else {
-            x <- x
+            x <- paste0(explode[[1]][1:2], collapse = ":")
           }
         } else {
           x <- NA
