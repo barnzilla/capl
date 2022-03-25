@@ -77,6 +77,6 @@ capl_results <- get_capl(capl_demo_data)
 
 get_capl_domain_status(capl_results, "pc")
 
-# [1] "complete"               "incomplete"             "missing interpretation" 
+# [1] "complete"               "incomplete"             "missing interpretation"
 
 }

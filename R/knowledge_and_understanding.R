@@ -15,7 +15,7 @@
 #' @param increase A vector representing a response to the fourth fill in the blank item (correct answers are 8 or "Strength").
 #' @param when_cooling_down A vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").
 #' @param heart_rate A vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").
-#' @param version An optional numeric vector representing the version of CAPL. This argument is set to 2 by default. If set to 1,
+#' @param version An optional numeric (integer) vector representing the version of CAPL. This argument is set to 2 by default. If set to 1,
 #' the when_cooling_down parameter will be ignored and the score re-weighted so that it's out of six.
 #'
 #' @details

@@ -329,6 +329,8 @@ get_capl_demo_data <- function(n = 500) {
 #'
 #' @export
 #'
+#' @importFrom dplyr bind_cols
+#'
 #' @param raw_data a data frame of raw CAPL-2 data.
 #'
 #' @details

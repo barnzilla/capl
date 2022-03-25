@@ -18,7 +18,7 @@ This function checks whether a vector is a character and not of length zero or "
 \examples{
 validate_character(c("beginning", "progressing", "achieving", "excelling", "", NA, 7))
 
-# [1] "beginning"   "progressing" "achieving"   "excelling"   NA            NA 
+# [1] "beginning"   "progressing" "achieving"   "excelling"   NA            NA
 # [7] "7"
 
 }

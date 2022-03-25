@@ -9,7 +9,7 @@
 #' @param raw_data A data frame of raw CAPL-2 data.
 #' @param sort An optional character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc"
 #' and "zyx"; valid values are not case-sensitive). This argument is set to "asis" by default.
-#' @param version An optional numeric vector representing the version of CAPL. This argument is set to 2 by default. If set to 1, [get_fill_in_the_blanks_score()]
+#' @param version An optional numeric (integer) vector representing the version of CAPL. This argument is set to 2 by default. If set to 1, [get_fill_in_the_blanks_score()]
 #' will ignore the when_cooling_down parameter and re-weight the score so that it's out of six.
 #'
 #' @details

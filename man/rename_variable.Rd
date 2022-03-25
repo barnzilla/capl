@@ -32,7 +32,7 @@ str(capl_demo_data[, 1:2])
 # $ gender: chr  "Female" "Girl" "Girl" "f" ...
 
 capl_demo_data <- rename_variable(
-  x = capl_demo_data, 
+  x = capl_demo_data,
   search = c("age", "gender"),
   replace = c("hello", "world")
 )

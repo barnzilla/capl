@@ -10,7 +10,8 @@ get_fill_in_the_blanks_score(
   improve = NA,
   increase = NA,
   when_cooling_down = NA,
-  heart_rate = NA
+  heart_rate = NA,
+  version = 2
 )
 }
 \arguments{
@@ -25,6 +26,9 @@ get_fill_in_the_blanks_score(
 \item{when_cooling_down}{A vector representing a response to the fifth fill in the blank item (correct answers are 2 or "Stretches").}
 
 \item{heart_rate}{A vector representing a response to the sixth fill in the blank item (correct answers are 4 or "Pulse").}
+
+\item{version}{An optional numeric (integer) vector representing the version of CAPL. This argument is set to 2 by default. If set to 1,
+the when_cooling_down parameter will be ignored and the score re-weighted so that it's out of six.}
 }
 \value{
 Returns a numeric (integer) vector with values between 0 and 5 (if valid) or NA (if not valid).

@@ -24,7 +24,7 @@ Other \code{capl} functions called by this function include: \code{\link[=valida
 }
 \examples{
 capl_demo_data <- import_capl_data(
-  file_path = "c:/users/joel/desktop/capl_demo_data.xlsx", 
+  file_path = "c:/users/joel/desktop/capl_demo_data.xlsx",
   sheet_name = "Sheet1"
 )
 

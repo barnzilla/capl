@@ -28,9 +28,9 @@ Other \code{capl} functions called by this function include: \code{\link[=valida
 }
 \examples{
 get_capl_interpretation(
-  age = 7:13, 
-  gender = c("g", "g", "b", "Boy", "m", "f", "Female"), 
-  score = c(50, 25, 100, 5, 150, 23, 78), 
+  age = 7:13,
+  gender = c("g", "g", "b", "Boy", "m", "f", "Female"),
+  score = c(50, 25, 100, 5, 150, 23, 78),
   protocol = "pacer"
 )
 

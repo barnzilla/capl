@@ -4,13 +4,16 @@
 \alias{get_capl}
 \title{Compute all CAPL-2 scores and interpretations at once.}
 \usage{
-get_capl(raw_data = NULL, sort = "asis")
+get_capl(raw_data = NULL, sort = "asis", version = 2)
 }
 \arguments{
 \item{raw_data}{A data frame of raw CAPL-2 data.}
 
 \item{sort}{An optional character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc"
 and "zyx"; valid values are not case-sensitive). This argument is set to "asis" by default.}
+
+\item{version}{An optional numeric (integer) vector representing the version of CAPL. This argument is set to 2 by default. If set to 1, \code{\link[=get_fill_in_the_blanks_score]{get_fill_in_the_blanks_score()}}
+will ignore the when_cooling_down parameter and re-weight the score so that it's out of six.}
 }
 \value{
 Returns a merged data frame of raw data and CAPL-2 scores and interpretations.

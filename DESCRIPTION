@@ -1,6 +1,6 @@
 Package: capl
 Title: Compute and Visualize CAPL-2 Scores and Interpretations
-Version: 1.39
+Version: 1.40
 Authors@R: 
     c(person(given = "Joel",
              family = "Barnes",
@@ -35,6 +35,7 @@ Imports:
     magrittr,
     readxl,
     stats,
+    stringr,
     writexl
 Suggests: 
     knitr,
