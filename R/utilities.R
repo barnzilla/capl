@@ -71,6 +71,8 @@ export_capl_data <- function(x = NULL, file_path = NA) {
 #'
 #' @export
 #'
+#' @importFrom stringr str_count
+#'
 #' @param x A character vector representing values in 12-hour clock format.
 #'
 #' @details
@@ -88,7 +90,11 @@ get_24_hour_clock <- function(x = NA) {
       sapply(x, function(x) {
         x <- validate_character(x)
         if(grepl("am|pm", tolower(x))) {
-          x <- format(strptime(tolower(x), "%I:%M %p"), format = "%H:%M")
+          if(str_count(x, ":") > 1) {
+            x <- format(strptime(tolower(x), "%I:%M:%S %p"), format = "%H:%M")
+          } else {
+            x <- format(strptime(tolower(x), "%I:%M %p"), format = "%H:%M")
+          }
         } else if(grepl(":", tolower(x))) {
           explode <- strsplit(tolower(x), ":")
           hour <- validate_integer(explode[[1]][1])
