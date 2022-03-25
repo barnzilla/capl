@@ -7,7 +7,7 @@
 #' @export
 #'
 #' @param raw_data A data frame of raw CAPL-2 data.
-#' @param sort An optional character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc" 
+#' @param sort An optional character vector representing how the variables in the returned data frame are to be sorted (valid values are "asis, "abc"
 #' and "zyx"; valid values are not case-sensitive). This argument is set to "asis" by default.
 #'
 #' @details
@@ -104,7 +104,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' Compute the status of a CAPL domain.
 #'
 #' @description
-#' This function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain (e.g., `pc_status`, 
+#' This function computes the status ("complete", "missing interpretation", "missing protocol" or "incomplete") of a CAPL domain (e.g., `pc_status`,
 #' `db_status`, `mc_status`, `ku_status`, `capl_status`).
 #'
 #' @export
@@ -118,7 +118,7 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' * `pc_interpretation`
 #' * `pacer_score`
 #' * `plank_score`
-#' * `camsa_score` 
+#' * `camsa_score`
 #'
 #' If the `domain` argument is set to "db", the following variables must be included the `x` argument:
 #' * `db_score`
@@ -160,8 +160,8 @@ get_capl <- function(raw_data = NULL, sort = "asis") {
 #' capl_results <- get_capl(capl_demo_data)
 #'
 #' get_capl_domain_status(capl_results, "pc")
-#' 
-#' # [1] "complete"               "incomplete"             "missing interpretation" 
+#'
+#' # [1] "complete"               "incomplete"             "missing interpretation"
 #'
 #' @return Returns a character vector with a value of "complete", "missing interpretation", "missing protocol" or "incomplete".
 get_capl_domain_status <- function(x = NULL, domain = NA) {
@@ -194,7 +194,7 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
       } else {
         x <- x[required_variables]
         x[, 2] <- sapply(x[, 2], validate_character)
-        x[, -2] <- data.frame(apply(data.frame(x[, -2]), 2, validate_number))
+        x[-2] <- lapply(x[-2], validate_number)
         number_of_columns = ncol(x)
         return(
           unname(
@@ -239,9 +239,9 @@ get_capl_domain_status <- function(x = NULL, domain = NA) {
 #'
 #' @examples
 #' get_capl_interpretation(
-#'   age = 7:13, 
-#'   gender = c("g", "g", "b", "Boy", "m", "f", "Female"), 
-#'   score = c(50, 25, 100, 5, 150, 23, 78), 
+#'   age = 7:13,
+#'   gender = c("g", "g", "b", "Boy", "m", "f", "Female"),
+#'   score = c(50, 25, 100, 5, 150, 23, 78),
 #'   protocol = "pacer"
 #' )
 #'
@@ -319,7 +319,7 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
 	  protocol <- validate_character(protocol)
       if(protocol == "camsa") {
 		score <- score * 2.8
-	  } 
+	  }
       return(
         unname(
           apply(data.frame(age, gender, score, rep(tolower(protocol[1]), length(age))), 1, function(x) {
@@ -398,9 +398,9 @@ get_capl_interpretation <- function(age = NA, gender = NA, score = NA, protocol 
   )
 }
 
-#' Compute an overall physical literacy score. 
+#' Compute an overall physical literacy score.
 #'
-#' @description 
+#' @description
 #' This function computes an overall physical literacy score (`capl_score`) based on the physical competence (`pc_score`), daily behaviour (`db_score`),
 #' motivation and confidence (`mc_score`), and knowledge and understanding (`ku_score`) domain scores. If one of the scores is missing or invalid, a
 #' weighted score will be computed from the other three scores.
