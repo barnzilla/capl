@@ -54,7 +54,7 @@ get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
 #'
 #' @export
 #'
-#' @importFrom lubridate as.duration dminutes hm 
+#' @importFrom lubridate as.duration dminutes hm
 #' @importFrom stats var
 #'
 #' @param time_on A character vector representing the time (in 12- or 24-hour clock format) when the pedometer was first worn on a given day.
@@ -78,9 +78,11 @@ get_db_score <- function(step_score = NA, self_report_pa_score = NA) {
 get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time = NA) {
   try(
     if(var(c(length(time_on), length(time_off), length(non_wear_time))) == 0) {
+      df <- data.frame(time_on, time_off, non_wear_time)
+      df[1:2] <- lapply(df[1:2], as.character)
       return(
         unname(
-          apply(data.frame(time_on, time_off, non_wear_time), 1, function(x) {
+          apply(df, 1, function(x) {
             time_on <- suppressMessages(suppressWarnings(hm(get_24_hour_clock(x[1]), quiet = TRUE)))
             time_off <- suppressMessages(suppressWarnings(hm(get_24_hour_clock(x[2]), quiet = TRUE)))
             non_wear_time <- validate_number(x[3])
@@ -99,7 +101,7 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
               if("minutes" %in% time_unit) {
                 wear_time <- wear_time / 60
               }
-              if(wear_time < 0) {
+              if(is.na(wear_time) | wear_time < 0) {
                 NA
               } else {
                 wear_time
@@ -118,7 +120,7 @@ get_pedometer_wear_time <- function(time_on = NA, time_off = NA, non_wear_time =
 #'
 #' @description
 #' This function computes a score (`self_report_pa_score`) for a response to "During the past week (7 days), on how many days were you physically active for
-#' a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in 
+#' a total of at least 60 minutes per day? (all the time you spent in activities that increased your heart rate and made you breathe hard)?" in
 #' [the CAPL-2 Questionnaire](https://www.capl-eclp.ca/wp-content/uploads/2018/02/CAPL-2-questionnaire.pdf). This score is used to compute the daily
 #' behaviour domain score (`db_score`).
 #'
@@ -166,7 +168,7 @@ get_self_report_pa_score <- function(x = NA) {
 #'
 #' @description
 #' This function computes the daily arithmetic mean of a week of steps taken as measured by a pedometer (`step_average`). This variable is used to compute
-#' the step score (`step_score`). 
+#' the step score (`step_score`).
 #'
 #' @export
 #'
@@ -174,7 +176,7 @@ get_self_report_pa_score <- function(x = NA) {
 #'
 #' @param raw_data A data frame that includes seven days of pedometer steps and their corresponding on and off times. See Details for how these variables
 #' must be named.
-#' 
+#'
 #' @details
 #' This function will throw an error unless the following variables are found in the `raw_data` argument:
 #' * `steps1`
@@ -183,7 +185,7 @@ get_self_report_pa_score <- function(x = NA) {
 #' * `steps4`
 #' * `steps5`
 #' * `steps6`
-#' * `steps7` 
+#' * `steps7`
 #' * `time_on1`
 #' * `time_on2`
 #' * `time_on3`
@@ -199,16 +201,16 @@ get_self_report_pa_score <- function(x = NA) {
 #' * `time_off6`
 #' * `time_off7`
 #'
-#' There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid 
-#' day will be randomly sampled and used for the fourth valid day before computing the mean. 
+#' There must be at least three valid days for an arithmetic mean to be computed. If only three valid days, one of the step values from a valid
+#' day will be randomly sampled and used for the fourth valid day before computing the mean.
 #'
 #' Other `capl` functions called by this function include: [validate_steps()] and [get_pedometer_wear_time()].
 #'
 #' @examples
 #' capl_demo_data <- get_capl_demo_data(10)
-#' 
+#'
 #' get_step_average(capl_demo_data)$step_average
-#' 
+#'
 #' # [1] 18365 12655 15493 12966 11396 13954 18456 13589 17543 11276
 #'
 #' @return Returns a data frame with nine columns: `steps1` (validated), `steps2` (validated), `steps3` (validated), `steps4` (validated), `steps5` (validated), `steps6` (validated), `steps7` (validated), `valid_days` and `step_average`. The steps are validated with the [validate_steps()] function.
@@ -229,7 +231,7 @@ get_step_average <- function(raw_data = NULL) {
         }
         steps_df <- steps_df[,-1]
         steps_df$valid_days <- apply(steps_df, 1, function(x) sum(! is.na(x)))
-        
+
         steps_df$step_average <- apply(steps_df, 1, function(x) {
           valid_days <- x[8]
           if(is.na(valid_days) | valid_days < 3) {
@@ -251,7 +253,7 @@ get_step_average <- function(raw_data = NULL) {
 #' Compute a step score.
 #'
 #' @description
-#' This function computes a step score (`step_score`) based on the average daily steps taken as measured by a pedometer. This score is used to compute the 
+#' This function computes a step score (`step_score`) based on the average daily steps taken as measured by a pedometer. This score is used to compute the
 #' daily behaviour domain score (`db_score`).
 #'
 #' @export
