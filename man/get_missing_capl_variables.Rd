@@ -71,7 +71,7 @@ The required CAPL-2 variables include:
 \item feelings_about_pa2
 \item feelings_about_pa3
 \item pa_guideline
-\item crt_means
+\item crf_means
 \item ms_means
 \item sports_skill
 \item pa_is
